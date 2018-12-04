@@ -112,23 +112,23 @@
 <meta name="keywords" content="迁移学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Transfer component analysis 个人理解">
-<meta property="og:url" content="http://tangmeii.cn/2018/12/05/20181204 TCA/index.html">
+<meta property="og:url" content="http://tangmeii.cn/2018/12/05/TCA-Analysis/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;杨强的TCA 迁移成分分析（Domain adaptation via transfer component analysis），这是我认真看的第一篇计算机的论文，感觉有点吃力，其实网上有一些解读，只是我的底子比较差，没怎么看懂。看完这个文章再看其他的才发现，距离函数、核运算都是CS专业的基本知识，路漫漫啊。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://tangmeii.cn/2018/12/05/20181204%20TCA/equ5.gif">
-<meta property="og:updated_time" content="2018-12-04T13:33:51.172Z">
+<meta property="og:image" content="http://tangmeii.cn/2018/12/05/TCA-Analysis/equ5.gif">
+<meta property="og:updated_time" content="2018-12-04T13:40:04.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transfer component analysis 个人理解">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;杨强的TCA 迁移成分分析（Domain adaptation via transfer component analysis），这是我认真看的第一篇计算机的论文，感觉有点吃力，其实网上有一些解读，只是我的底子比较差，没怎么看懂。看完这个文章再看其他的才发现，距离函数、核运算都是CS专业的基本知识，路漫漫啊。">
-<meta name="twitter:image" content="http://tangmeii.cn/2018/12/05/20181204%20TCA/equ5.gif">
+<meta name="twitter:image" content="http://tangmeii.cn/2018/12/05/TCA-Analysis/equ5.gif">
 
 
 
 
 
 
-  <link rel="canonical" href="http://tangmeii.cn/2018/12/05/20181204 TCA/">
+  <link rel="canonical" href="http://tangmeii.cn/2018/12/05/TCA-Analysis/">
 
 
 
@@ -345,7 +345,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2018/12/05/20181204 TCA/">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2018/12/05/TCA-Analysis/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gengxiang">
@@ -404,7 +404,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-04 21:33:51" itemprop="dateModified" datetime="2018-12-04T21:33:51+08:00">2018-12-04</time>
+                <time title="修改时间：2018-12-04 21:40:04" itemprop="dateModified" datetime="2018-12-04T21:40:04+08:00">2018-12-04</time>
               
             
           </span>
@@ -493,7 +493,7 @@ x_{S_{n_{1}}} \right) \right) + \frac{1}{n_{2}}\left( \phi\left( x_{T_{1}}
 <p>\begin{equation}K =  \begin{bmatrix} K_{S,S} &amp; K_{S,T} \ K_{T,S} &amp; K_{T,T} \ \end{bmatrix}<br>\in \mathbb{R}^{(n_{1} + n_{2}) \times (n_{1} + n_{2})}\end{equation}</p>
 <p>即$K = \left\lbrack {\phi\left( x_{i} \right)}^{T}\phi\left( x_{j} \right)\right\rbrack,i,j\in \lbrack 1,n_{1} + n_{2}\rbrack$，即为$(n_{1} + n_{2})\times (n_{1} +n_{2})$的内积矩阵，式（3）即为这些内积矩阵再乘上系数（即为式（3）中有颜色的部分），因此再定义一个系数矩阵<em>L</em>:</p>
 <p>再定义$L$：</p>
-<p><img src="/2018/12/05/20181204 TCA/equ5.gif" alt="TCA"><br>(5)</p>
+<p><img src="/2018/12/05/TCA-Analysis/equ5.gif" alt="TCA"><br>(5)</p>
 <p>设展$n_{1}$=3和$n_{2} = 2$，则矩阵展开为：</p>
 <script type="math/tex; mode=display">\left| \begin{matrix}
 \begin{matrix} 1/9 & 1/9 & 1/9 \\ 1/9 & 1/9 & 1/9 \\ 1/9 & 1/9 & 1/9 \\
@@ -540,7 +540,7 @@ decomposition“，翻译过来是”在广义特征值分解过程中避免分�
 
 （b）然而有时过多注重保留散度也不好，如图（b）$x_{1}$方向的散度很大但是对分类其实没有用。
 
-![](20181204 TCA/8d4442205c772c884ed9203c46621144.png)
+![](TCA-Analysis/8d4442205c772c884ed9203c46621144.png)
 
 步骤3：在体现数据散度特征的同时优化W
 ------------------------------------
@@ -698,8 +698,8 @@ $$H = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix} -
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/05/TCA-Analysis/" rel="next" title="Transfer component analysis 个人理解">
-                <i class="fa fa-chevron-left"></i> Transfer component analysis 个人理解
+              <a href="/2018/12/04/20181204周末电影/" rel="next" title="周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》">
+                <i class="fa fa-chevron-left"></i> 周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》
               </a>
             
           </div>
@@ -778,7 +778,7 @@ $$H = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix} -
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
