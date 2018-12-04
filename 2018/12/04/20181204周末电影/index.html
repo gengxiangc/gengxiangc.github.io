@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="Random&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是源自选择函数  $f$。">
+  <meta name="description" content="思想训练过程&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影：《影》 《幸福终点站》 《球王的诞生》《美国动物》，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是个选择模型$f$的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》">
+<meta property="og:title" content="电影推荐模型的思想训练过程">
 <meta property="og:url" content="http://tangmeii.cn/2018/12/04/20181204周末电影/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="Random&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是源自选择函数  $f$。">
+<meta property="og:description" content="思想训练过程&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影：《影》 《幸福终点站》 《球王的诞生》《美国动物》，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是个选择模型$f$的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-04T09:27:24.567Z">
+<meta property="og:updated_time" content="2018-12-04T14:28:18.450Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》">
-<meta name="twitter:description" content="Random&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是源自选择函数  $f$。">
+<meta name="twitter:title" content="电影推荐模型的思想训练过程">
+<meta name="twitter:description" content="思想训练过程&amp;emsp;&amp;emsp;周末在暴风电视本周最新榜上看了四部电影：《影》 《幸福终点站》 《球王的诞生》《美国动物》，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是个选择模型$f$的问题。">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》 | Tangmeii_Sites</title>
+  <title>电影推荐模型的思想训练过程 | Tangmeii_Sites</title>
   
 
 
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">周末电影： 《影》 《幸福终点站》 《球王的诞生》《美国动物》
+          <h1 class="post-title" itemprop="name headline">电影推荐模型的思想训练过程
               
             
           </h1>
@@ -384,7 +384,7 @@
                 
               
 
-              <time title="创建时间：2018-12-04 10:36:53 / 修改时间：17:27:24" itemprop="dateCreated datePublished" datetime="2018-12-04T10:36:53+08:00">2018-12-04</time>
+              <time title="创建时间：2018-12-04 10:36:53 / 修改时间：22:28:18" itemprop="dateCreated datePublished" datetime="2018-12-04T10:36:53+08:00">2018-12-04</time>
             
 
             
@@ -440,15 +440,18 @@
       
 
       
-        <h2 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h2><p>&emsp;&emsp;周末在暴风电视本周最新榜上看了四部电影，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是源自选择函数  $f$。<br><a id="more"></a><br>&emsp;&emsp;为什么回产生这种现象呢，我们分析一下。如果把推荐电影当作一个任务 $f$ ,那么有以下几种模型：</p>
+        <h2 id="思想训练过程"><a href="#思想训练过程" class="headerlink" title="思想训练过程"></a>思想训练过程</h2><p>&emsp;&emsp;周末在暴风电视本周最新榜上看了四部电影：《影》 《幸福终点站》 《球王的诞生》《美国动物》，难得的是，竟然都没有让我失望，想起之前有些周末，我在豆瓣上精心挑选了一些电影，反而难以让我感到满意。我想这是个选择模型$f$的问题。<br><a id="more"></a><br>&emsp;&emsp;为什么回产生这种现象呢，我们分析一下。如果把推荐电影当作一个任务 $f$ ,那么有以下几种模型：</p>
 <ul>
-<li><p><strong>电影天堂</strong>：</p>
+<li><p><strong>电影天堂</strong>：“最近的电影”<br>不断推出最新电影，可以看作是随机生成。由于没有针对单独用户进行推荐，所以信息有效率较低。</p>
 </li>
-<li><p><strong>豆瓣推荐</strong>：根据以往我对所看过电影的打分情况，推荐我爱看的，这是经典的feed流。如果我喜欢科幻电影，系统会一直给我推荐科幻电影，早前的推荐会让我感到很满意，但是后期当我出现审美疲劳的时候，系统已经陷入了“信息茧房”。这里请注意，我说的是系统陷入了茧房，而不是我陷入了茧房。我不会因为系统无限制推荐而陷入科幻电影，但是推荐系统却深深陷入了科幻电影。</p>
+<li><p><strong>豆瓣推荐</strong>：“我曾经喜欢的电影”<br>根据以往我对所看过电影的打分情况，推荐我爱看的，这是经典的feed流。如果我喜欢科幻电影，系统会一直给我推荐科幻电影，早前的推荐会让我感到很满意，但是后期当我出现审美疲劳的时候，系统已经陷入了“信息茧房”。这里请注意，我说的是系统陷入了茧房，而不是我陷入了茧房。我不会因为系统无限制推荐而陷入科幻电影，但是推荐系统却深深陷入了科幻电影。</p>
+</li>
+<li><p><strong>朋友推荐</strong>：“大家都说好看的电影”<br>当豆瓣的推荐无法满足用户的时候，用户会通过社交媒体或者朋友之间推荐。对于能够推荐电影的朋友，一般圈子较近，思想层次比较相似，因此这种能够有效得到一些比较满意的电影，但是这种方式效率较低。 </p>
 </li>
 </ul>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<p>&emsp;&emsp;可以看出，目前并没有有效的机制可以推荐“用户喜欢的电影”，在人的思想和意识无法被读取之前，比较有效的方式就是“以往喜好”加上“随机游走”，不断试探用户对其他电影的接受可能性。  </p>
+<p>&emsp;&emsp;从模型在线训练的角度，就是当数据收敛之后，不断加上新的数据分布，防止茧房。这个倒是跟我们实验室周老大的研究比较相似，温度场控制曲线训练好之后，间断加入随机模式，防止模型过拟合。</p>
+<p>&emsp;&emsp;通过以上分析，对于我自己来说，最有效的方式就是主动找一些自己以前不喜欢的电影，逃出自己喜欢的电影圈子，这样可能会有意外收获。</p>
 
       
     </div>
@@ -667,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random"><span class="nav-number">1.</span> <span class="nav-text">Random</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">2.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">2.1.</span> <span class="nav-text">Create a new post</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#思想训练过程"><span class="nav-number">1.</span> <span class="nav-text">思想训练过程</span></a></li></ol></div>
             
 
           </div>
