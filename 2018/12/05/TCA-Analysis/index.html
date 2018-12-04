@@ -117,7 +117,8 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;杨强的TCA 迁移成分分析（Domain adaptation via transfer component analysis），这是我认真看的第一篇计算机的论文，感觉有点吃力，其实网上有一些解读，只是我的底子比较差，没怎么看懂。看完这个文章再看其他的才发现，距离函数、核运算都是CS专业的基本知识，路漫漫啊。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2018/12/05/TCA-Analysis/equ5.gif">
-<meta property="og:updated_time" content="2018-12-04T13:40:04.709Z">
+<meta property="og:image" content="http://tangmeii.cn/2018/12/05/TCA-Analysis/8d4442205c772c884ed9203c46621144.png">
+<meta property="og:updated_time" content="2018-12-04T13:58:03.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transfer component analysis 个人理解">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;杨强的TCA 迁移成分分析（Domain adaptation via transfer component analysis），这是我认真看的第一篇计算机的论文，感觉有点吃力，其实网上有一些解读，只是我的底子比较差，没怎么看懂。看完这个文章再看其他的才发现，距离函数、核运算都是CS专业的基本知识，路漫漫啊。">
@@ -404,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-04 21:40:04" itemprop="dateModified" datetime="2018-12-04T21:40:04+08:00">2018-12-04</time>
+                <time title="修改时间：2018-12-04 21:58:03" itemprop="dateModified" datetime="2018-12-04T21:58:03+08:00">2018-12-04</time>
               
             
           </span>
@@ -456,7 +457,7 @@
 
       
         <p>&emsp;&emsp;杨强的TCA 迁移成分分析（Domain adaptation via transfer component analysis），这是我认真看的第一篇计算机的论文，感觉有点吃力，其实网上有一些解读，只是我的底子比较差，没怎么看懂。看完这个文章再看其他的才发现，距离函数、核运算都是CS专业的基本知识，路漫漫啊。<br><a id="more"></a>  </p>
-<h2 id="1-TCA：迁移成分分析"><a href="#1-TCA：迁移成分分析" class="headerlink" title="1 TCA：迁移成分分析"></a>1 TCA：迁移成分分析</h2><p>步骤1：将源数据和目标数据都映射到希尔伯特空间中，在此空间中两数据源距离最近，求矩阵$K$。</p>
+<h2 id="TCA：迁移成分分析"><a href="#TCA：迁移成分分析" class="headerlink" title="TCA：迁移成分分析"></a>TCA：迁移成分分析</h2><p>步骤1：将源数据和目标数据都映射到希尔伯特空间中，在此空间中两数据源距离最近，求矩阵$K$。</p>
 <p>步骤2：定义低维的矩阵$W$，结合约束优化$W$。这个W就是“迁移成分”。</p>
 <p><strong>解释</strong>：</p>
 <p>步骤一其实是杨强的另一篇论文，用半正定规划求解映射$K$。</p>
@@ -493,7 +494,10 @@ x_{S_{n_{1}}} \right) \right) + \frac{1}{n_{2}}\left( \phi\left( x_{T_{1}}
 <p>\begin{equation}K =  \begin{bmatrix} K_{S,S} &amp; K_{S,T} \ K_{T,S} &amp; K_{T,T} \ \end{bmatrix}<br>\in \mathbb{R}^{(n_{1} + n_{2}) \times (n_{1} + n_{2})}\end{equation}</p>
 <p>即$K = \left\lbrack {\phi\left( x_{i} \right)}^{T}\phi\left( x_{j} \right)\right\rbrack,i,j\in \lbrack 1,n_{1} + n_{2}\rbrack$，即为$(n_{1} + n_{2})\times (n_{1} +n_{2})$的内积矩阵，式（3）即为这些内积矩阵再乘上系数（即为式（3）中有颜色的部分），因此再定义一个系数矩阵<em>L</em>:</p>
 <p>再定义$L$：</p>
-<p><img src="/2018/12/05/TCA-Analysis/equ5.gif" alt="TCA"><br>(5)</p>
+<p><img src="/2018/12/05/TCA-Analysis/equ5.gif" alt="TCA">  </p>
+<ul>
+<li>(5)</li>
+</ul>
 <p>设展$n_{1}$=3和$n_{2} = 2$，则矩阵展开为：</p>
 <script type="math/tex; mode=display">\left| \begin{matrix}
 \begin{matrix} 1/9 & 1/9 & 1/9 \\ 1/9 & 1/9 & 1/9 \\ 1/9 & 1/9 & 1/9 \\
@@ -501,163 +505,64 @@ x_{S_{n_{1}}} \right) \right) + \frac{1}{n_{2}}\left( \phi\left( x_{T_{1}}
 \end{matrix} \\ \begin{matrix} 1/6 & 1/6 & 1/6 \\ 1/6 & 1/6 & 1/6 \\
 \end{matrix} & \begin{matrix} 1/4 & 1/4 \\ 1/4 & 1/4 \\ \end{matrix} \\
 \end{matrix} \right|</script><p>因此矩阵K的每行乘以矩阵L的每列，再相加，即为式（3），因此式3可以描述为矩阵的迹<a href="2">[2]</a></p>
-<script type="math/tex; mode=display">D\text{IS}\left( X_{s},X_{t} \right) = tr(\text{KL})$$ (6)
-
-这里有个问题，为何我们可以求核矩阵*K*来代替求核函数$k$呢，我们要保证核矩阵有确切对应的核函数，因此需要把式（6）定义成：
-
-$$D\text{IS}\left( X_{s},X_{t} \right) = tr\left( \text{KL} \right) -
-\lambda\text{tr}\left( K \right)$$ (7)
-
-（这里没看懂，但是找到了一些参考文献<a href="3">[3]</a><a href="4">[4]</a>，这些在核研究方面是基本定理，有需要再看。大概是为了正则化，降低$K$的复杂度。
-
-
-
-此时，我们的优化目标可以定义为：
-
-$$\min\ \text{tr}\left( \text{KL} \right) - \lambda\text{tr}\left( K \right)</script><p>(8)</p>
+<p>\begin{equation}D\text{IS}\left( X_{s},X_{t} \right) = tr(\text{KL})\end{equation}</p>
+<p>这里有个问题，为何我们可以求核矩阵<em>K</em>来代替求核函数$k$呢，我们要保证核矩阵有确切对应的核函数，因此需要把式（6）定义成：</p>
+<p>\begin{equation}D\text{IS}\left( X_{s},X_{t} \right) = tr\left( \text{KL} \right) -<br>\lambda\text{tr}\left( K \right)\end{equation}</p>
+<p>（这里没看懂，但是找到了一些参考文献<a href="3">[3]</a><a href="4">[4]</a>，这些在核研究方面是基本定理，有需要再看。大概是为了正则化，降低$K$的复杂度。</p>
+<p>此时，我们的优化目标可以定义为：</p>
+<p>\begin{equation}\min \text{tr}\left( \text{KL} \right) - \lambda\text{tr}\left( K \right)\end{equation}</p>
 <p><strong>个人理解</strong>：到这里其实是杨强之前一篇论文<a href="5">[5]</a>，原文式（8）中的K是用半正定规划<a href="6">[6]</a>强行求解的，求解之后是用PCA进行降维，这个求解过程对我们可能有帮助，而本文TCA并没有求解K，在算法操作过程中直接定义核函数（线性核或者高斯核）。</p>
 <h2 id="步骤2：降维定义新目标函数（Parametric-Kernel-Map-for-Unseen-Patterns）"><a href="#步骤2：降维定义新目标函数（Parametric-Kernel-Map-for-Unseen-Patterns）" class="headerlink" title="步骤2：降维定义新目标函数（Parametric Kernel Map for Unseen Patterns）"></a>步骤2：降维定义新目标函数（Parametric Kernel Map for Unseen Patterns）</h2><p>首先核矩阵可以表示为 empirical kernel map ：$K = (KK^{- 1/2})(K^{-1/2}K)$，此时$K$是（$n_{1} + n_{2}$）维，为了将核矩阵降为$m$维（$m &lt;n_{1} + n_{2}$），定义一个矩阵<br>$\tilde{W} \in \mathbb{R}^{(n_{1} + n_{2})\times m}$，新的核矩阵可以表示为：</p>
-<script type="math/tex; mode=display">\tilde{K} = \left( KK^{- \frac{1}{2}}\tilde{W} \right)\left(
-{\tilde{W}}^{T}K^{- \frac{1}{2}}K \right) = \text{KW}W^{T}K$$ (9)
-
-其中${W = K}^{- \frac{1}{2}}\tilde{W}$, 此时距离函数变为：</script><p>D\text{IS}\left( X_{s},X_{t} \right) = tr\left( (\text{KW}W^{T}K)L \right) = \text{tr}\left( W^{T}KL\text{KW} \right)</p>
-<script type="math/tex; mode=display">
-
-目标函数定义为：
-
-$$\min\ \text{tr}\left( W^{T}KL\text{KW} \right) + \mu\text{tr}\left( W^{T}W
-\right)$$ (10)
-
-其中$\text{tr}\left( W^{T}W\right)$作为惩罚项来降低$W$的复杂度，这个是可以理解的，只是式（8）的不能理解。原文中说正则项作用还有“avoid
-the rank deficiency of the denominator in the generalized eigenvalue
-decomposition“，翻译过来是”在广义特征值分解过程中避免分母秩亏“。
-
-是不是现在就可以得到完美的降维域移植呢，不是的，请看以下两点现象：
-
-**观察现象**：
-
-（a）距离函数本身要能够体现数据的特征，我们希望映射之后的数据距离更近但本身的散度要保持，如下图(a)，分类对$x_{1}$方向敏感，而$x_{2}$方向只是随机噪声，然而按照距离求解核矩阵时，映射可能把$x_{1}$方向的大跨度压缩，而试图优化$x_{2}$方向的距离，这样虽然可以使距离小，却由于丢失$x_{1}$方向的散度导致结果对分类任务没有帮助。因此映射要保持数据本身各个维度的散度特征。
-
-（b）然而有时过多注重保留散度也不好，如图（b）$x_{1}$方向的散度很大但是对分类其实没有用。
-
-![](TCA-Analysis/8d4442205c772c884ed9203c46621144.png)
-
-步骤3：在体现数据散度特征的同时优化W
-------------------------------------
-
-一组数据的散度可以用散列矩阵（Scatter
-matrix）来描述，对于一个矩阵A，其散度可表示为：$S =\text{AH}A^{T}$，其中$H$为中心矩阵<a href="7">[7]</a>，对于式（10），数据经过改进的核矩阵已经表示为$W^{T}K$，因此其散度可以表示为$W^{T}K\text{HKW}$，其中$H= \mathbf{I}_{n_{1} + n_{2}} - \frac{1}{nn_{1} +n_{2}}\mathbf{11}^{T}$，其中$\mathbf{I}_{n_{1} + n_{2}} \in \mathbb{R}^{(n_{1}+ n_{2}) \times m}$
-是单位矩阵。为了保持源数据各个维度的散度特征不变，上述优化问题可以表示为：
-
-
-
-$$\min\ \text{tr}\left( W^{T}KL\text{KW} \right) + \mu\text{tr}\left( W^{T}W
-\right)</script><script type="math/tex; mode=display">\operatorname{s.t.\ }\ W^{T}KH\text{KW} = I_{m}$$ (11)
-
-其中$\mu$是正则化控制参数。式（11）为约束条件，保持散度不变。
-
-后续问题是一个数学领域常见的“迹优化问题”（Trace optimization
-problem），采用的方法是拉格朗日对偶法，网上可以查到详细解释，我认为这部分跟我暂时不相关，因此这部分不看了。结论是，$W$的解即为${(\text{KLK}+ \mu I)}^{- 1}\text{KHK}$的前m个特征向量。
-
-2 SSTCA：半监督迁移成分分析
-===========================
-
-考虑源数据有Y标签，因此可以采用半监督，主要基于Hilbert–Schmidt Independence
-Criterion (HSIC)，并添加了约束如下：
-
-（1）减小源数据和目标数据的在嵌入空间中的分布距离（基于MMD，自己随便定义一个核）
-
-（2）保持标签独立性（不懂为何可以实现）
-
-${\tilde{K}}_{\text{yy}} = \gamma K_{l} + (1 - \gamma)K_{v}$ (12)
-
-其中$K_{l}$为标签的核，目标数据部分为0。
-
-（3）维持数据流形相似下降维
-
-依据：如果两个数据$x_{1}$和$x_{2}$在源空间中距离相近，我们希望在嵌入空间中两者距离依然相近，这就是维持数据流形。采用的方法是拉普拉斯映射<a href="8">[8]</a>，在源空间中$x_{1}$附近$k$个数据定义为相邻，其系数定义为$m_{\text{ij}}= exp( -d_{\text{ij}}^{2}/{2\sigma}^{2})$，根据相邻点和权重定义度矩阵D和邻接矩阵M，即可定义拉普拉斯矩阵$\mathcal{L}= D -M$，对于嵌入数据$\mathcal{A}$矩阵拉普拉斯矩$\mathcal{L}$阵有个性质<a href="9">[9]</a>如下：
-
-
-
-$$\sum_{(i,j) \in \mathcal{N}}^{}m_{\text{ij}}\left\| \mathcal{A}_{i} -
-\mathcal{A}_{j} \right\|^{2} = tr(\mathcal{\text{AL}}\mathcal{A}^{T})$$ (13)
-
-这个性质证明见参考文献。由于我们问题中嵌入数据是$W^{T}K$，因此优化目标为控制嵌入空间中的距离加权和最小即为：
-
-$$\sum_{(i,j) \in \mathcal{N}}^{}m_{\text{ij}}\left\| {\lbrack
-W^{T}K\rbrack}_{i} - {\lbrack W^{T}K\rbrack}_{j} \right\|^{2} = tr(\left\lbrack
-W^{T}K \right\rbrack^{T}\mathcal{L\lbrack}\text{KW}\rbrack)$$ (14)
-
-到此，把多个约束加在一起，再上点正则化项即可：
-
-$$\operatorname{minW}\ \text{tr}\left( W^{T}KL\text{KW} \right) +
-\mu\text{tr}\left( W^{T}W \right) + \frac{\lambda}{n^{2}}tr(\left\lbrack W^{T}K
-\right\rbrack^{T}\mathcal{L\lbrack}\text{KW}\rbrack)</script><script type="math/tex; mode=display">\operatorname{s.t.\ }\ W^{T}KH{\tilde{K}}_{\text{yy}}H\text{KW} = I_{m}$$ (11)
-
-其中$\lambda$和$\mu$都是正则化控制参数。
-
-其中W的解刚好是${(K\left( L + \lambda\mathcal{L} \right)K + \mu I)}^{-1}\text{KH}{\tilde{K}}_{\text{yy}}HK$的前m个特征向量。
-
-3 实验对比
-==========
-实验对比方法可以学习学习，多维度进行了对比。
-
-A 生成数据对比
---------------
-
-（1）只优化距离，SSA
-
-（2）只保持散度进行降维：PCA
-
-（3）SSTCA
-
-（4）只保持流形进行降维：双月流形结构
-
-B 基于wifi信号定位回归问题
---------------------------
-
-（1）实验准备：a.传统回归模型 RLSR b.传统降维模型 KPCA
-c.传统的调整权重训练KMM和KLIEP d.现有的领域适配 SCL e.本文的TCA和SSTCA
-f.只优化距离不保持散度 SSA TCAReduced g.最新的降维方法 MMDE
-
-（2）与其他降维方法对比： b g d f
-
-（3）与传统方法对比： a b e
-
-（4）与域移植方法对比：c d e f
-
-（5）与MMDE相比（因为这个方法是杨强自己提出的）
-
-（6）对参数的敏感性
-
-C 文本分类问题 
----------------
-
-对比同B
-
-<a name="#1">[1]</a>: 注：核函数定义（来自《统计学习方法》）
-
-设$\mathcal{X}$是输入空间(欧式空间$\mathbf{R}^{n}$的子集或者离散集合)，又设$\mathcal{H}$为特征空间（希尔伯特空间），如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：
-$\phi\left(x\right):\mathcal{X \rightarrow}\mathcal{H}$，使得对所有$x,z \in\mathcal{X}$，函数$(x,z)$满足条件：$K\left( x,z \right) = \phi\left( x\right) \bullet \phi\left( z \right)$，则称$K\left( x,z\right)$为核函数，式中$\phi\left( x \right) \bullet \phi\left( z\right)$为$\phi\left( x \right)$和$\phi\left( z\right)$的内积。当映射$\phi$$难以显示表达的时候，用核函数方便计算。
-
-<a name="#2">[2]</a>: **矩阵的迹**：在线性代数中，一个n×n矩阵A的主对角线上各个元素的总和被称为矩阵A的迹（或迹数），一般记作tr(A)
-
-<a name="#3">[3]</a>: **李航**. 统计学习方法[M]. 清华大学出版社, 2012.
-
-<a name="#4">[4]</a>: **Song**, L. 2007. Learning via Hilbert Space Embedding of Distributions.
-Ph.D. Dissertation, The University of Sydney.Draft.
-
-<a name="#5">[5]</a>: Pan S J, Kwok J T, Yang Q. Transfer learning via dimensionality
-reduction[J]. 2008, 2:677-682.
-
-<a name="#6">[6]</a>: Lanckriet G R G, Cristianini N, Bartlett P, et al. Learning the Kernel
-Matrix with Semidefinite Programming[J]. Journal of Machine Learning Research,
-2002, 5(1):27-72.
-
-<a name="#7">[7]</a>: **中心矩阵：**若$A \in \mathbb{R}^{n}$，则$H = \mathbf{I}_{n} -
-\frac{1}{n}\mathbf{11}^{T}$，称做n阶中心矩阵。举例：当$n = 3$时：
-
-$$H = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix} -
+<p>\begin{equation}\tilde{K} = \left( KK^{- \frac{1}{2}}\tilde{W} \right)\left(<br>{\tilde{W}}^{T}K^{- \frac{1}{2}}K \right) = \text{KW}W^{T}K\end{equation}</p>
+<p>其中${W = K}^{- \frac{1}{2}}\tilde{W}$, 此时距离函数变为：</p>
+<p>\begin{equation}<br>D\text{IS}\left( X_{s},X_{t} \right) = tr\left( (\text{KW}W^{T}K)L \right) = \text{tr}\left( W^{T}KL\text{KW} \right)\end{equation}</p>
+<p>目标函数定义为：</p>
+<p>\begin{equation}\min \text{tr}\left( W^{T}KL\text{KW} \right) + \mu\text{tr}\left( W^{T}W<br>\right)\end{equation}</p>
+<p>其中$\text{tr}\left( W^{T}W\right)$作为惩罚项来降低$W$的复杂度，这个是可以理解的，只是式（8）的不能理解。原文中说正则项作用还有“avoid<br>the rank deficiency of the denominator in the generalized eigenvalue<br>decomposition“，翻译过来是”在广义特征值分解过程中避免分母秩亏“。</p>
+<p>是不是现在就可以得到完美的降维域移植呢，不是的，请看以下两点现象：</p>
+<p><strong>观察现象</strong>：</p>
+<p>（a）距离函数本身要能够体现数据的特征，我们希望映射之后的数据距离更近但本身的散度要保持，如下图(a)，分类对$x_{1}$方向敏感，而$x_{2}$方向只是随机噪声，然而按照距离求解核矩阵时，映射可能把$x_{1}$方向的大跨度压缩，而试图优化$x_{2}$方向的距离，这样虽然可以使距离小，却由于丢失$x_{1}$方向的散度导致结果对分类任务没有帮助。因此映射要保持数据本身各个维度的散度特征。</p>
+<p>（b）然而有时过多注重保留散度也不好，如图（b）$x_{1}$方向的散度很大但是对分类其实没有用。</p>
+<p><img src="/2018/12/05/TCA-Analysis/8d4442205c772c884ed9203c46621144.png" alt=""></p>
+<h2 id="步骤3：在体现数据散度特征的同时优化W"><a href="#步骤3：在体现数据散度特征的同时优化W" class="headerlink" title="步骤3：在体现数据散度特征的同时优化W"></a>步骤3：在体现数据散度特征的同时优化W</h2><p>一组数据的散度可以用散列矩阵（Scatter<br>matrix）来描述，对于一个矩阵A，其散度可表示为：$S =\text{AH}A^{T}$，其中$H$为中心矩阵<a href="7">[7]</a>，对于式（10），数据经过改进的核矩阵已经表示为$W^{T}K$，因此其散度可以表示为$W^{T}K\text{HKW}$，其中$H= \mathbf{I}_{n_{1} + n_{2}} - \frac{1}{nn_{1} +n_{2}}\mathbf{11}^{T}$，其中$\mathbf{I}_{n_{1} + n_{2}} \in \mathbb{R}^{(n_{1}+ n_{2}) \times m}$<br>是单位矩阵。为了保持源数据各个维度的散度特征不变，上述优化问题可以表示为：</p>
+<script type="math/tex; mode=display">\min\ \text{tr}\left( W^{T}KL\text{KW} \right) + \mu\text{tr}\left( W^{T}W
+\right)</script><p>\begin{equation}\operatorname{s.t. } W^{T}KH\text{KW} = I_{m}\end{equation}</p>
+<p>其中$\mu$是正则化控制参数。式（11）为约束条件，保持散度不变。</p>
+<p>后续问题是一个数学领域常见的“迹优化问题”（Trace optimization<br>problem），采用的方法是拉格朗日对偶法，网上可以查到详细解释，我认为这部分跟我暂时不相关，因此这部分不看了。结论是，$W$的解即为${(\text{KLK}+ \mu I)}^{- 1}\text{KHK}$的前m个特征向量。</p>
+<h2 id="SSTCA：半监督迁移成分分析"><a href="#SSTCA：半监督迁移成分分析" class="headerlink" title="SSTCA：半监督迁移成分分析"></a>SSTCA：半监督迁移成分分析</h2><p>考虑源数据有Y标签，因此可以采用半监督，主要基于Hilbert–Schmidt Independence<br>Criterion (HSIC)，并添加了约束如下：</p>
+<p>（1）减小源数据和目标数据的在嵌入空间中的分布距离（基于MMD，自己随便定义一个核）</p>
+<p>（2）保持标签独立性（不懂为何可以实现）</p>
+<p>\begin{equation}{\tilde{K}}_{\text{yy}} = \gamma K_{l} + (1 - \gamma)K_{v}\end{equation}</p>
+<p>其中$K_{l}$为标签的核，目标数据部分为0。</p>
+<p>（3）维持数据流形相似下降维</p>
+<p>依据：如果两个数据$x_{1}$和$x_{2}$在源空间中距离相近，我们希望在嵌入空间中两者距离依然相近，这就是维持数据流形。采用的方法是拉普拉斯映射<a href="8">[8]</a>，在源空间中$x_{1}$附近$k$个数据定义为相邻，其系数定义为$m_{\text{ij}}= exp( -d_{\text{ij}}^{2}/{2\sigma}^{2})$，根据相邻点和权重定义度矩阵D和邻接矩阵M，即可定义拉普拉斯矩阵$\mathcal{L}= D -M$，对于嵌入数据$\mathcal{A}$矩阵拉普拉斯矩$\mathcal{L}$阵有个性质<a href="9">[9]</a>如下：</p>
+<p>\begin{equation}\sum_{(i,j) \in \mathcal{N}}^{}m_{\text{ij}}\left| \mathcal{A}_{i} -<br>\mathcal{A}_{j} \right|^{2} = tr(\mathcal{\text{AL}}\mathcal{A}^{T})\end{equation}</p>
+<p>这个性质证明见参考文献。由于我们问题中嵌入数据是$W^{T}K$，因此优化目标为控制嵌入空间中的距离加权和最小即为：</p>
+<p>\begin{equation}\sum_{(i,j) \in \mathcal{N}}^{}m_{\text{ij}}\left| {\lbrack<br>W^{T}K\rbrack}_{i} - {\lbrack W^{T}K\rbrack}_{j} \right|^{2} = tr(\left\lbrack<br>W^{T}K \right\rbrack^{T}\mathcal{L\lbrack}\text{KW}\rbrack)\end{equation}<br>到此，把多个约束加在一起，再上点正则化项即可：</p>
+<p>\begin{equation}\operatorname{minW} \text{tr}\left( W^{T}KL\text{KW} \right) +<br>\mu\text{tr}\left( W^{T}W \right) + \frac{\lambda}{n^{2}}tr(\left\lbrack W^{T}K<br>\right\rbrack^{T}\mathcal{L\lbrack}\text{KW}\rbrack)\end{equation}</p>
+<p>\begin{equation}\operatorname{s.t. } W^{T}KH{\tilde{K}}_{\text{yy}}H\text{KW} = I_{m}\end{equation}</p>
+<p>其中$\lambda$和$\mu$都是正则化控制参数。</p>
+<p>其中W的解刚好是${(K\left( L + \lambda\mathcal{L} \right)K + \mu I)}^{-1}\text{KH}{\tilde{K}}_{\text{yy}}HK$的前m个特征向量。</p>
+<p>实验对比方法可以学习学习，多维度进行了对比。</p>
+<h2 id="生成数据对比"><a href="#生成数据对比" class="headerlink" title="生成数据对比"></a>生成数据对比</h2><p>（1）只优化距离，SSA</p>
+<p>（2）只保持散度进行降维：PCA</p>
+<p>（3）SSTCA</p>
+<p>（4）只保持流形进行降维：双月流形结构</p>
+<h2 id="基于wifi信号定位回归问题"><a href="#基于wifi信号定位回归问题" class="headerlink" title="基于wifi信号定位回归问题"></a>基于wifi信号定位回归问题</h2><p>（1）实验准备：a.传统回归模型 RLSR b.传统降维模型 KPCA<br>c.传统的调整权重训练KMM和KLIEP d.现有的领域适配 SCL e.本文的TCA和SSTCA<br>f.只优化距离不保持散度 SSA TCAReduced g.最新的降维方法 MMDE</p>
+<p>（2）与其他降维方法对比： b g d f</p>
+<p>（3）与传统方法对比： a b e</p>
+<p>（4）与域移植方法对比：c d e f</p>
+<p>（5）与MMDE相比（因为这个方法是杨强自己提出的）</p>
+<p>（6）对参数的敏感性</p>
+<h2 id="文本分类问题"><a href="#文本分类问题" class="headerlink" title="文本分类问题"></a>文本分类问题</h2><p>对比同B</p>
+<p><a name="#1">[1]</a>: <strong>核函数定义</strong>（来自《统计学习方法》）设$\mathcal{X}$是输入空间(欧式空间$\mathbf{R}^{n}$的子集或者离散集合)，又设$\mathcal{H}$为特征空间（希尔伯特空间），如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：$\phi\left(x\right):\mathcal{X \rightarrow}\mathcal{H}$，使得对所有$x,z \in\mathcal{X}$，函数$(x,z)$满足条件：$K\left( x,z \right) = \phi\left( x\right) \bullet \phi\left( z \right)$，则称$K\left( x,z\right)$为核函数，式中$\phi\left( x \right) \bullet \phi\left( z\right)$为$\phi\left( x \right)$和$\phi\left( z\right)$的内积。当映射$\phi$$难以显示表达的时候，用核函数方便计算。</p>
+<p><a name="#2">[2]</a>: <strong>矩阵的迹</strong>：一个n×n矩阵A的主对角线上各个元素的总和被称为矩阵A的迹记作tr(A)</p>
+<p><a name="#3">[3]</a>: <strong>李航</strong>. 统计学习方法[M]. 清华大学出版社, 2012.</p>
+<p><a name="#4">[4]</a>: <strong>Song</strong>, L. 2007. Learning via Hilbert Space Embedding of Distributions.<br>Ph.D. Dissertation, The University of Sydney.Draft.</p>
+<p><a name="#5">[5]</a>: Pan S J, Kwok J T, Yang Q. Transfer learning via dimensionality<br>reduction[J]. 2008, 2:677-682.</p>
+<p><a name="#6">[6]</a>: Lanckriet G R G, Cristianini N, Bartlett P, et al. Learning the Kernel<br>Matrix with Semidefinite Programming[J]. Journal of Machine Learning Research,<br>2002, 5(1):27-72.</p>
+<p><a name="#7">[7]</a>: <strong>中心矩阵：</strong>若$A \in \mathbb{R}^{n}$，则$H = \mathbf{I}_{n} -<br>\frac{1}{n}\mathbf{11}^{T}$，称做n阶中心矩阵。举例：当$n = 3$时：</p>
+<script type="math/tex; mode=display">H = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix} -
 \frac{1}{3}\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \\
 \end{bmatrix} = \begin{bmatrix} 2/3 & - 1/3 & - 1/3 \\  - 1/3 & 2/3 & - 1/3
 \\  - 1/3 & - 1/3 & 2/3 \\ \end{bmatrix}</script><p><a name="#8">[8]</a>: <a href="https://baike.baidu.com/item/%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%9F%A9%E9%98%B5/5583042?fr=aladdin" target="_blank" rel="noopener">百度百科：拉普拉斯矩阵</a></p>
@@ -882,7 +787,7 @@ $$H = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix} -
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-TCA：迁移成分分析"><span class="nav-number">1.</span> <span class="nav-text">1 TCA：迁移成分分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤1：基于MMD定义优化目标"><span class="nav-number">2.</span> <span class="nav-text">步骤1：基于MMD定义优化目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤2：降维定义新目标函数（Parametric-Kernel-Map-for-Unseen-Patterns）"><span class="nav-number">3.</span> <span class="nav-text">步骤2：降维定义新目标函数（Parametric Kernel Map for Unseen Patterns）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCA：迁移成分分析"><span class="nav-number">1.</span> <span class="nav-text">TCA：迁移成分分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤1：基于MMD定义优化目标"><span class="nav-number">2.</span> <span class="nav-text">步骤1：基于MMD定义优化目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤2：降维定义新目标函数（Parametric-Kernel-Map-for-Unseen-Patterns）"><span class="nav-number">3.</span> <span class="nav-text">步骤2：降维定义新目标函数（Parametric Kernel Map for Unseen Patterns）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤3：在体现数据散度特征的同时优化W"><span class="nav-number">4.</span> <span class="nav-text">步骤3：在体现数据散度特征的同时优化W</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSTCA：半监督迁移成分分析"><span class="nav-number">5.</span> <span class="nav-text">SSTCA：半监督迁移成分分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成数据对比"><span class="nav-number">6.</span> <span class="nav-text">生成数据对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于wifi信号定位回归问题"><span class="nav-number">7.</span> <span class="nav-text">基于wifi信号定位回归问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本分类问题"><span class="nav-number">8.</span> <span class="nav-text">文本分类问题</span></a></li></ol></div>
             
 
           </div>
