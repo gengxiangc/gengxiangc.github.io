@@ -116,12 +116,13 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="&amp;emsp;  模糊系统基于模糊逻辑,与传统的二值逻辑相比，模糊逻辑更加接近于人类的思维和自然语言。原理上，模糊逻辑提供了一种有效的方式来获取现实世界中近似的和不精确的特性。一个模糊系统中基本的部分是一个语言规则集，该规则间通过模糊蕴涵和推理式的合成规则这两个概念相关联。本质上，模糊系统提供了一种很烦，即把基于专家知识的语言规则转换成自动的控制行为。许多实验表面模糊系统得出的结果远远优于用传统方法">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png">
-<meta property="og:updated_time" content="2019-04-16T08:53:19.218Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/2019-04-16-16-50-52.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/2019-04-16-16-57-49.png">
+<meta property="og:updated_time" content="2019-04-16T09:02:20.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fuzzy System">
 <meta name="twitter:description" content="&amp;emsp;  模糊系统基于模糊逻辑,与传统的二值逻辑相比，模糊逻辑更加接近于人类的思维和自然语言。原理上，模糊逻辑提供了一种有效的方式来获取现实世界中近似的和不精确的特性。一个模糊系统中基本的部分是一个语言规则集，该规则间通过模糊蕴涵和推理式的合成规则这两个概念相关联。本质上，模糊系统提供了一种很烦，即把基于专家知识的语言规则转换成自动的控制行为。许多实验表面模糊系统得出的结果远远优于用传统方法">
-<meta name="twitter:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/2019-04-16-16-50-52.png">
 
 
 
@@ -388,7 +389,7 @@
                 
               
 
-              <time title="创建时间：2019-04-16 10:31:42 / 修改时间：16:53:19" itemprop="dateCreated datePublished" datetime="2019-04-16T10:31:42+08:00">2019-04-16</time>
+              <time title="创建时间：2019-04-16 10:31:42 / 修改时间：17:02:20" itemprop="dateCreated datePublished" datetime="2019-04-16T10:31:42+08:00">2019-04-16</time>
             
 
             
@@ -490,10 +491,26 @@ R^{i} : \text { IF } x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { a
 \mu_{\widetilde{A}^{*}}(x)=\left\{\begin{array}{ll}{1} & {x=x^{*}} \\ {0} & {x \neq x}\end{array}\right.</script><strong>优点</strong>：易于实现模糊化运算<br><strong>缺点</strong>：舍弃了所有$x \neq x^{*}$处的隶属值，因此对数据噪声的鲁棒性较差。</li>
 </ul>
 <ul>
-<li>三角隶属函数法<br>简单常用的模糊化方法，结果有一定的鲁棒性，看公式和图即可理解。$\sigma$决定了三角隶属函数的抗干扰能力。<script type="math/tex; mode=display">
+<li>三角隶属函数法<br>&emsp; 简单常用的模糊化方法，结果有一定的鲁棒性，看公式和图即可理解。$\sigma$决定了三角隶属函数的抗干扰能力。<script type="math/tex; mode=display">
 \mu_{\widetilde{A}^{*}}(x)=\left\{\begin{array}{c}{1-\frac{\left|x-x^{*}\right|}{\sigma}| | x-x^{*}| \leq \sigma} \\ {0 \quad\left|x-x^{*}\right|>\sigma}\end{array}\right.</script></li>
 </ul>
-<p><img src="/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png" alt=""></p>
+<p><img src="/2019/04/16/Fuzzy-System/2019-04-16-16-50-52.png" alt=""></p>
+<ul>
+<li>高斯隶属函数法<br>&emsp; 与前两者相比，高斯隶属函数更常用。<script type="math/tex; mode=display">
+\mu_{\widetilde{A}^{*}}(x)=e^{-\frac{\left(x-x^{*}\right)^{2}}{2 \sigma^{2}}}</script></li>
+</ul>
+<h2 id="去模糊化"><a href="#去模糊化" class="headerlink" title="去模糊化"></a>去模糊化</h2><p>&emsp; 即为确定一个最能代表模糊集合的精确值。经过模糊规则后求解的仍然是模糊集合，需要经过去模糊化得到精确值。经典的去模糊化方法有：</p>
+<ul>
+<li><p>最大隶属度法<br>&emsp; 选择模糊集合中隶属值最大的点。优点是运算快，缺点显而易见，无法体现模糊集合的属性，丢失信息严重。<br><img src="/2019/04/16/Fuzzy-System/2019-04-16-16-57-49.png" alt=""></p>
+</li>
+<li><p>重心法（Tsukamoto模糊模型）<br>&emsp; 加权运算得到重心位置的元素作为输出清晰值，在连续域上，计算公式为：</p>
+<script type="math/tex; mode=display">
+y^{*}=\frac{\int_{y_{\min }}^{y_{\max }} y \mu(y) d y}{\int_{y_{\min }}^{y_{\max }} \mu(y) d y}</script><p>&emsp; 在离散域上，计算公式为：</p>
+<script type="math/tex; mode=display">
+y^{*}=\frac{\sum_{i=1}^{N}\left(y_{i} \mu\left(y_{i}\right)\right)}{\sum_{i=1}^{N} \mu\left(y_{i}\right)}</script><p>&emsp; 举例：给定模糊集合：$\widetilde{C}=\frac{0.1}{2}+\frac{0.4}{3}+\frac{0.7}{4}+\frac{1.0}{5}+\frac{0.7}{6}+\frac{0.3}{7}$，其清晰值为：</p>
+<script type="math/tex; mode=display">
+y^{*}=\frac{\sum_{i=1}^{N}\left(y_{i} \mu_{i}\left(y_{i}\right)\right)}{\sum_{i=1}^{N} \mu_{i}\left(y_{i}\right)}=\frac{2 \times 0.1+3 \times 0.4+4 \times 0.7+5 \times 1.0+6 \times 0.7+7 \times 0.3}{0.1+0.4+0.7+1.0+0.7+0.3}</script></li>
+</ul>
 
       
     </div>
@@ -723,7 +740,7 @@ R^{i} : \text { IF } x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { a
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊集"><span class="nav-number">1.</span> <span class="nav-text">模糊集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊规则"><span class="nav-number">2.</span> <span class="nav-text">模糊规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模糊IF-THEN规则"><span class="nav-number">2.1.</span> <span class="nav-text">1 模糊IF-THEN规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TSK模型-Takagi-Sugeno-Kang-模型"><span class="nav-number">2.2.</span> <span class="nav-text">2 TSK模型(Takagi-Sugeno-Kang 模型)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊化"><span class="nav-number">3.</span> <span class="nav-text">模糊化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊集"><span class="nav-number">1.</span> <span class="nav-text">模糊集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊规则"><span class="nav-number">2.</span> <span class="nav-text">模糊规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模糊IF-THEN规则"><span class="nav-number">2.1.</span> <span class="nav-text">1 模糊IF-THEN规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TSK模型-Takagi-Sugeno-Kang-模型"><span class="nav-number">2.2.</span> <span class="nav-text">2 TSK模型(Takagi-Sugeno-Kang 模型)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊化"><span class="nav-number">3.</span> <span class="nav-text">模糊化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去模糊化"><span class="nav-number">4.</span> <span class="nav-text">去模糊化</span></a></li></ol></div>
             
 
           </div>
