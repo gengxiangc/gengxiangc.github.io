@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="&amp;emsp;  模糊系统基于模糊逻辑,与传统的二值逻辑相比，模糊逻辑更加接近于人类的思维和自然语言。原理上，模糊逻辑提供了一种有效的方式来获取现实世界中近似的和不精确的特性。一个模糊系统中基本的部分是一个语言规则集，该规则间通过模糊蕴涵和推理式的合成规则这两个概念相关联。本质上，模糊系统提供了一种很烦，即把基于专家知识的语言规则转换成自动的控制行为。许多实验表面模糊系统得出的结果远远优于用传统方法">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/2019-04-16-16-25-52.png">
-<meta property="og:updated_time" content="2019-04-16T08:28:00.798Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png">
+<meta property="og:updated_time" content="2019-04-16T08:53:19.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fuzzy System">
 <meta name="twitter:description" content="&amp;emsp;  模糊系统基于模糊逻辑,与传统的二值逻辑相比，模糊逻辑更加接近于人类的思维和自然语言。原理上，模糊逻辑提供了一种有效的方式来获取现实世界中近似的和不精确的特性。一个模糊系统中基本的部分是一个语言规则集，该规则间通过模糊蕴涵和推理式的合成规则这两个概念相关联。本质上，模糊系统提供了一种很烦，即把基于专家知识的语言规则转换成自动的控制行为。许多实验表面模糊系统得出的结果远远优于用传统方法">
-<meta name="twitter:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/2019-04-16-16-25-52.png">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png">
 
 
 
@@ -388,7 +388,7 @@
                 
               
 
-              <time title="创建时间：2019-04-16 10:31:42 / 修改时间：16:28:00" itemprop="dateCreated datePublished" datetime="2019-04-16T10:31:42+08:00">2019-04-16</time>
+              <time title="创建时间：2019-04-16 10:31:42 / 修改时间：16:53:19" itemprop="dateCreated datePublished" datetime="2019-04-16T10:31:42+08:00">2019-04-16</time>
             
 
             
@@ -445,10 +445,10 @@
 
       
         <p>&emsp;  模糊系统基于模糊逻辑,与传统的二值逻辑相比，模糊逻辑更加接近于人类的思维和自然语言。原理上，模糊逻辑提供了一种有效的方式来获取现实世界中近似的和不精确的特性。一个模糊系统中基本的部分是一个语言规则集，该规则间通过模糊蕴涵和推理式的合成规则这两个概念相关联。本质上，模糊系统提供了一种很烦，即把基于专家知识的语言规则转换成自动的控制行为。许多实验表面模糊系统得出的结果远远优于用传统方法得到的结果。特别是当用传统的定量方法分析起来太复杂，或者当已知的信息源只能定性地、不精确地或不确定地描述时，模糊系统方法显得非常有效。因此，可以认为模糊系统朝着传统的精确数学方法和人类决策的最终交融靠近了一步。</p>
-<pre><code>-- 来自《 Matlab模糊系统设计》
+<pre><code>-- 本篇文章大部分内容来自教材《 Matlab模糊系统设计》
 </code></pre><a id="more"></a>  
 <hr>
-<h4 id="模糊集"><a href="#模糊集" class="headerlink" title="模糊集"></a>模糊集</h4><p>&emsp;模糊集是传统的集合论的推广，该集合中包含隶属于不精确的元素。把隶属的程序定义为隶属度函数(Menbership funtion)，通常该函数是一个位于0~1之间的数值。这种方法明确地提供了一种用于数学模型表达不确定性的方法。通常来说，两个用的最广泛的隶属度描述为三角函数和高斯函数，他们的定义如下：</p>
+<h2 id="模糊集"><a href="#模糊集" class="headerlink" title="模糊集"></a>模糊集</h2><p>&emsp;模糊集是传统的集合论的推广，该集合中包含隶属于不精确的元素。把隶属的程序定义为隶属度函数(Menbership funtion)，通常该函数是一个位于0~1之间的数值。这种方法明确地提供了一种用于数学模型表达不确定性的方法。通常来说，两个用的最广泛的隶属度描述为三角函数和高斯函数，他们的定义如下：</p>
 <ul>
 <li>三角隶属函数<script type="math/tex; mode=display">
 \mu(x)=\left\{\begin{array}{cc}{1-\frac{|x-m|}{\sigma},|x-m| \leqslant \sigma} \\ {0, \qquad Other}\end{array}\right.</script>&emsp; 式中： $m,   \sigma $分别是该模糊集的中心和宽度。</li>
@@ -456,8 +456,9 @@
 </ul>
 <script type="math/tex; mode=display">
 \mu(x)=\exp \left[-\frac{(x-c)^{2}}{\sigma^{2}}\right]</script><p>&emsp; 式中$c,   \sigma $分别是高斯模糊集的中心和宽度</p>
-<h4 id="模糊规则"><a href="#模糊规则" class="headerlink" title="模糊规则"></a>模糊规则</h4><p>&emsp; 模糊系统本质上是一个基于规则的专家系统，它包括一组“IF-THEN”形式的语言规则。到目前位置，最常用的模糊规则是纯粹的模糊模型（或者模糊IF-THEN规则）以及TSK模型。</p>
-<h5 id="1-模糊IF-THEN规则"><a href="#1-模糊IF-THEN规则" class="headerlink" title="1 模糊IF-THEN规则"></a>1 模糊IF-THEN规则</h5><p>&emsp; 模糊IF-THEN规则也称为模糊蕴涵或模糊条件描述，他们都是用IF A THEN B的形式的语句来表示的。由于他们的形式简单，模糊IF-THEN 语句通常用于表达不精确的推理方式，这种推理方式对于人们在不确定或不精确环境下仍然具有做出决策的能力上起着非常重要的作用。一个普遍的例子如下：</p>
+<hr>
+<h2 id="模糊规则"><a href="#模糊规则" class="headerlink" title="模糊规则"></a>模糊规则</h2><p>&emsp; 模糊系统本质上是一个基于规则的专家系统，它包括一组“IF-THEN”形式的语言规则。到目前位置，最常用的模糊规则是纯粹的模糊模型（或者模糊IF-THEN规则）以及TSK模型。</p>
+<h3 id="1-模糊IF-THEN规则"><a href="#1-模糊IF-THEN规则" class="headerlink" title="1 模糊IF-THEN规则"></a>1 模糊IF-THEN规则</h3><p>&emsp; 模糊IF-THEN规则也称为模糊蕴涵或模糊条件描述，他们都是用IF A THEN B的形式的语句来表示的。由于他们的形式简单，模糊IF-THEN 语句通常用于表达不精确的推理方式，这种推理方式对于人们在不确定或不精确环境下仍然具有做出决策的能力上起着非常重要的作用。一个普遍的例子如下：</p>
 <script type="math/tex; mode=display">
 R^{i} : \operatorname{IF} x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { and } x_{r} \text { is } F_{r}^{i}, \text { THEN } y_{1} \text { is } G_{1}^{i} \text { and } \cdots \text { and } y_{s} \text { is } G_{s}^{i}</script><p>&emsp; 其中:$F_{j}^{i}(j=1,2, \cdots, r), \quad G_{k}^{i}(k=1,2, \cdots, s)$是<strong>模糊集</strong>的标识，他们用适当的<strong>隶属度函数</strong>来刻画； $X=\left(x_{1}, x_{2}, \cdots, x_{r}\right) \in \mathbf{R}^{r}, \quad Y=\left(y_{1}, y_{2}, \cdots, y_{s}\right) \in \mathbf{R}^{s}$分别为语言变量的输入和输出；上标$i(=1,2, \cdots, u)$表示第$i$条规则。</p>
 <p>&emsp; 每一个模糊IF-THEN规则定义了一个模糊集:</p>
@@ -466,7 +467,7 @@ F_{1}^{i} F_{2}^{i} \cdots F_{r}^{i} \rightarrow G_{1}^{i} G_{2}^{i} \cdots G_{s
 <p>&emsp; 模糊IF-THEN系统组成了模糊逻辑系统的基本部分，它是一个普遍的加工，在这个架构中，来自于人类专家的语言信息被量化，同时模糊逻辑的法则使得这个语言信息能够被系统利用。这种规则的主要不足之处是它的输出和输出都是模糊集。然而在大多数工程系统中，系统的输入和输出都是清晰量。为了简单起见，单点模糊输出经常使用，即:</p>
 <script type="math/tex; mode=display">
 R^{i} : \operatorname{IF} x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { and } x_{r} \text { is } F_{r}^{i}, \text { THEN } y^{i} \text { is } C</script><p>其中: $C$为一个单点模糊（即清晰量）。<br>&emsp; 以上模型简称为S模型</p>
-<h5 id="2-TSK模型-Takagi-Sugeno-Kang-模型"><a href="#2-TSK模型-Takagi-Sugeno-Kang-模型" class="headerlink" title="2 TSK模型(Takagi-Sugeno-Kang 模型)"></a>2 TSK模型(Takagi-Sugeno-Kang 模型)</h5><p>&emsp; 为了取代简单的IF-THEN规则，TSK三人共同提出了如下形式的IF-THEN规则:</p>
+<h3 id="2-TSK模型-Takagi-Sugeno-Kang-模型"><a href="#2-TSK模型-Takagi-Sugeno-Kang-模型" class="headerlink" title="2 TSK模型(Takagi-Sugeno-Kang 模型)"></a>2 TSK模型(Takagi-Sugeno-Kang 模型)</h3><p>&emsp; 为了取代简单的IF-THEN规则，TSK三人共同提出了如下形式的IF-THEN规则:</p>
 <script type="math/tex; mode=display">
 R^{i} : \text { IF } x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { and } x_{r} \text { is } F_{r}^{i}, \text { THEN } y^{i}=a_{0}^{i}+a_{1}^{i} x_{1}+\cdots+a_{r}^{i} x_{r}</script><p>&emsp; 其中$: F_{j}^{i}(j=1,2, \cdots, r)$是一个模糊集；$a_{j}^{i}(j=1,2, \cdots, r, i=1,2, \cdots, u)$为实值参数;$y^{i}$为根据第$i$各规则的系统的输出。<br>&emsp; 也就是说，TSK模型考虑的规则的IF部分是模糊的而THEN部分是清晰的。它的输出是所有输入变量的线性组合，实验表面该模型具有如下有点：</p>
 <ul>
@@ -476,7 +477,23 @@ R^{i} : \text { IF } x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { a
 <li>能够确保输出平面的连续性</li>
 <li>更适合用于数据方法分析</li>
 </ul>
-<p><img src="/2019/04/16/Fuzzy-System/2019-04-16-16-25-52.png" alt=""></p>
+<hr>
+<h2 id="模糊化"><a href="#模糊化" class="headerlink" title="模糊化"></a>模糊化</h2><p>&emsp; 精确值进入模糊推理系统时，一般要将其模糊化成给定论域上的模糊集合。模糊化的实质是将给定输入张日光模糊集合。模糊化的原则是：</p>
+<ul>
+<li>在精确值位置模糊集合的隶属度最大</li>
+<li>当输入有噪声干扰时，模糊化结果具有一定的抗干扰能力</li>
+<li>模糊化运算应尽可能简单</li>
+</ul>
+<p>&emsp; <strong>常用模糊化方法</strong></p>
+<ul>
+<li>模糊单值法<br>&emsp; 模糊单值法是将精确值转化为模糊单值，这种模糊化方法只是形式上模糊，而实际上还是精确量。<br>设$x^{<em>}$为实测的精确值，$\tilde{A}^{</em>}$为转换后的模糊值，则有：<script type="math/tex; mode=display">
+\mu_{\widetilde{A}^{*}}(x)=\left\{\begin{array}{ll}{1} & {x=x^{*}} \\ {0} & {x \neq x}\end{array}\right.</script><strong>优点</strong>：易于实现模糊化运算<br><strong>缺点</strong>：舍弃了所有$x \neq x^{*}$处的隶属值，因此对数据噪声的鲁棒性较差。</li>
+</ul>
+<ul>
+<li>三角隶属函数法<br>简单常用的模糊化方法，结果有一定的鲁棒性，看公式和图即可理解。$\sigma$决定了三角隶属函数的抗干扰能力。<script type="math/tex; mode=display">
+\mu_{\widetilde{A}^{*}}(x)=\left\{\begin{array}{c}{1-\frac{\left|x-x^{*}\right|}{\sigma}| | x-x^{*}| \leq \sigma} \\ {0 \quad\left|x-x^{*}\right|>\sigma}\end{array}\right.</script></li>
+</ul>
+<p><img src="/2019/04/16/Fuzzy-System/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Fuzzy-System/2019-04-16-16-50-52.png" alt=""></p>
 
       
     </div>
@@ -706,7 +723,7 @@ R^{i} : \text { IF } x_{1} \text { is } F_{1}^{i} \text { and } \cdots \text { a
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊集"><span class="nav-number">1.</span> <span class="nav-text">模糊集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊规则"><span class="nav-number">2.</span> <span class="nav-text">模糊规则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-模糊IF-THEN规则"><span class="nav-number">2.1.</span> <span class="nav-text">1 模糊IF-THEN规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-TSK模型-Takagi-Sugeno-Kang-模型"><span class="nav-number">2.2.</span> <span class="nav-text">2 TSK模型(Takagi-Sugeno-Kang 模型)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊集"><span class="nav-number">1.</span> <span class="nav-text">模糊集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊规则"><span class="nav-number">2.</span> <span class="nav-text">模糊规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模糊IF-THEN规则"><span class="nav-number">2.1.</span> <span class="nav-text">1 模糊IF-THEN规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TSK模型-Takagi-Sugeno-Kang-模型"><span class="nav-number">2.2.</span> <span class="nav-text">2 TSK模型(Takagi-Sugeno-Kang 模型)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊化"><span class="nav-number">3.</span> <span class="nav-text">模糊化</span></a></li></ol></div>
             
 
           </div>
