@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="&amp;emsp;  两个研究小组都聚焦于TSK模糊系统下的迁移学习，因此仔细研究一下 TSK Fuzzy system 下的 Transfer learning。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-22T13:20:38.199Z">
+<meta property="og:updated_time" content="2019-04-22T14:10:57.092Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TSK Tranfer learning">
 <meta name="twitter:description" content="&amp;emsp;  两个研究小组都聚焦于TSK模糊系统下的迁移学习，因此仔细研究一下 TSK Fuzzy system 下的 Transfer learning。">
@@ -386,7 +386,7 @@
                 
               
 
-              <time title="创建时间：2019-04-22 20:16:40 / 修改时间：21:20:38" itemprop="dateCreated datePublished" datetime="2019-04-22T20:16:40+08:00">2019-04-22</time>
+              <time title="创建时间：2019-04-22 20:16:40 / 修改时间：22:10:57" itemprop="dateCreated datePublished" datetime="2019-04-22T20:16:40+08:00">2019-04-22</time>
             
 
             
@@ -481,7 +481,31 @@ y=f(\mathbf{x})=\mathbf{p}_{g}^{\mathrm{T}} \mathbf{x}_{g} \tag{6}</script><p>�
 \mathbf{x}_{g}=\left[\left(\tilde{\mathbf{x}}^{1}\right)^{\mathrm{T}},\left(\tilde{\mathbf{x}}^{2}\right)^{\mathrm{T}}, \cdots,\left(\tilde{\mathbf{x}}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{7c}</script><script type="math/tex; mode=display">
 \mathbf{p}^{k}=\left[p_{0}^{k}, p_{1}^{k}, \cdots, p_{d}^{k}\right]^{\mathrm{T}} \in R^{(d+1) \times 1} \tag{7d}</script><script type="math/tex; mode=display">
 \mathbf{p}_{g}=\left[\left(\mathbf{p}^{1}\right)^{\mathrm{T}},\left(\mathbf{p}^{2}\right)^{\mathrm{T}}, \cdots,\left(\mathbf{p}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{7e}</script><p>经过以上处理之后，$\mathbf{X}_{g}$即为经过Fuzzy 映射之后的特征向量，<strong>其实就是原数据乘以隶属度</strong>，文中称作：_the antecedent part of TSK-FS_  而后面的参数部分$\mathbf{p}_{g}$文中称作：_the consequent parameters of the TSK-FS_ 。此时由于隶属度全是已知的，式子(6)其实是一个线性模型，在输入给定时，可以用最小二乘法求解$\mathbf{p}_{g}$。</p>
-<pre><code>[1] Yang C, Deng Z, Choi K S, et al. Takagi–Sugeno–Kang transfer learning fuzzy logic system for the adaptive recognition of epileptic electroencephalogram signals[J]. IEEE Transactions on Fuzzy Systems, 2016, 24(5): 1079-1094.
+<h2 id="Maximum-Mean-Discrepency"><a href="#Maximum-Mean-Discrepency" class="headerlink" title="Maximum Mean Discrepency"></a>Maximum Mean Discrepency</h2><p>文中又回顾了以下最大均值偏差，这里不详细说了：</p>
+<script type="math/tex; mode=display">
+\operatorname{MMD}^{2}(\mathbf{X}, \mathbf{Y})=\left\|\frac{1}{m} \sum_{i=1}^{m} \phi\left(\mathbf{x}_{i}\right)-\frac{1}{n} \sum_{j=1}^{n} \phi\left(\mathbf{y}_{j}\right)\right\|_{\mathcal{H}}^{2} \tag{8}</script><p>迁移学习的目的是求解$\phi$。[_这么说勉强也可以_]<br>然后作者觉得需要同时对齐边缘和条件分布，因此采用了清华龙组的JDA方法，首先边缘和条件分布分别表示为：</p>
+<script type="math/tex; mode=display">
+\operatorname{MMD}_{P}^{2}\left(\mathbf{X}_{s}, \mathbf{X}_{T}\right)=\left\|\frac{1}{n_{s}} \sum_{i=1}^{n_{n}} \phi\left(\mathbf{x}_{s_{i}}\right)-\frac{1}{n_{t}} \sum_{j=1}^{n_{n}} \phi\left(\mathbf{x}_{t_{j}}\right)\right\|_{\mathcal{H}}^{2}  \tag{9a}</script><script type="math/tex; mode=display">
+\operatorname{MMD}_{Q}^{2}\left(\mathbf{X}_{S}, \mathbf{X}_{T}\right)=\sum_{c=1}^{C}\left\|\frac{1}{n_{s}^{(c)}} \sum_{y_{i_{i}=c}} \phi\left(\mathbf{x}_{s_{i}}\right)-\frac{1}{n_{t}^{(c)}} \sum_{\hat{y}_{i j}=c} \phi\left(\mathbf{x}_{t_{j}}\right)\right\|_{\mathcal{H}}^{2} \tag{9b}</script><p>这里对于条件分布的表示略微奇怪，不过没关系，先继续看。其中$C$是分类问题对应的总类别。$n_{s}^{(c)}$是原数据中对应于类别$c$的样本的个数。目标数据集的伪标签是基于原数据训练的，初始伪标签精度较低，后续会不断迭代，这些在JDA方法中都有，我先继续看看作者还要做什么。</p>
+<h2 id="Overview-of-TRL-TSK-FS"><a href="#Overview-of-TRL-TSK-FS" class="headerlink" title="Overview of TRL-TSK-FS"></a>Overview of TRL-TSK-FS</h2><p>Transfer representation learning - TSK- Fuzzy system. 为了在缩小分布距离的同时保证数据结构，目标函数定义如下：</p>
+<script type="math/tex; mode=display">
+\min _{\phi} D i s t a n c e\left(\mathbf{X}_{S}, \mathbf{X}_{T} | \phi\right)+\operatorname{Info}_{-} \operatorname{loss}\left(\mathbf{X}_{s}, \mathbf{X}_{T} | \phi\right) \tag{10}</script><h2 id="Shared-Feature-Space-Construction"><a href="#Shared-Feature-Space-Construction" class="headerlink" title="Shared Feature Space Construction"></a>Shared Feature Space Construction</h2><p>_通常构建特征空间的方式为：首先非线性变换，再降维 — 作者_<br>文章的创新思路在于对于 _the antecedent part_ 做非线性变换，再对 _the consequent part_ 做降维。<br>回顾以下，前者是指乘了隶属度之后的训练样本，后者参数是线性子模型的参数p，这里把多输出TSK-FS的输出当作了是输出特征，因此本文其实是把MO-TSK-FS当作了自编码器，。</p>
+<h3 id="Fuzzy-feature-space-based-on-TSK-FS"><a href="#Fuzzy-feature-space-based-on-TSK-FS" class="headerlink" title="Fuzzy feature space based on TSK-FS"></a>Fuzzy feature space based on TSK-FS</h3><p>源数据和目标数据上的单个样本分别表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{g}_{s_{i}}=\left[\left(\tilde{\mathbf{x}}_{s_{i}}^{1}\right)^{\mathrm{T}},\left(\tilde{\mathbf{x}}_{s_{i}}^{2}\right)^{\mathrm{T}}, \cdots,\left(\tilde{\mathbf{x}}_{s_{i}}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{11a}</script><script type="math/tex; mode=display">
+\mathbf{g}_{t_{i}}=\left[\left(\tilde{\mathbf{x}}_{t_{i}}^{1}\right)^{\mathrm{T}},\left(\tilde{\mathbf{x}}_{t_{i}}^{2}\right)^{\mathrm{T}}, \cdots,\left(\tilde{\mathbf{x}}_{t_{i}}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{11b}</script><p>整个源数据集和目标数据集表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{G}_{S}=\left[\mathbf{g}_{s_{1}}, \mathbf{g}_{s_{2}}, \cdots, \mathbf{g}_{s_{n_{s}}}\right] \in R^{K(d+1) \times n_{s}}  \tag{11c}</script><script type="math/tex; mode=display">
+\mathbf{G}_{T}=\left[\mathbf{g}_{t_{1}}, \mathbf{g}_{t_{2}}, \cdots, \mathbf{g}_{t_{l_{n}}}\right] \in R^{K(d+1) \times n_{i}}  \tag{11d}</script><p>模型参数P此处乘以了m，整个FS变成了多输出FS：</p>
+<script type="math/tex; mode=display">
+\mathbf{P}=\left[\mathbf{p}_{g}^{1}, \mathbf{p}_{g}^{2}, \cdots, \mathbf{p}_{g}^{m}\right] \in R^{K(d+1) \times m}  \tag{11e}</script><p>本来FS是一个向量$\mathbf{x}$映射到一个$y$数字，现在变成了一个向量$\mathbf{x}$映射到m个数字$y$，于是多输出的FS变成了一个从向量$\mathbf{x}$到向量$\mathbf{y}$的映射，如果后者的维度低于前者，那么就可以当作是一种降维提取高级特征。<strong>我觉得这种方法优点问题</strong><br>继续看，对于一个样本$\boldsymbol{g}_{s_{i}}$，映射表示为：</p>
+<script type="math/tex; mode=display">
+\phi\left(\mathbf{x}_{s_{i}}\right)=\mathbf{P}^{\mathrm{T}} \mathbf{g}_{s_{i}}   \tag{12a}</script><script type="math/tex; mode=display">
+\phi\left(\mathbf{x}_{t_{i}}\right)=\mathbf{P}^{\mathrm{T}} \mathbf{g}_{t_{i}} \tag{12b}</script><p>对于整组源数据和目标数据，映射可以表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{Z}_{S}=\mathbf{P}^{\mathrm{T}} \mathbf{G}_{S}   \tag{13a}</script><script type="math/tex; mode=display">
+\mathbf{Z}_{T}=\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T}   \tag{13a}</script><p><strong>一般特征表示及降维，所得到的特征是正交的。而这里多输出很有可能多个模糊输出是相同的</strong><br><strong>文中这里假设源数据和目标数据都服从一组参数P，也就是服从相同的线性模糊模型</strong><br>总结：文章认为，源数据和目标数据的隶属度是不同的，而模糊规则是相同的，翻译成文中的话就是，前参数相同，而后参数是不同的。源数据和目标数据的前参数[中心值和宽度值]可以通过FCM求解。而后参数则是基于JDA的方法优化。<br>    [1]</p>
+<pre><code>[1]Yang C, Deng Z, Choi K S, et al. Takagi–Sugeno–Kang transfer learning fuzzy logic system for the adaptive recognition of epileptic electroencephalogram signals[J]. IEEE Transactions on Fuzzy Systems, 2016, 24(5): 1079-1094.
 [2] Zuo H, Zhang G, Pedrycz W, et al. Fuzzy regression transfer learning in Takagi–Sugeno fuzzy models[J]. IEEE Transactions on Fuzzy Systems, 2017, 25(6): 1795-1807.
 [3] Xu P, Deng Z, Wang J, et al. Transfer Representation Learning with TSK Fuzzy System[J]. arXiv preprint arXiv:1901.02703, 2019.
 </code></pre>
@@ -717,7 +741,7 @@ y=f(\mathbf{x})=\mathbf{p}_{g}^{\mathrm{T}} \mathbf{x}_{g} \tag{6}</script><p>�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TSK-Fuzzy-Logis-System"><span class="nav-number">1.</span> <span class="nav-text">TSK Fuzzy Logis System</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TSK-Fuzzy-Logis-System"><span class="nav-number">1.</span> <span class="nav-text">TSK Fuzzy Logis System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maximum-Mean-Discrepency"><span class="nav-number">2.</span> <span class="nav-text">Maximum Mean Discrepency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview-of-TRL-TSK-FS"><span class="nav-number">3.</span> <span class="nav-text">Overview of TRL-TSK-FS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shared-Feature-Space-Construction"><span class="nav-number">4.</span> <span class="nav-text">Shared Feature Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fuzzy-feature-space-based-on-TSK-FS"><span class="nav-number">4.1.</span> <span class="nav-text">Fuzzy feature space based on TSK-FS</span></a></li></ol></li></ol></div>
             
 
           </div>
