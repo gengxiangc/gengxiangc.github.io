@@ -117,7 +117,7 @@
 <meta property="og:description" content="&amp;emsp;  两个研究小组都聚焦于TSK模糊系统下的迁移学习，因此仔细研究一下 TSK Fuzzy system 下的 Transfer learning。文章附图，挺复杂的，暂时没看懂：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2019/04/22/TSK-Tranfer-learning/2019-04-22-22-12-30.png">
-<meta property="og:updated_time" content="2019-04-22T14:12:40.402Z">
+<meta property="og:updated_time" content="2019-04-23T07:49:00.903Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TSK Tranfer learning">
 <meta name="twitter:description" content="&amp;emsp;  两个研究小组都聚焦于TSK模糊系统下的迁移学习，因此仔细研究一下 TSK Fuzzy system 下的 Transfer learning。文章附图，挺复杂的，暂时没看懂：">
@@ -388,12 +388,24 @@
                 
               
 
-              <time title="创建时间：2019-04-22 20:16:40 / 修改时间：22:12:40" itemprop="dateCreated datePublished" datetime="2019-04-22T20:16:40+08:00">2019-04-22</time>
+              <time title="创建时间：2019-04-22 20:16:40" itemprop="dateCreated datePublished" datetime="2019-04-22T20:16:40+08:00">2019-04-22</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-23 15:49:00" itemprop="dateModified" datetime="2019-04-23T15:49:00+08:00">2019-04-23</time>
               
             
           </span>
@@ -482,7 +494,7 @@ y=f(\mathbf{x})=\mathbf{p}_{g}^{\mathrm{T}} \mathbf{x}_{g} \tag{6}</script><p>�
 \tag{7b}</script><script type="math/tex; mode=display">
 \mathbf{x}_{g}=\left[\left(\tilde{\mathbf{x}}^{1}\right)^{\mathrm{T}},\left(\tilde{\mathbf{x}}^{2}\right)^{\mathrm{T}}, \cdots,\left(\tilde{\mathbf{x}}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{7c}</script><script type="math/tex; mode=display">
 \mathbf{p}^{k}=\left[p_{0}^{k}, p_{1}^{k}, \cdots, p_{d}^{k}\right]^{\mathrm{T}} \in R^{(d+1) \times 1} \tag{7d}</script><script type="math/tex; mode=display">
-\mathbf{p}_{g}=\left[\left(\mathbf{p}^{1}\right)^{\mathrm{T}},\left(\mathbf{p}^{2}\right)^{\mathrm{T}}, \cdots,\left(\mathbf{p}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{7e}</script><p>经过以上处理之后，$\mathbf{X}_{g}$即为经过Fuzzy 映射之后的特征向量，<strong>其实就是原数据乘以隶属度</strong>，文中称作：_the antecedent part of TSK-FS_  而后面的参数部分$\mathbf{p}_{g}$文中称作：_the consequent parameters of the TSK-FS_ 。此时由于隶属度全是已知的，式子(6)其实是一个线性模型，在输入给定时，可以用最小二乘法求解$\mathbf{p}_{g}$。</p>
+\mathbf{p}_{g}=\left[\left(\mathbf{p}^{1}\right)^{\mathrm{T}},\left(\mathbf{p}^{2}\right)^{\mathrm{T}}, \cdots,\left(\mathbf{p}^{K}\right)^{\mathrm{T}}\right]^{\mathrm{T}} \in R^{K(d+1) \times 1} \tag{7e}</script><p>经过以上处理之后，$\mathbf{X}_{g}$即为经过Fuzzy 映射之后的特征向量，<strong>其实就是原数据乘以隶属度</strong>，文中称作：_the antecedent part of TSK-FS_ 。 而后面的参数部分$\mathbf{p}_{g}$文中称作：_the consequent parameters of the TSK-FS_ 。此时由于隶属度全是已知的，式子(6)其实是一个线性模型，在输入给定时，可以用最小二乘法求解$\mathbf{p}_{g}$。</p>
 <h2 id="Maximum-Mean-Discrepency"><a href="#Maximum-Mean-Discrepency" class="headerlink" title="Maximum Mean Discrepency"></a>Maximum Mean Discrepency</h2><p>文中又回顾了以下最大均值偏差，这里不详细说了：</p>
 <script type="math/tex; mode=display">
 \operatorname{MMD}^{2}(\mathbf{X}, \mathbf{Y})=\left\|\frac{1}{m} \sum_{i=1}^{m} \phi\left(\mathbf{x}_{i}\right)-\frac{1}{n} \sum_{j=1}^{n} \phi\left(\mathbf{y}_{j}\right)\right\|_{\mathcal{H}}^{2} \tag{8}</script><p>迁移学习的目的是求解$\phi$。[_这么说勉强也可以_]<br>然后作者觉得需要同时对齐边缘和条件分布，因此采用了清华龙组的JDA方法，首先边缘和条件分布分别表示为：</p>
@@ -506,7 +518,38 @@ y=f(\mathbf{x})=\mathbf{p}_{g}^{\mathrm{T}} \mathbf{x}_{g} \tag{6}</script><p>�
 \phi\left(\mathbf{x}_{t_{i}}\right)=\mathbf{P}^{\mathrm{T}} \mathbf{g}_{t_{i}} \tag{12b}</script><p>对于整组源数据和目标数据，映射可以表示为：</p>
 <script type="math/tex; mode=display">
 \mathbf{Z}_{S}=\mathbf{P}^{\mathrm{T}} \mathbf{G}_{S}   \tag{13a}</script><script type="math/tex; mode=display">
-\mathbf{Z}_{T}=\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T}   \tag{13a}</script><p><strong>一般特征表示及降维，所得到的特征是正交的。而这里多输出很有可能多个模糊输出是相同的</strong><br><strong>文中这里假设源数据和目标数据都服从一组参数P，也就是服从相同的线性模糊模型</strong><br>总结：文章认为，源数据和目标数据的隶属度是不同的，而模糊规则是相同的，翻译成文中的话就是，前参数相同，而后参数是不同的。源数据和目标数据的前参数[中心值和宽度值]可以通过FCM求解。而后参数则是基于JDA的方法优化。<br>    [1]</p>
+\mathbf{Z}_{T}=\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T}   \tag{13a}</script><p><strong>疑问：一般特征表示及降维，所得到的特征是正交的。而这里多输出很有可能多个模糊输出是相同的</strong><br><strong>文中这里假设源数据和目标数据都服从一组参数P，也就是服从相同的线性模糊模型</strong><br>总结：文章认为，源数据和目标数据的隶属度是不同的，而模糊规则是相同的，翻译成文中的话就是，前参数相同，而后参数是不同的。源数据和目标数据的前参数[中心值和宽度值]可以通过FCM求解。而后参数则是基于JDA的方法优化。</p>
+<h3 id="Antecedent-parameters-前参数即隶属度等"><a href="#Antecedent-parameters-前参数即隶属度等" class="headerlink" title="Antecedent parameters (前参数即隶属度等)"></a>Antecedent parameters (前参数即隶属度等)</h3><p>FCM 虽然常用，但是却不稳定，对参数非常敏感，此处使用了 Var-Part聚类方法。用于得到前参数中的聚类中心和聚类宽度，从而计算隶属度。</p>
+<pre><code>   T. Su and J. G. Dy, &quot;In search of deterministic methods for initializing K-means and Gaussian mixture clustering,&quot; Intelligent Data Analysis, vol. 11, pp. 319-338, 2007
+</code></pre><h2 id="Distribution-Matching"><a href="#Distribution-Matching" class="headerlink" title="Distribution Matching"></a>Distribution Matching</h2><p>此处开始用JDA的方法，因此简写：<br>最小化边缘分布：</p>
+<script type="math/tex; mode=display">
+\operatorname{MMD}_{P}^{2}\left(\mathbf{Z}_{S}, \mathbf{Z}_{T}\right)=\left\|\frac{1}{n_{s}} \sum_{i=1}^{n_{s}} \mathbf{P}^{\mathrm{T}} \mathbf{g}_{s_{i}}-\frac{1}{n_{t}} \sum_{j=1}^{n_{i}} \mathbf{P}^{\mathrm{T}} \mathbf{g}_{t_{j}}\right\|_{\mathcal{f}}^{2}=\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{X} \mathbf{M} \mathbf{G}_{X}^{\mathrm{T}} \mathbf{P}\right)  \tag{15}</script><p>最小化条件分布：</p>
+<script type="math/tex; mode=display">
+\operatorname{MMD}_{Q}^{2}\left(\mathbf{Z}_{S}, \mathbf{Z}_{T}\right)=\sum_{c=1}^{C}\left\|\frac{1}{n_{s}^{(c)}} \sum_{y_{s_{i}}=c} \mathbf{P}^{\mathrm{T}} \mathbf{g}_{s_{i}}-\frac{1}{n_{t}^{(c)}} \sum_{\hat{y}_{t_{i}}=c} \mathbf{P}^{\mathrm{T}} \mathbf{g}_{t_{i}}\right\|_{\mathcal{H}}^{2}
+=\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{X} \sum_{c=1}^{C} \mathbf{M}_{c} \mathbf{G}_{X}^{\mathrm{T}} \mathbf{P}\right)   \tag{16}</script><p>总优化目标即为：</p>
+<script type="math/tex; mode=display">
+\min _{\mathbf{P}} \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{X} \mathbf{M} \mathbf{G}_{X}^{\mathrm{T}} \mathbf{P}\right)+\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{X} \sum_{c=1}^{c} \mathbf{M}_{c} \mathbf{G}_{X}^{\mathrm{T}} \mathbf{P}\right)  \tag{17}</script><p>式10需要求解映射$\phi$，而式17只需要求解线性映射P，这就是本文的创新，其实优点像TCA文中，也不求解映射，只是假设是某种映射。</p>
+<h2 id="保持数据几何结构"><a href="#保持数据几何结构" class="headerlink" title="保持数据几何结构"></a>保持数据几何结构</h2><p>这部分其实就是TCA中用到的，最大化中心矩阵方差的形式，保持数据结构：</p>
+<script type="math/tex; mode=display">
+\max _{\mathbf{P}} \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}} \mathbf{P}\right)
+\tag{18}</script><p>其中$\mathbf{H}_{T}$是中心矩阵。<br>同时考虑the discriminant information，作者又丰富了目标函数，这个我没见过，可能是一种常用的保持数据类别结构的方法吧：</p>
+<script type="math/tex; mode=display">
+\min _{\mathbf{P}} \frac{\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{S}_{w} \mathbf{P}\right)}{\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}} \mathbf{P}\right)+\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{S}_{b} \mathbf{P}\right)}
+\tag{22}</script><h2 id="联合优化目标"><a href="#联合优化目标" class="headerlink" title="联合优化目标"></a>联合优化目标</h2><script type="math/tex; mode=display">
+\min _{\phi} D i s t a n c e\left(\mathbf{X}_{S}, \mathbf{X}_{T} | \phi\right)+\operatorname{Info}_{-} \operatorname{loss}\left(\mathbf{X}_{S}, \mathbf{X}_{T} | \phi\right)</script><script type="math/tex; mode=display">
+=\min _{\mathbf{P}} \frac{\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{X}\left(\mathbf{M}+\sum_{c=1}^{C} \mathbf{M}_{c}\right) \mathbf{G}_{X}^{\mathrm{T}} \mathbf{P}\right)+\alpha \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{P}\right)+\beta \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{S}_{w} \mathbf{P}\right)}{\lambda \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}} \mathbf{P}\right)+\beta \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}} \mathbf{S}_{b} \mathbf{P}\right)}</script><script type="math/tex; mode=display">
+=\min _{\mathbf{p}} \frac{\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}}\left(\mathbf{G}_{X}\left(\mathbf{M}+\sum_{c=1}^{c} \mathbf{M}_{c}\right) \mathbf{G}_{X}^{\mathrm{T}}+\alpha \mathbf{I}+\beta \mathbf{S}_{w}\right) \mathbf{P}\right)}{\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}}\left(\lambda \mathbf{G}_{\tau} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}}+\beta \mathbf{S}_{b}\right) \mathbf{P}\right)}  \tag{23}</script><p>$\alpha, \beta$ and $\lambda$是正则化参数，与JDA求解相似，转成约束优化问题：</p>
+<script type="math/tex; mode=display">
+\min _{P} \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}}\left(\mathbf{G}_{X}\left(\mathbf{M}+\sum_{c=1}^{c} \mathbf{M}_{c}\right) \mathbf{G}_{X}^{\mathrm{T}}+\alpha \mathbf{I}+\beta \mathbf{S}_{w}\right) \mathbf{P}\right)</script><script type="math/tex; mode=display">
+s.t. \ \operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}}\left(\lambda \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}}+\beta \mathbf{S}_{b}\right) \mathbf{P}\right)=1  \tag{24}</script><p>上式可以用拉格朗日方程表示为：</p>
+<script type="math/tex; mode=display">
+L=\operatorname{Tr}\left(\mathbf{P}^{\mathrm{T}}\left(\mathbf{G}_{X}\left(\mathbf{M}+\sum_{c=1}^{C} \mathbf{M}_{c}\right) \mathbf{G}_{X}^{\mathrm{T}}+\alpha \mathbf{I}+\beta \mathbf{S}_{w}\right) \mathbf{P}\right)</script><script type="math/tex; mode=display">
++\operatorname{Tr}\left(\left(\mathbf{P}^{\mathrm{T}}\left(\lambda \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}}+\beta \mathbf{S}_{b}\right) \mathbf{P}-\mathbf{I}\right) \Phi\right)  \tag{25}</script><p>其中$\Phi=\operatorname{diag}\left(\varphi_{1}, \varphi_{2}, \cdots, \varphi_{m}\right) \in R^{m \times m}$是拉格朗日乘子，使$\frac{\partial L}{\partial \mathbf{P}}=0$可得：</p>
+<script type="math/tex; mode=display">
+\left(\mathbf{P}^{\mathrm{T}}\left(\mathbf{G}_{X}\left(\mathbf{M}+\sum_{c=1}^{C} \mathbf{M}_{c}\right) \mathbf{G}_{X}^{\mathrm{T}}+\alpha \mathbf{I}+\beta \mathbf{S}_{w}\right) \mathbf{P}\right)</script><script type="math/tex; mode=display">
+=\left(\lambda \mathbf{G}_{T} \mathbf{H}_{T} \mathbf{G}_{T}^{\mathrm{T}}+\beta \mathbf{S}_{b}\right) \mathbf{P} \Phi    \tag{26}</script><p>到这里是个广义特征值分解问题，可以用matlab的eigs直接求解了！</p>
+<h2 id="计算复杂度"><a href="#计算复杂度" class="headerlink" title="计算复杂度"></a>计算复杂度</h2><p>刚好JDA文章有计算复杂度分析，这里完全复刻过来就行。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文的创新在于，利用模糊模型做假设：源数据和目标数据仅隶属度不同，而模糊规则相同。不管这种假设是否成立，这毕竟是一种新的思路。很棒。</p>
 <pre><code>[1]Yang C, Deng Z, Choi K S, et al. Takagi–Sugeno–Kang transfer learning fuzzy logic system for the adaptive recognition of epileptic electroencephalogram signals[J]. IEEE Transactions on Fuzzy Systems, 2016, 24(5): 1079-1094.
 [2] Zuo H, Zhang G, Pedrycz W, et al. Fuzzy regression transfer learning in Takagi–Sugeno fuzzy models[J]. IEEE Transactions on Fuzzy Systems, 2017, 25(6): 1795-1807.
 [3] Xu P, Deng Z, Wang J, et al. Transfer Representation Learning with TSK Fuzzy System[J]. arXiv preprint arXiv:1901.02703, 2019.
@@ -743,7 +786,7 @@ y=f(\mathbf{x})=\mathbf{p}_{g}^{\mathrm{T}} \mathbf{x}_{g} \tag{6}</script><p>�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TSK-Fuzzy-Logis-System"><span class="nav-number">1.</span> <span class="nav-text">TSK Fuzzy Logis System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maximum-Mean-Discrepency"><span class="nav-number">2.</span> <span class="nav-text">Maximum Mean Discrepency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview-of-TRL-TSK-FS"><span class="nav-number">3.</span> <span class="nav-text">Overview of TRL-TSK-FS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shared-Feature-Space-Construction"><span class="nav-number">4.</span> <span class="nav-text">Shared Feature Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fuzzy-feature-space-based-on-TSK-FS"><span class="nav-number">4.1.</span> <span class="nav-text">Fuzzy feature space based on TSK-FS</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TSK-Fuzzy-Logis-System"><span class="nav-number">1.</span> <span class="nav-text">TSK Fuzzy Logis System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maximum-Mean-Discrepency"><span class="nav-number">2.</span> <span class="nav-text">Maximum Mean Discrepency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview-of-TRL-TSK-FS"><span class="nav-number">3.</span> <span class="nav-text">Overview of TRL-TSK-FS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shared-Feature-Space-Construction"><span class="nav-number">4.</span> <span class="nav-text">Shared Feature Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fuzzy-feature-space-based-on-TSK-FS"><span class="nav-number">4.1.</span> <span class="nav-text">Fuzzy feature space based on TSK-FS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Antecedent-parameters-前参数即隶属度等"><span class="nav-number">4.2.</span> <span class="nav-text">Antecedent parameters (前参数即隶属度等)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distribution-Matching"><span class="nav-number">5.</span> <span class="nav-text">Distribution Matching</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保持数据几何结构"><span class="nav-number">6.</span> <span class="nav-text">保持数据几何结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联合优化目标"><span class="nav-number">7.</span> <span class="nav-text">联合优化目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算复杂度"><span class="nav-number">8.</span> <span class="nav-text">计算复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
