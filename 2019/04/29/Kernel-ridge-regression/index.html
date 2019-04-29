@@ -108,25 +108,27 @@
 
 
 
-  <meta name="description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
-<meta name="keywords" content="windows,CMD">
+  <meta name="description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
+<meta name="keywords" content="基础知识">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何把CMD添加到右键">
-<meta property="og:url" content="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/index.html">
+<meta property="og:title" content="Kernel ridge regression">
+<meta property="og:url" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
+<meta property="og:description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-04T09:37:07.000Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png">
+<meta property="og:updated_time" content="2019-04-29T14:11:35.855Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何把CMD添加到右键">
-<meta name="twitter:description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
+<meta name="twitter:title" content="Kernel ridge regression">
+<meta name="twitter:description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/">
+  <link rel="canonical" href="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/">
 
 
 
@@ -136,7 +138,7 @@
   };
 </script>
 
-  <title>如何把CMD添加到右键 | Tangmeii_Sites</title>
+  <title>Kernel ridge regression | Tangmeii_Sites</title>
   
 
 
@@ -344,7 +346,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gengxiang">
@@ -361,7 +363,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何把CMD添加到右键
+          <h1 class="post-title" itemprop="name headline">Kernel ridge regression
               
             
           </h1>
@@ -386,24 +388,12 @@
                 
               
 
-              <time title="创建时间：2018-12-03 22:50:24" itemprop="dateCreated datePublished" datetime="2018-12-03T22:50:24+08:00">2018-12-03</time>
+              <time title="创建时间：2019-04-29 19:22:14 / 修改时间：22:11:35" itemprop="dateCreated datePublished" datetime="2019-04-29T19:22:14+08:00">2019-04-29</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-12-04 17:37:07" itemprop="dateModified" datetime="2018-12-04T17:37:07+08:00">2018-12-04</time>
               
             
           </span>
@@ -420,7 +410,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/研究/" itemprop="url" rel="index"><span itemprop="name">研究</span></a></span>
 
                 
                 
@@ -461,10 +451,59 @@
       
 
       
-        <h4 id="处理CSV"><a href="#处理CSV" class="headerlink" title="处理CSV"></a>处理CSV</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">pd</span><span class="selector-class">.read_csv</span>()</span><br></pre></td></tr></table></figure>
-<h4 id="读取类数据"><a href="#读取类数据" class="headerlink" title="读取类数据"></a>读取类数据</h4><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = pd[<span class="string">'typeA'</span>]</span><br><span class="line">data = pd.typeA</span><br><span class="line">class = [<span class="string">'typeA'</span>,<span class="string">'typeB'</span>,<span class="string">'typeC'</span>]</span><br><span class="line">data = pd[class]  <span class="meta">%</span><span class="meta">%</span> 多个</span><br><span class="line">data.describe<span class="comment">()</span> <span class="meta">%</span><span class="meta">%</span> 描述数据的统计特性</span><br><span class="line">data.head<span class="comment">()</span>  <span class="meta">%</span><span class="meta">%</span> 列出前几个</span><br></pre></td></tr></table></figure>
-<h4 id="提交比赛答案"><a href="#提交比赛答案" class="headerlink" title="提交比赛答案"></a>提交比赛答案</h4><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">my_submission = pd.DataFrame(&#123;<span class="string">'Id'</span>: test.Id, <span class="string">'SalePrice'</span>: predicted_prices&#125;)</span><br><span class="line"><span class="comment"># you could use any filename. We choose submission here</span></span><br><span class="line">my_submission.to_csv(<span class="string">'submission.csv'</span>, <span class="keyword">index</span>=False)</span><br></pre></td></tr></table></figure>
-<h4 id="字典用法-巧用key"><a href="#字典用法-巧用key" class="headerlink" title="字典用法 巧用key"></a>字典用法 巧用key</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">candidate = [5, 25, 50, 100, 200] </span><br><span class="line">scores = &#123;leaf_size: get_mae(leaf_size, train_X, val_X, train_y, val_y) for leaf_size in candidate&#125; </span><br><span class="line"><span class="comment">## 这里直接把leaf_size 当作key</span></span><br><span class="line">best_tree_size = min(scores, key=scores.get)</span><br><span class="line">plt.plot(scores.keys(),scores.values())</span><br></pre></td></tr></table></figure>
+        <p>最小二乘，岭回归，高斯过程回归，分别是什么。<br><a id="more"></a>  </p>
+<h2 id="矩阵求导规则："><a href="#矩阵求导规则：" class="headerlink" title="矩阵求导规则："></a>矩阵求导规则：</h2><p><a href="https://blog.csdn.net/promisejia/article/details/80159619" target="_blank" rel="noopener">矩阵各种运算规则</a></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+Y& =A * X \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A^{T}\\ 
+Y &=X * A \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A   \\ 
+Y& =A X B \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A^{T} B^{T} \\
+Y& =A X^{T} B \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=B A \\
+\frac{\mathrm{d}\left(X^{T} A X\right)}{\mathrm{d} x}&=\frac{\mathrm{d} X^{T}}{\mathrm{d} x} A X+\frac{\mathrm{d} A X}{\mathrm{d} x}\left(X^{T}\right)^{T}=A X+A^{T} X
+\end{aligned}</script><h2 id="线性最小二乘回归"><a href="#线性最小二乘回归" class="headerlink" title="线性最小二乘回归"></a>线性最小二乘回归</h2><p>线性最小二乘问题其实就是求解一组$\theta$，此时的代价函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+J(\theta) & =\frac{1}{2 m} \sum_{i=1}^{m}\left(x_{i}\theta-y_{i}\right)^{2} + \lambda\|\theta\|^{2}\\
+\frac{d J}{d\theta}& =\frac{d(X \theta-y)^{T}(X \theta-y)+\lambda\theta^{T}\theta}{d \theta} \\
+&=\frac{d\left(\theta^{T} X^{T}X \theta-y^{T} X y-\theta^{T} X^{T} y+y^{T} y +\lambda\theta^{T}\theta\right)}{d \theta} \\
+& =X^{T} X \theta+x^{T} X \theta-X^{T} y-X^{T} y+2\lambda\theta =0
+\end{aligned} \tag{2}</script><script type="math/tex; mode=display">
+\begin{aligned}
+&X^{\top} X \theta-X^{T} y+\lambda\theta =0 \\
+&X^{T} X \theta +\lambda\theta =X^{T} y \\
+&\theta =\left(X^{T} X + \lambda I\right)^{-1} X^{T} y
+\end{aligned}</script><h2 id="核岭回归"><a href="#核岭回归" class="headerlink" title="核岭回归"></a>核岭回归</h2><p>首先有：</p>
+<script type="math/tex; mode=display">
+\left(X^{T} X+\lambda I\right) X^{T}=X^{T} X X^{T}+\lambda X^{T}=X^{T}\left(X X^{T}+\lambda I\right)</script><p>这个式子左乘$\left(X^{T} X+\lambda I\right)^{-1}$并右乘$\left(X^{T} X+\lambda I\right)^{-1} X^{T} y$可以得到：</p>
+<script type="math/tex; mode=display">
+X^{T}\left(X X^{T}+\lambda I\right)^{-1} y=\left(X^{T} X+\lambda I\right)^{-1} X^{T} y</script><p>其中右边即为$ \theta$:</p>
+<script type="math/tex; mode=display">
+X^{T}\left(X X^{T}+\lambda I\right)^{-1} y=\theta \tag{3}</script><p>【其实上式可以根据式（2）推导】<br>令：</p>
+<script type="math/tex; mode=display">
+\alpha=\left(X X^{T}+\lambda I\right)^{-1} y</script><p>则有：</p>
+<script type="math/tex; mode=display">
+\theta=X^{T} \alpha</script><p>对于一个新的观测值$\left(x^{\prime}, y^{\prime}\right)$<br>如果【其中$x^{\prime}$是行向量】，那么预测值为：</p>
+<script type="math/tex; mode=display">
+\hat{y}^{\prime}=x^{\prime}\theta=x^{\prime}X^{T}\left(X X^{T}+\lambda I\right)^{-1} y</script><p>如果【其中$x^{\prime}$是列向量】，那么预测值为：</p>
+<script type="math/tex; mode=display">
+\hat{y}^{\prime}=\theta^{T} x^{\prime}=y^{T}\left(X X^{T}+\lambda I\right)^{-1} X x^{\prime}</script><p>设：</p>
+<script type="math/tex; mode=display">
+K_{i j}=x_{i} x_{j}^{T}</script><script type="math/tex; mode=display">
+\kappa_{i}=x_{i} x^{\prime}</script><p>其中$x_{i}$是矩阵$X$的一个行向量，也就是一个样本。此时$K$是核矩阵，其每个元素是对应$i,j$样本的内积。而$\kappa_{i}$则是第$i$个样本对观测值$x^{\prime}$的内积。由于观测值形式是列向量，所以$\kappa_{i}$中的$x^{\prime}$没有转置，此时观测值标签可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat{y}^{\prime}=y^{T}(K+\lambda I)^{-1} \kappa</script><p>如果【其中$x^{\prime}$是行向量】，那么预测值形式为：</p>
+<script type="math/tex; mode=display">
+\hat{y}^{\prime}=\kappa^{T}(K+\lambda I)^{-1} y</script><p>两个式子本质上是一样的。<br>此时可以发现，预测值仅与$K$和$\kappa$有关，而与特征$X$无关。所以如果我们对输入做映射$x \rightarrow \Phi(x)$，我们只需要计算映射之后的$\mathrm{K}$ and $\kappa$，也就是说，就算我们不知道映射是长什么样子，只要知道了核函数长什么样就行了，<strong>用核函数代替映射的内积，这就是核技巧</strong>。<br>这里应该明白了为什么式子3中把$\theta$的形式换了一下，换了之后式中的$X^{T} X$变成了$X X^{T}$，即$K=X X^{T}$。只有这么变换之后，核矩阵才有意义。核矩阵的Size是N*N【N是样本数量】。</p>
+<h2 id="高斯过程回归"><a href="#高斯过程回归" class="headerlink" title="高斯过程回归"></a>高斯过程回归</h2><p><a href="http://boris-belousov.net/2017/09/10/gaussian-process-linear-regression/#ridge-regression" target="_blank" rel="noopener">参考这里</a></p>
+<script type="math/tex; mode=display">
+\left[ \begin{array}{l}{\mathbf{y}} \\ {y_{*}}\end{array}\right] \sim \mathcal{N}\left(\mathbf{0}, \left[ \begin{array}{cc}{K} & {K_{*}^{\mathrm{T}}} \\ {K_{*}} & {K_{* *}}\end{array}\right]\right)</script><script type="math/tex; mode=display">
+y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} K^{-1} K_{*}^{\mathrm{T}}\right)</script><p>预测值为：</p>
+<script type="math/tex; mode=display">
+\overline{y}_{*}=K_{*} K^{-1} \mathbf{y}</script><p>可以看出这里得的$K_{*}$KRR中的$\kappa$，这里的$K$其实就是KRR中的$K$。所以预测形式上，GP和KRR是一样的，不过GP可以给出置信区间:</p>
+<script type="math/tex; mode=display">
+\operatorname{var}\left(y_{*}\right)=K_{* *}-K_{*} K^{-1} K_{*}^{\mathrm{T}}</script><p><a href="https://scikit-learn.org/stable/auto_examples/gaussian_process/plot_compare_gpr_krr.html" target="_blank" rel="noopener">scikit-learn中给出了一些两者区别的解释</a>:</p>
+<p><em>Both kernel ridge regression (KRR) and Gaussian process regression (GPR) learn a target function by employing internally the “kernel trick”. KRR learns a linear function in the space induced by the respective kernel which corresponds to a non-linear function in the original space. The linear function in the kernel space is chosen based on the mean-squared error loss with ridge regularization. GPR uses the kernel to define the covariance of a prior distribution over the target functions and uses the observed training data to define a likelihood function. Based on Bayes theorem, a (Gaussian) posterior distribution over target functions is defined, whose mean is used for prediction.<br>A major difference is that GPR can choose the kernel’s hyperparameters based on gradient-ascent on the marginal likelihood function while KRR needs to perform a grid search on a cross-validated loss function (mean-squared error loss). A further difference is that GPR learns a generative, probabilistic model of the target function and can thus provide meaningful confidence intervals and posterior samples along with the predictions while KRR only provides predictions.<br>This example illustrates both methods on an artificial dataset, which consists of a sinusoidal target function and strong noise. The figure compares the learned model of KRR and GPR based on a ExpSineSquared kernel, which is suited for learning periodic functions. The kernel’s hyperparameters control the smoothness (l) and periodicity of the kernel (p). Moreover, the noise level of the data is learned explicitly by GPR by an additional WhiteKernel component in the kernel and by the regularization parameter alpha of KRR.<br>The figure shows that both methods learn reasonable models of the target function. GPR correctly identifies the periodicity of the function to be roughly 2</em>pi (6.28), while KRR chooses the doubled periodicity 4<em>pi. Besides that, GPR provides reasonable confidence bounds on the prediction which are not available for KRR. A major difference between the two methods is the time required for fitting and predicting: while fitting KRR is fast in principle, the grid-search for hyperparameter optimization scales exponentially with the number of hyperparameters (“curse of dimensionality”). The gradient-based optimization of the parameters in GPR does not suffer from this exponential scaling and is thus considerable faster on this example with 3-dimensional hyperparameter space. The time for predicting is similar; however, generating the variance of the predictive distribution of GPR takes considerable longer than just predicting the mean.</em></p>
+<p><img src="/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png" alt=""></p>
 
       
     </div>
@@ -488,9 +527,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/windows/" rel="tag"># windows</a>
-          
-            <a href="/tags/CMD/" rel="tag"># CMD</a>
+            <a href="/tags/基础知识/" rel="tag"># 基础知识</a>
           
         </div>
       
@@ -503,8 +540,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/03/hello-world/" rel="next" title="Hexo 重要操作">
-                <i class="fa fa-chevron-left"></i> Hexo 重要操作
+              <a href="/2019/04/29/Importance-Weighted-TL-for-regression/" rel="next" title="Importance Weighted TL for regression">
+                <i class="fa fa-chevron-left"></i> Importance Weighted TL for regression
               </a>
             
           </div>
@@ -512,10 +549,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/04/20181204周末电影/" rel="prev" title="电影推荐模型的思想训练过程">
-                电影推荐模型的思想训练过程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -704,7 +737,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理CSV"><span class="nav-number">1.</span> <span class="nav-text">处理CSV</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取类数据"><span class="nav-number">2.</span> <span class="nav-text">读取类数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提交比赛答案"><span class="nav-number">3.</span> <span class="nav-text">提交比赛答案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字典用法-巧用key"><span class="nav-number">4.</span> <span class="nav-text">字典用法 巧用key</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵求导规则："><span class="nav-number">1.</span> <span class="nav-text">矩阵求导规则：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性最小二乘回归"><span class="nav-number">2.</span> <span class="nav-text">线性最小二乘回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核岭回归"><span class="nav-number">3.</span> <span class="nav-text">核岭回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯过程回归"><span class="nav-number">4.</span> <span class="nav-text">高斯过程回归</span></a></li></ol></div>
             
 
           </div>
@@ -888,7 +921,7 @@
   
     <script type="text/javascript">
       window.livereOptions = {
-        refer: '2018/12/03/如何把CMD添加到右键/'
+        refer: '2019/04/29/Kernel-ridge-regression/'
       };
       (function(d, s) {
         var j, e = d.getElementsByTagName(s)[0];
@@ -930,6 +963,43 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+
+    
   
 
 
