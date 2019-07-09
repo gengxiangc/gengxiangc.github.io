@@ -108,27 +108,28 @@
 
 
 
-  <meta name="description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
-<meta name="keywords" content="基础知识">
+  <meta name="description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
+<meta name="keywords" content="T1模糊系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kernel ridge regression">
-<meta property="og:url" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/index.html">
+<meta property="og:title" content="Type-1 Fuzzy Systems">
+<meta property="og:url" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
+<meta property="og:description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png">
-<meta property="og:updated_time" content="2019-04-29T14:11:35.855Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-15-23-45.png">
+<meta property="og:updated_time" content="2019-07-09T08:39:57.997Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kernel ridge regression">
-<meta name="twitter:description" content="最小二乘，岭回归，高斯过程回归，分别是什么。">
-<meta name="twitter:image" content="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png">
+<meta name="twitter:title" content="Type-1 Fuzzy Systems">
+<meta name="twitter:description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/">
+  <link rel="canonical" href="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/">
 
 
 
@@ -138,7 +139,7 @@
   };
 </script>
 
-  <title>Kernel ridge regression | Tangmeii_Sites</title>
+  <title>Type-1 Fuzzy Systems | Tangmeii_Sites</title>
   
 
 
@@ -346,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/04/29/Kernel-ridge-regression/">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gengxiang">
@@ -363,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Kernel ridge regression
+          <h1 class="post-title" itemprop="name headline">Type-1 Fuzzy Systems
               
             
           </h1>
@@ -388,7 +389,7 @@
                 
               
 
-              <time title="创建时间：2019-04-29 19:22:14 / 修改时间：22:11:35" itemprop="dateCreated datePublished" datetime="2019-04-29T19:22:14+08:00">2019-04-29</time>
+              <time title="创建时间：2019-07-09 09:39:23 / 修改时间：16:39:57" itemprop="dateCreated datePublished" datetime="2019-07-09T09:39:23+08:00">2019-07-09</time>
             
 
             
@@ -410,7 +411,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/研究/" itemprop="url" rel="index"><span itemprop="name">研究</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
 
                 
                 
@@ -451,59 +452,50 @@
       
 
       
-        <p>最小二乘，岭回归，高斯过程回归，分别是什么。<br><a id="more"></a>  </p>
-<h2 id="矩阵求导规则："><a href="#矩阵求导规则：" class="headerlink" title="矩阵求导规则："></a>矩阵求导规则：</h2><p><a href="https://blog.csdn.net/promisejia/article/details/80159619" target="_blank" rel="noopener">矩阵各种运算规则</a></p>
+        <h1 id="Type-1-Fuzzy-Systems"><a href="#Type-1-Fuzzy-Systems" class="headerlink" title="Type-1 Fuzzy Systems"></a>Type-1 Fuzzy Systems</h1><p> &emsp;&emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。<br> <img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png" alt=""><br> <a id="more"></a>  </p>
+<h2 id="规则-Rules"><a href="#规则-Rules" class="headerlink" title="规则 Rules"></a>规则 Rules</h2><p>&emsp;&emsp;经典模糊规则包括Zadeh规则和TSK规则，考虑一个模糊系统具有 $p$ 个输入$x_{1} \in X_{1}, \ldots, x_{p} \in X_{p}$（就是说$\mathbf{x}$的维度是$p$）和一维输出$y \in Y$，两种模糊规则定义如下：<br><strong>定义 3.1a</strong> &emsp; 针对Zadeh规则下的模糊系统，其中第$l$个$(l=1, \ldots, M)$<strong>通用Zadeh规则</strong>定义为：</p>
+<script type="math/tex; mode=display">
+R_{Z}^{l} : \operatorname{IF} x_{1} \text { is } F_{1}^{l} \text { and } \cdots \text { and } x_{p} \text { is } F_{p}^{l}, \text { THEN } y \text { is } G^{l} \tag{3.1
+}</script><p>&emsp;&emsp;这里的$F_{p}^{l}$是指第$l$条规则在第$p$维度上的模糊集，输出$G^{l}$是一型模糊集，可以由其隶属度函数（MF）定义：$\mu_{G^{l}}(y)$<br><strong>定义 3.1b</strong> &emsp; 针对TSK规则下的模糊系统，其中第$l$个$(l=1, \ldots, M)$<strong>通用TSK规则</strong>定义为：</p>
+<script type="math/tex; mode=display">
+R_{T S K}^{l} : \operatorname{IF} x_{1} \text { is } F_{1}^{l} \text { and } \cdots \text { and } x_{p} \text { is } F_{p}^{l}, \text { THEN } y \text { is } g^{l}\left(x_{1}, \ldots, x_{p}\right) \quad l=1, \ldots, M \tag{3.2}</script><p>&emsp;&emsp;这TSK规则中的输出是清晰数，当然，也可以认为是模糊单值(fuzzy singleton)。注意：使用Zadeh规则的模糊系统称为<strong>Mamdani模糊系统</strong>，使用TSK模糊规则的模糊系统称为<strong>TSK模糊系统</strong>。</p>
+<h2 id="模糊器-Fuzzifier"><a href="#模糊器-Fuzzifier" class="headerlink" title="模糊器 Fuzzifier"></a>模糊器 Fuzzifier</h2><p>&emsp;&emsp;模糊器将清晰值(crisp point)$\mathbf{x}=\left(x_{1}, \ldots, x_{p}\right)^{T} \in X_{1} \times X_{2} \times \cdots \times X_{p} \equiv \mathbf{X}$映射到模糊集$A_{\mathrm{x}}$ in $\mathbf{X}$。<br><strong>定义 3.4</strong>&emsp; 单值模糊器(singleton fuzzifier) 是指$\mu_{X_{i}}\left(x_{i}^{\prime}\right)=1$且对于 $x_{i} \in X_{i}$ ， $x_{i} \neq x_{i}^{\prime}$情况，$\mu_{X_{i}}\left(x_{i}\right)=0$ 。（也就是说，只有一个位置隶属度为1，其他都为零）。<br><strong>定义 3.4</strong>&emsp; 非单值模糊器(non-singleton fuzzifier) 是指对于清晰观测值$x_{i}=\mathrm{x}_{i}^{\prime}$，映射成一个一型模糊数，在观测值位置隶属度为1，远离观测值的位置隶属度逐步下降。即为：$\mu_{X_{i}}\left(x_{i}^{\prime}\right)=1$，其他位置隶属度表示为$\mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right)$<br>&emsp;&emsp;隶属函数常用的由高斯和三角<br>&emsp;&emsp;1.高斯隶属函数: $\mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right)=\exp \left[-x_{i}-x_{i}^{\prime}\right)^{2} / 2 \sigma^{2} ]$<br>&emsp;&emsp;2.三角隶属函数: $\mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right)=\max \left(0,1-\left|\left(x_{i}-x_{i}^{\prime}\right) / c\right|\right)$<br>&emsp;&emsp;高斯隶属度中的$x_{i}^{\prime}$指模糊集的中心，即为观测值的清晰数，$\sigma$是模糊集的伸展度，因此高斯隶属度可以理解为把一个清晰数描述成带噪声的数，这个$\sigma$可以理解为噪声的范围。</p>
+<h2 id="模糊推理机-Fuzzy-inference-Engine"><a href="#模糊推理机-Fuzzy-inference-Engine" class="headerlink" title="模糊推理机 Fuzzy inference Engine"></a>模糊推理机 Fuzzy inference Engine</h2><h3 id="规则输出"><a href="#规则输出" class="headerlink" title="规则输出"></a>规则输出</h3><p>&emsp;&emsp;首先从Mamdani模糊系统开始：令$F_{1}^{l} \times \cdots \times F_{p}^{l}=A^{l}$(其中$A^{l}$是$\mathbf{x}$的模糊集，$F_{p}^{l}$是指第$l$条规则在第$p$维度上的模糊集，$\times$指模糊集之间的运算符）， Mamdani FS表示为：</p>
+<script type="math/tex; mode=display">
+R_{Z}^{l} : F_{1}^{l} \times \cdots \times F_{p}^{l} \rightarrow G^{l}=A^{l} \rightarrow G^{l} \tag{3.6}</script><p>&emsp;&emsp;规则$R_{Z}^{l}$由隶属函数$\mu_{R_{Z}^{l}}(\mathbf{x}, y)$所描述（注意这个隶属函数是描述规则的真值度，也就是规则的成立程度，与之前的隶属函数的意义是不同的）：</p>
+<script type="math/tex; mode=display">
+\mu_{R_{Z}^{l}}(\mathbf{x}, y)=\mu_{A^{l} \rightarrow G^{l}}(\mathbf{x}, y) \tag{3.7}</script><p>&emsp;&emsp;$p$个维度的<strong>规则隶属度</strong>之间可以用T-范运算,简写为T：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-Y& =A * X \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A^{T}\\ 
-Y &=X * A \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A   \\ 
-Y& =A X B \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=A^{T} B^{T} \\
-Y& =A X^{T} B \quad \frac{\mathrm{d} Y}{\mathrm{d} X}=B A \\
-\frac{\mathrm{d}\left(X^{T} A X\right)}{\mathrm{d} x}&=\frac{\mathrm{d} X^{T}}{\mathrm{d} x} A X+\frac{\mathrm{d} A X}{\mathrm{d} x}\left(X^{T}\right)^{T}=A X+A^{T} X
-\end{aligned}</script><h2 id="线性最小二乘回归"><a href="#线性最小二乘回归" class="headerlink" title="线性最小二乘回归"></a>线性最小二乘回归</h2><p>线性最小二乘问题其实就是求解一组$\theta$，此时的代价函数为：</p>
+\mu_{A^{l} \rightarrow G^{l}}(\mathbf{x}, y)&=\mu_{F_{1}^{l} \times \cdots \times F_{p}^{l} \rightarrow G^{l}}(\mathbf{x}, y)\\
+& = \mu_{F_{1}^{l} \times \cdots \times F_{p}^{l}}(\mathbf{x}) \star \mu_{G^{l}}(y) \\
+& = \mu_{F_{1}^{l}}\left(x_{1}\right) \star \cdots \star \mu_{F_{p}^{l}}\left(x_{p}\right) \star \mu_{G^{l}}(y) \\
+& =\left[T_{i=1}^{p} \mu_{F_{i}^{l}}\left(x_{i}\right)\right] \star \mu_{G^{l}}(y)
+\end{aligned}  \tag{3.8}</script><p>&emsp;&emsp;其中$\star$是指T-范运算，可以是取最小或者取乘积。也被称作Mamdani蕴含(Mamdani implication)<br>&emsp;&emsp;$p$个维度的<strong>输入隶属度</strong>为：</p>
+<script type="math/tex; mode=display">
+\mu_{A_{x^{\prime}}}(\mathbf{x})=\mu_{X_{1}}\left(x_{1} | x_{1}^{\prime}\right) \star \cdots \star \mu_{X_{p}}\left(x_{p} | x_{p}^{\prime}\right)=T_{i=1}^{p} \mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right) \tag{3.9}</script><p><img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-15-23-45.png" alt=""></p>
+<p>&emsp;&emsp; 每条规则$R_{Z}^{l}$都决定了一个输出模糊集$B^{l}=A_{\mathbf{x}^{\prime}} \circ R_{Z}^{l}$，$B^{l}$由其隶属度表示：</p>
+<script type="math/tex; mode=display">
+\mu_{B^{l}}\left(y | \mathbf{x}^{\prime}\right)=\mu_{A_{\mathbf{x}^{\prime}} \circ R_{Z}^{l}}\left(y | \mathbf{x}^{\prime}\right)=\sup _{\mathbf{x} \in \mathbf{X}}\left[\mu_{A_{\mathbf{x}^{\prime}}}(\mathbf{x}) \star \mu_{A^{l} \rightarrow G^{l}}(\mathbf{x}, y)\right], y \in Y \tag{3.10}</script><p>&emsp;&emsp; 隶属度用类似条件概率的方式表达，是因为输出的隶属度是$\mathbf{x}^{\prime}$的函数。其中$\star$是指T-范运算，sup[ ] 称作 <em>sup-star composition</em> 是取T-范之后的上界，可以这么认为：把sup[ ]中的两个元素写成矩阵，加法处理编程取最大值运算。<br>&emsp;&emsp; 式子3.10中的两个隶属度分别可以表示成$p$维的形式，也就是式3.8和式3.9。带入3.11可得：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-J(\theta) & =\frac{1}{2 m} \sum_{i=1}^{m}\left(x_{i}\theta-y_{i}\right)^{2} + \lambda\|\theta\|^{2}\\
-\frac{d J}{d\theta}& =\frac{d(X \theta-y)^{T}(X \theta-y)+\lambda\theta^{T}\theta}{d \theta} \\
-&=\frac{d\left(\theta^{T} X^{T}X \theta-y^{T} X y-\theta^{T} X^{T} y+y^{T} y +\lambda\theta^{T}\theta\right)}{d \theta} \\
-& =X^{T} X \theta+x^{T} X \theta-X^{T} y-X^{T} y+2\lambda\theta =0
-\end{aligned} \tag{2}</script><script type="math/tex; mode=display">
-\begin{aligned}
-&X^{\top} X \theta-X^{T} y+\lambda\theta =0 \\
-&X^{T} X \theta +\lambda\theta =X^{T} y \\
-&\theta =\left(X^{T} X + \lambda I\right)^{-1} X^{T} y
-\end{aligned}</script><h2 id="核岭回归"><a href="#核岭回归" class="headerlink" title="核岭回归"></a>核岭回归</h2><p>首先有：</p>
+\mu_{B^{l}}\left(y | \mathbf{x}^{\prime}\right)
+& =\sup _{\mathbf{x} \in X}\left[\mu_{A_{x}^{\prime}}(\mathbf{x}) \star \mu_{A^{l} \rightarrow G^{l}}(\mathbf{x}, y)\right] \\
+&=\sup _{\mathbf{x} \in X}\left[T_{i=1}^{p} \mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right) \star\left[T_{i=1}^{p} \mu_{F_{i}^{l}}\left(x_{i}\right)\right] \star \mu_{G^{l}}(y)\right] \\
+&=\sup _{\mathbf{x} \in X}\left\{\left[T_{i=1}^{p} \mu_{X_{i}}\left(x_{i} | x_{i}^{\prime}\right) \star \mu_{F_{i}^{l}}\left(x_{i}\right)\right]\right. \\
+&=\left\{\left[\sup _{x_{1} \in X_{1}} \mu_{X_{1}}\left(x_{1} | x_{1}^{\prime}\right) \star \mu_{F_{1}^{l}}\left(x_{1}\right)\right] \star \cdots \star\left[\sup _{x_{p} \in X_{p}} \mu_{X_{p}}\left(x_{p} | x_{p}^{\prime}\right) \star \mu_{F_{p}^{l}}\left(x_{p}\right)\right]\right\} \star \mu_{G^{l}}(y)
+\end{aligned}  \tag{3.11}</script><p>&emsp;&emsp; 就是说输出规则是由多个上确界与输出隶属函数的T-范。<br>&emsp;&emsp; 上式中大括号之内的称作第$l$条规则的‘火力范围’定义成$<br>f^{l}\left(\mathbf{x}^{\prime}\right) \in[0,1]$：</p>
 <script type="math/tex; mode=display">
-\left(X^{T} X+\lambda I\right) X^{T}=X^{T} X X^{T}+\lambda X^{T}=X^{T}\left(X X^{T}+\lambda I\right)</script><p>这个式子左乘$\left(X^{T} X+\lambda I\right)^{-1}$并右乘$\left(X^{T} X+\lambda I\right)^{-1} X^{T} y$可以得到：</p>
+f^{l}\left(\mathbf{x}^{\prime}\right) \equiv\left\{\left[\sup _{x_{1} \in X_{1}} \mu_{X_{1}}\left(x_{1} | x^{\prime}\right) \star \mu_{F_{1}^{l}}\left(x_{1}\right)\right] \star \cdots \boldsymbol{\star}\left[\sup _{x_{p} \in X_{p}} \mu_{X_{p}}\left(x_{p} | x_{p}^{\prime}\right) \boldsymbol{\star} \mu_{F_{p}^{l}}\left(x_{p}\right)\right]\right\} \tag{3.12}</script><p>&emsp;&emsp;这里的火力范围是$\mathbf{x}^{\prime}$的函数，计算之后其实是个常数。对$\mathbf{x}^{\prime}$进行降维表示为：</p>
 <script type="math/tex; mode=display">
-X^{T}\left(X X^{T}+\lambda I\right)^{-1} y=\left(X^{T} X+\lambda I\right)^{-1} X^{T} y</script><p>其中右边即为$ \theta$:</p>
+f^{l}\left(x_{i}^{\prime}\right) \equiv \sup _{x_{i} \in X_{i}} \mu_{X_{i}}\left(x_{i} | x^{\prime}\right) \star \mu_{F_{i}^{l}}\left(x_{i}\right) \tag{3.13}</script><p>&emsp;&emsp;此时式3.12可以简化为：</p>
 <script type="math/tex; mode=display">
-X^{T}\left(X X^{T}+\lambda I\right)^{-1} y=\theta \tag{3}</script><p>【其实上式可以根据式（2）推导】<br>令：</p>
+f^{l}\left(\mathbf{x}^{\prime}\right)=T_{i=1}^{p} f^{l}\left(x_{i}^{\prime}\right) \tag{3.14}</script><p>&emsp;&emsp;式子3.11可以化简为：</p>
 <script type="math/tex; mode=display">
-\alpha=\left(X X^{T}+\lambda I\right)^{-1} y</script><p>则有：</p>
+\mu_{B^{l}}\left(y | \mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \star \mu_{G^{l}}(y), \quad y \in Y \tag{3.15}</script><p>&emsp;&emsp;所以说一个规则的输出其实就是一个规则的<strong>火力范围</strong>与其<strong>后件模糊集</strong>的T-范运算。<br>&emsp;&emsp;总结一下，Mamdani模糊系统和TSK模糊系统的规则输出分别为：</p>
 <script type="math/tex; mode=display">
-\theta=X^{T} \alpha</script><p>对于一个新的观测值$\left(x^{\prime}, y^{\prime}\right)$<br>如果【其中$x^{\prime}$是行向量】，那么预测值为：</p>
-<script type="math/tex; mode=display">
-\hat{y}^{\prime}=x^{\prime}\theta=x^{\prime}X^{T}\left(X X^{T}+\lambda I\right)^{-1} y</script><p>如果【其中$x^{\prime}$是列向量】，那么预测值为：</p>
-<script type="math/tex; mode=display">
-\hat{y}^{\prime}=\theta^{T} x^{\prime}=y^{T}\left(X X^{T}+\lambda I\right)^{-1} X x^{\prime}</script><p>设：</p>
-<script type="math/tex; mode=display">
-K_{i j}=x_{i} x_{j}^{T}</script><script type="math/tex; mode=display">
-\kappa_{i}=x_{i} x^{\prime}</script><p>其中$x_{i}$是矩阵$X$的一个行向量，也就是一个样本。此时$K$是核矩阵，其每个元素是对应$i,j$样本的内积。而$\kappa_{i}$则是第$i$个样本对观测值$x^{\prime}$的内积。由于观测值形式是列向量，所以$\kappa_{i}$中的$x^{\prime}$没有转置，此时观测值标签可以表示为：</p>
-<script type="math/tex; mode=display">
-\hat{y}^{\prime}=y^{T}(K+\lambda I)^{-1} \kappa</script><p>如果【其中$x^{\prime}$是行向量】，那么预测值形式为：</p>
-<script type="math/tex; mode=display">
-\hat{y}^{\prime}=\kappa^{T}(K+\lambda I)^{-1} y</script><p>两个式子本质上是一样的。<br>此时可以发现，预测值仅与$K$和$\kappa$有关，而与特征$X$无关。所以如果我们对输入做映射$x \rightarrow \Phi(x)$，我们只需要计算映射之后的$\mathrm{K}$ and $\kappa$，也就是说，就算我们不知道映射是长什么样子，只要知道了核函数长什么样就行了，<strong>用核函数代替映射的内积，这就是核技巧</strong>。<br>这里应该明白了为什么式子3中把$\theta$的形式换了一下，换了之后式中的$X^{T} X$变成了$X X^{T}$，即$K=X X^{T}$。只有这么变换之后，核矩阵才有意义。核矩阵的Size是N*N【N是样本数量】。</p>
-<h2 id="高斯过程回归"><a href="#高斯过程回归" class="headerlink" title="高斯过程回归"></a>高斯过程回归</h2><p><a href="http://boris-belousov.net/2017/09/10/gaussian-process-linear-regression/#ridge-regression" target="_blank" rel="noopener">参考这里</a></p>
-<script type="math/tex; mode=display">
-\left[ \begin{array}{l}{\mathbf{y}} \\ {y_{*}}\end{array}\right] \sim \mathcal{N}\left(\mathbf{0}, \left[ \begin{array}{cc}{K} & {K_{*}^{\mathrm{T}}} \\ {K_{*}} & {K_{* *}}\end{array}\right]\right)</script><script type="math/tex; mode=display">
-y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} K^{-1} K_{*}^{\mathrm{T}}\right)</script><p>预测值为：</p>
-<script type="math/tex; mode=display">
-\overline{y}_{*}=K_{*} K^{-1} \mathbf{y}</script><p>可以看出这里得的$K_{*}$KRR中的$\kappa$，这里的$K$其实就是KRR中的$K$。所以预测形式上，GP和KRR是一样的，不过GP可以给出置信区间:</p>
-<script type="math/tex; mode=display">
-\operatorname{var}\left(y_{*}\right)=K_{* *}-K_{*} K^{-1} K_{*}^{\mathrm{T}}</script><p><a href="https://scikit-learn.org/stable/auto_examples/gaussian_process/plot_compare_gpr_krr.html" target="_blank" rel="noopener">scikit-learn中给出了一些两者区别的解释</a>:</p>
-<p><em>Both kernel ridge regression (KRR) and Gaussian process regression (GPR) learn a target function by employing internally the “kernel trick”. KRR learns a linear function in the space induced by the respective kernel which corresponds to a non-linear function in the original space. The linear function in the kernel space is chosen based on the mean-squared error loss with ridge regularization. GPR uses the kernel to define the covariance of a prior distribution over the target functions and uses the observed training data to define a likelihood function. Based on Bayes theorem, a (Gaussian) posterior distribution over target functions is defined, whose mean is used for prediction.<br>A major difference is that GPR can choose the kernel’s hyperparameters based on gradient-ascent on the marginal likelihood function while KRR needs to perform a grid search on a cross-validated loss function (mean-squared error loss). A further difference is that GPR learns a generative, probabilistic model of the target function and can thus provide meaningful confidence intervals and posterior samples along with the predictions while KRR only provides predictions.<br>This example illustrates both methods on an artificial dataset, which consists of a sinusoidal target function and strong noise. The figure compares the learned model of KRR and GPR based on a ExpSineSquared kernel, which is suited for learning periodic functions. The kernel’s hyperparameters control the smoothness (l) and periodicity of the kernel (p). Moreover, the noise level of the data is learned explicitly by GPR by an additional WhiteKernel component in the kernel and by the regularization parameter alpha of KRR.<br>The figure shows that both methods learn reasonable models of the target function. GPR correctly identifies the periodicity of the function to be roughly 2</em>pi (6.28), while KRR chooses the doubled periodicity 4<em>pi. Besides that, GPR provides reasonable confidence bounds on the prediction which are not available for KRR. A major difference between the two methods is the time required for fitting and predicting: while fitting KRR is fast in principle, the grid-search for hyperparameter optimization scales exponentially with the number of hyperparameters (“curse of dimensionality”). The gradient-based optimization of the parameters in GPR does not suffer from this exponential scaling and is thus considerable faster on this example with 3-dimensional hyperparameter space. The time for predicting is similar; however, generating the variance of the predictive distribution of GPR takes considerable longer than just predicting the mean.</em></p>
-<p><img src="/2019/04/29/Kernel-ridge-regression/2019-04-29-22-11-27.png" alt=""></p>
+\left\{\begin{array}{ll}{\text { Mamdani fuzzy system: }} & {\mu_{B^{\prime}}\left(y | \mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \boldsymbol{\star} \mu_{G^{\prime}}(y), \quad y \in Y} \\ {\mathrm{TSK} \text { fuzzy system: }} & {\mu_{B^{\prime}}\left(\mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \text { when } y=g^{l}\left(\mathbf{x}^{\prime}\right)}\end{array}\right.  \tag{3.17}</script><p>&emsp;&emsp;<font color="#dd0000">TSK模糊系统没看懂呢，后面再看看。</font></p>
+<h3 id="规则输出-1"><a href="#规则输出-1" class="headerlink" title="规则输出"></a>规则输出</h3><p>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;</p>
 
       
     </div>
@@ -527,7 +519,7 @@ y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} 
       
         <div class="post-tags">
           
-            <a href="/tags/基础知识/" rel="tag"># 基础知识</a>
+            <a href="/tags/T1模糊系统/" rel="tag"># T1模糊系统</a>
           
         </div>
       
@@ -540,8 +532,8 @@ y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} 
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/29/Importance-Weighted-TL-for-regression/" rel="next" title="Importance Weighted TL for regression">
-                <i class="fa fa-chevron-left"></i> Importance Weighted TL for regression
+              <a href="/2019/04/29/Kernel-ridge-regression/" rel="next" title="Kernel ridge regression">
+                <i class="fa fa-chevron-left"></i> Kernel ridge regression
               </a>
             
           </div>
@@ -549,10 +541,6 @@ y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/09/Type-1-Fuzzy-Systems/" rel="prev" title="Type-1 Fuzzy Systems">
-                Type-1 Fuzzy Systems <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -743,7 +731,7 @@ y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵求导规则："><span class="nav-number">1.</span> <span class="nav-text">矩阵求导规则：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性最小二乘回归"><span class="nav-number">2.</span> <span class="nav-text">线性最小二乘回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核岭回归"><span class="nav-number">3.</span> <span class="nav-text">核岭回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯过程回归"><span class="nav-number">4.</span> <span class="nav-text">高斯过程回归</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Type-1-Fuzzy-Systems"><span class="nav-number">1.</span> <span class="nav-text">Type-1 Fuzzy Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#规则-Rules"><span class="nav-number">1.1.</span> <span class="nav-text">规则 Rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊器-Fuzzifier"><span class="nav-number">1.2.</span> <span class="nav-text">模糊器 Fuzzifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊推理机-Fuzzy-inference-Engine"><span class="nav-number">1.3.</span> <span class="nav-text">模糊推理机 Fuzzy inference Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则输出"><span class="nav-number">1.3.1.</span> <span class="nav-text">规则输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则输出-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">规则输出</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -927,7 +915,7 @@ y_{*} | \mathbf{y} \sim \mathcal{N}\left(K_{*} K^{-1} \mathbf{y}, K_{* *}-K_{*} 
   
     <script type="text/javascript">
       window.livereOptions = {
-        refer: '2019/04/29/Kernel-ridge-regression/'
+        refer: '2019/07/09/Type-1-Fuzzy-Systems/'
       };
       (function(d, s) {
         var j, e = d.getElementsByTagName(s)[0];
