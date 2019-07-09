@@ -108,20 +108,22 @@
 
 
 
-  <meta name="description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
 <meta name="keywords" content="T1模糊系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Type-1 Fuzzy Systems">
 <meta property="og:url" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png">
 <meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-15-23-45.png">
-<meta property="og:updated_time" content="2019-07-09T08:39:57.997Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-17-53-40.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-18-02-42.png">
+<meta property="og:updated_time" content="2019-07-09T10:12:21.829Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Type-1 Fuzzy Systems">
-<meta name="twitter:description" content="Type-1 Fuzzy Systems &amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
 <meta name="twitter:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png">
 
 
@@ -389,7 +391,7 @@
                 
               
 
-              <time title="创建时间：2019-07-09 09:39:23 / 修改时间：16:39:57" itemprop="dateCreated datePublished" datetime="2019-07-09T09:39:23+08:00">2019-07-09</time>
+              <time title="创建时间：2019-07-09 09:39:23 / 修改时间：18:12:21" itemprop="dateCreated datePublished" datetime="2019-07-09T09:39:23+08:00">2019-07-09</time>
             
 
             
@@ -452,7 +454,7 @@
       
 
       
-        <h1 id="Type-1-Fuzzy-Systems"><a href="#Type-1-Fuzzy-Systems" class="headerlink" title="Type-1 Fuzzy Systems"></a>Type-1 Fuzzy Systems</h1><p> &emsp;&emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。<br> <img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png" alt=""><br> <a id="more"></a>  </p>
+        <p> &emsp;&emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。<br> <img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-09-43-03.png" alt=""><br> <a id="more"></a>  </p>
 <h2 id="规则-Rules"><a href="#规则-Rules" class="headerlink" title="规则 Rules"></a>规则 Rules</h2><p>&emsp;&emsp;经典模糊规则包括Zadeh规则和TSK规则，考虑一个模糊系统具有 $p$ 个输入$x_{1} \in X_{1}, \ldots, x_{p} \in X_{p}$（就是说$\mathbf{x}$的维度是$p$）和一维输出$y \in Y$，两种模糊规则定义如下：<br><strong>定义 3.1a</strong> &emsp; 针对Zadeh规则下的模糊系统，其中第$l$个$(l=1, \ldots, M)$<strong>通用Zadeh规则</strong>定义为：</p>
 <script type="math/tex; mode=display">
 R_{Z}^{l} : \operatorname{IF} x_{1} \text { is } F_{1}^{l} \text { and } \cdots \text { and } x_{p} \text { is } F_{p}^{l}, \text { THEN } y \text { is } G^{l} \tag{3.1
@@ -495,7 +497,15 @@ f^{l}\left(\mathbf{x}^{\prime}\right)=T_{i=1}^{p} f^{l}\left(x_{i}^{\prime}\righ
 \mu_{B^{l}}\left(y | \mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \star \mu_{G^{l}}(y), \quad y \in Y \tag{3.15}</script><p>&emsp;&emsp;所以说一个规则的输出其实就是一个规则的<strong>火力范围</strong>与其<strong>后件模糊集</strong>的T-范运算。<br>&emsp;&emsp;总结一下，Mamdani模糊系统和TSK模糊系统的规则输出分别为：</p>
 <script type="math/tex; mode=display">
 \left\{\begin{array}{ll}{\text { Mamdani fuzzy system: }} & {\mu_{B^{\prime}}\left(y | \mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \boldsymbol{\star} \mu_{G^{\prime}}(y), \quad y \in Y} \\ {\mathrm{TSK} \text { fuzzy system: }} & {\mu_{B^{\prime}}\left(\mathbf{x}^{\prime}\right)=f^{l}\left(\mathbf{x}^{\prime}\right) \text { when } y=g^{l}\left(\mathbf{x}^{\prime}\right)}\end{array}\right.  \tag{3.17}</script><p>&emsp;&emsp;<font color="#dd0000">TSK模糊系统没看懂呢，后面再看看。</font></p>
-<h3 id="规则输出-1"><a href="#规则输出-1" class="headerlink" title="规则输出"></a>规则输出</h3><p>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;</p>
+<h3 id="详解推理机"><a href="#详解推理机" class="headerlink" title="详解推理机"></a>详解推理机</h3><p>&emsp;&emsp;现在举例详细理解一下推理机，首先看第$i$个维度上，假如第$l_1$个规则的中心为$c_1$，对于观测点$x_i$，火力范围可以表述为：</p>
+<script type="math/tex; mode=display">
+f^{l}\left(x_{i}^{\prime}\right) \equiv \sup _{x_{i} \in X_{i}} \mu_{X_{i}}\left(x_{i}\right) \star \mu_{F_{i}^{l}}\left(x_{i}\right)</script><p>&emsp;&emsp;看下图,在取sup之前两个隶属函数的运算结果为粗线，根据T-范取最小还是乘积，粗线结果如下图a和b，对粗线进行取sup就是取粗线最高的位置，观测值在每个规则每个维度上都会有火力范围，如下图a，对于规则$l_1$，火力范围为：</p>
+<script type="math/tex; mode=display">
+f^{l_1}\left(x_{i}^{\prime}\right) \equiv \sup _{x_{i} \in X_{i}} [l_1 \star 蓝线] =0.7</script><p>&emsp;&emsp;同理：</p>
+<script type="math/tex; mode=display">
+f^{l_2}\left(x_{i}^{\prime}\right) \equiv \sup _{x_{i} \in X_{i}} [l_2 \star 蓝线] =0.5</script><p>&emsp;&emsp;在T-范取乘积的时候，粗线不一样，sup结果也不一样，如图b，火力范围分别为0.6和0.4。<br><img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-17-53-40.png" alt=""></p>
+<p>&emsp;&emsp;当然到这只是得到了观测值在每个规则在每个维度下的火力范围，$p$个维度的火力运算之后形成一个火力值，当然这个运算可以用相乘也可以取最小，对于每个规则，最终得到一个运算之后的火力范围$u^{l}$，如图，其实就是$f^{l}\left(\mathbf{x}^{\prime}\right)$，是个常数。根据公式3.13，对于Mamdani模糊系统，每个规则的最终火力范围还需要与此规则的输出隶属函数进行运算，如图3.6，虚线是输出的模糊集(隶属函数),红线是每个规则的最终火力范围，这里运算也可以取最小或乘积，分别对于下图a和b中的粗黑线。<br>&emsp;&emsp;至此，我们得到了观测点在每条规则下的输出，都是模糊数。<br><img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-18-02-42.png" alt=""></p>
+<p>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;</p>
 
       
     </div>
@@ -731,7 +741,7 @@ f^{l}\left(\mathbf{x}^{\prime}\right)=T_{i=1}^{p} f^{l}\left(x_{i}^{\prime}\righ
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Type-1-Fuzzy-Systems"><span class="nav-number">1.</span> <span class="nav-text">Type-1 Fuzzy Systems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#规则-Rules"><span class="nav-number">1.1.</span> <span class="nav-text">规则 Rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊器-Fuzzifier"><span class="nav-number">1.2.</span> <span class="nav-text">模糊器 Fuzzifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊推理机-Fuzzy-inference-Engine"><span class="nav-number">1.3.</span> <span class="nav-text">模糊推理机 Fuzzy inference Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则输出"><span class="nav-number">1.3.1.</span> <span class="nav-text">规则输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则输出-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">规则输出</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#规则-Rules"><span class="nav-number">1.</span> <span class="nav-text">规则 Rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊器-Fuzzifier"><span class="nav-number">2.</span> <span class="nav-text">模糊器 Fuzzifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊推理机-Fuzzy-inference-Engine"><span class="nav-number">3.</span> <span class="nav-text">模糊推理机 Fuzzy inference Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则输出"><span class="nav-number">3.1.</span> <span class="nav-text">规则输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#详解推理机"><span class="nav-number">3.2.</span> <span class="nav-text">详解推理机</span></a></li></ol></li></ol></div>
             
 
           </div>
