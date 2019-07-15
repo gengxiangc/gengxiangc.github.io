@@ -123,7 +123,7 @@
 <meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-18-30-45.png">
 <meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-18-38-02.png">
 <meta property="og:image" content="http://tangmeii.cn/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-19-18-09.png">
-<meta property="og:updated_time" content="2019-07-09T11:24:55.798Z">
+<meta property="og:updated_time" content="2019-07-15T02:10:26.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Type-1 Fuzzy Systems">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;首先开始学习Type-1 fuzzy system (T1 FS), 详细的书中都有，因此这里只从个人理解的方式讲，并非系统学习。T1 FS包括模糊器(Fuzzifier)、推理机(Inference)、规则(Rules)和解模糊器(Defuzzifier)。">
@@ -394,12 +394,24 @@
                 
               
 
-              <time title="创建时间：2019-07-09 09:39:23 / 修改时间：19:24:55" itemprop="dateCreated datePublished" datetime="2019-07-09T09:39:23+08:00">2019-07-09</time>
+              <time title="创建时间：2019-07-09 09:39:23" itemprop="dateCreated datePublished" datetime="2019-07-09T09:39:23+08:00">2019-07-09</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-15 10:10:26" itemprop="dateModified" datetime="2019-07-15T10:10:26+08:00">2019-07-15</time>
               
             
           </span>
@@ -513,7 +525,9 @@ f^{l_2}\left(x_{i}^{\prime}\right) \equiv \sup _{x_{i} \in X_{i}} [l_2 \star 蓝
 <script type="math/tex; mode=display">
 y_{h}\left(\mathbf{x}^{\prime}\right)=\frac{\sum_{l=1}^{M} \overline{y}^{l} \mu_{B^{\prime}}\left(\overline{y}^{l} | \mathbf{x}^{\prime}\right)}{\sum_{l=1}^{M} \mu_{B^{\prime}}\left(\overline{y}^{l} | \mathbf{x}^{\prime}\right)}</script><p>&emsp;&emsp;如图，每个红色箭头横坐标为后件的中心位置，纵坐标为后件的高度，求出这些箭头点重心的位置的横坐标，作为解模糊的输出。<br><img src="/2019/07/09/Type-1-Fuzzy-Systems/2019-07-09-19-18-09.png" alt=""></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;目前最常用的模糊系统是一型单值TSK模糊系统，一型/二型，单值/非单值，TSK/Mamdani都值得探索，这些模糊系统都是万能逼近器，其求解方式可以是最小二乘、梯度下降、SVD等等，下一节我若有时间则学习学习。其实模糊系统性能是很强的，只是没有神经网络简单易懂，扩展起来过于复杂，因此没有其他算法火爆。</p>
-<p>&emsp;&emsp;同时，模糊系统的模糊化过程，与概率分布有异曲同工之妙。<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;</p>
+<p>&emsp;&emsp;同时，模糊系统的模糊化过程，与概率分布有异曲同工之妙。<br>&emsp;&emsp;</p>
+<script type="math/tex; mode=display">
+f^{l}\left(\mathbf{x}^{\prime}\right) \equiv\left\{\left[\sup _{x_{1} \in X_{1}} \mu_{X_{1}}\left(x_{1} | x^{\prime}\right) \star \mu_{F_{1}^{\prime}}\left(x_{1}\right)\right] \star \cdots \star\left[\sup _{x_{p} \in X_{p}} \mu_{X_{p}}\left(x_{p} | x_{p}^{\prime}\right) \star \mu_{F_{p}^{l}}\left(x_{p}\right)\right]\right\}</script><p>&emsp;&emsp;王鹏程是傻逼<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;<br>&emsp;&emsp;</p>
 
       
     </div>
