@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
+<meta name="keywords" content="GP回归">
+<meta property="og:type" content="article">
+<meta property="og:title" content="&#39;GP回归：权重解释角度&#39;">
+<meta property="og:url" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/index.html">
+<meta property="og:site_name" content="Tangmeii_Sites">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
+<meta property="og:updated_time" content="2019-09-06T14:24:31.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="&#39;GP回归：权重解释角度&#39;">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>'GP回归：权重解释角度' | Tangmeii_Sites</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tangmeii_Sites</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gengxiang">
+      <meta itemprop="description" content="某航空人">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tangmeii_Sites">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">'GP回归：权重解释角度'
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:24:31" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> &emsp;&emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigma$，输出是带有方差和均值的结果。这个方法整体还是线性的，表现力肯定有限。</p>
+ <a id="more"></a>  
+<h2 id="线性模型的参数估计"><a href="#线性模型的参数估计" class="headerlink" title="线性模型的参数估计"></a>线性模型的参数估计</h2><p>假设一个标准的线性模型为：</p>
+<script type="math/tex; mode=display">
+f\left( x \right) = x^{\top}w,\ \ y = f\left( x \right) + \varepsilon</script><p>其中$\mathbf{x}$是模型数据，为了简化，偏置1就不写了。$\mathbf{w}$是待求得线性模型参数，假设观测值$y$由真实模型加上扰动$\varepsilon$构成，此处假设扰动是零均值得高斯独立同分布：</p>
+<script type="math/tex; mode=display">
+\varepsilon \sim \mathcal{N}\left( 0,\sigma_{n}^{2} \right)</script><p>所以就相当于，观测值$y$也是符合高斯分布的。</p>
+<p>对于给定得模型参数$\mathbf{w}$，观测值得<strong>似然</strong>可以表示为：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}\left( \mathbf{w} \middle| y,X \right) = p\left( y \middle| X,w \right)</script><p>也就是说，对于<strong>给定观测值下某组参数</strong>的似然 $\mathcal{L}\left( \mathbf{w}<br>\middle| y,X \right)$，可以表示为<strong>给定参数下观测值出现的概率</strong> $p\left(<br>\mathbf{y} \middle| X,\mathbf{w}<br>\right)$，也就是此参数下，所有样本出现的概率相乘，也是高斯分布：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathrm{p}(\mathrm{y} | \mathrm{X}, \mathrm{w})
+& =\prod_{\mathrm{i}=1}^{\mathrm{n}} \mathrm{p}\left(\mathrm{y}_{\mathrm{i}} | \mathrm{x}_{\mathrm{i}}, \mathrm{w}\right) \\
+&  =\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi} \sigma_{n}} \exp \left(-\frac{\left(y_{i}-x_{i}^{\top} w\right)^{2}}{2 \sigma_{n}^{2}}\right) \\
+& =\frac{1}{\left(2 \pi \sigma_{\mathrm{n}}^{2}\right)^{\mathrm{n} / 2}} \exp \left(-\frac{1}{2 \sigma_{\mathrm{n}}^{2}}\left|\mathrm{y}-\mathrm{X}^{\top} \mathrm{w}\right|^{2}\right) \\
+& =\mathcal{N}\left(\mathrm{X}^{\top} \mathrm{W}, \sigma_{\mathrm{n}}^{2} \mathrm{I}\right)
+\end{aligned}</script><p>如果按照前面章节多元高斯分布，直接就可以写出概率，只是麻烦点。</p>
+<p>简单来看就是，扰动是高斯分布的话，观测值也是高斯分布，其方差一致，均值即为$X^{\top}\mathbf{w}$<strong>。</strong></p>
+<script type="math/tex; mode=display">
+p\left( \mathbf{y} \middle| X,\mathbf{w} \right) = \prod_{i = 1}^{n}{p\left( y_{i} \middle| \mathbf{x}_{\mathbf{i}},\mathbf{w} \right)}\mathcal{= N}\left( X^{\top}\mathbf{w},\sigma_{n}^{2}I \right)</script><p>在此，我们认为参数也是符合高斯分布的，这是线性模型的先验(<strong>prior</strong>)：</p>
+<script type="math/tex; mode=display">
+w \sim \mathcal{N}\left( 0,\Sigma_{p} \right)</script><p>贝叶斯公式【请注意这跟分类问题的朴素贝叶斯很像】：</p>
+<script type="math/tex; mode=display">
+P\left( w \middle| A \right) = \frac{P\left( A \middle| w \right)*P\left( w \right)}{P\left( A \right)}</script><p>所以对于我们的问题，有【不用管里面的X】：</p>
+<script type="math/tex; mode=display">
+p\left( w \middle| y,X \right) = \frac{p\left( y \middle| X,w \right)p\left( w \right)}{p\left( y \middle| X \right)}</script><p>其中分母是个常数，与参数值无关$\mathbf{w}$：</p>
+<script type="math/tex; mode=display">
+p\left( y \middle| X \right) = \int_{}^{}{p\left( y \middle| X,w \right)p\left( w \right)d}w</script><p>所以我们给出与参数有关的表示为【暂且不考虑前面带$\pi$的项目】：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+p\left( w \middle| X,y \right) 
+& \propto \exp\left( - \frac{1}{2\sigma_{n}^{2}}\left| \mathbf{y} - X^{\top}\mathbf{w} \right|^{2} \right)\exp\left( - \frac{1}{2}w^{\top}\Sigma_{p}^{- 1}w \right)  \\
+& \propto \exp\left( - \frac{1}{2}\left( w - \overline{w} \right)^{\top}\left( \frac{1}{\sigma_{n}^{2}}XX^{\top} + \Sigma_{p}^{- 1} \right)\left( w - \overline{w} \right) \right) \\
+\end{aligned}</script><p>其中$\overline{w} = \sigma_{n}^{- 2}\left( \sigma_{n}^{- 2}XX^{\top} +<br>\Sigma_{p}^{- 1} \right)^{-<br>1}\text{Xy}$，【这一步化简还是挺复杂的，参照高斯分布相乘的标准求解】所以可以得到后验的分布为，均值$\overline{w}$，方差为$A^{- 1}$的高斯分布：</p>
+<script type="math/tex; mode=display">
+p\left( w \middle| X,y \right) \sim \mathcal{N}\left( \overline{w} = \frac{1}{\sigma_{n}^{2}}A^{- 1}Xy,A^{- 1} \right)</script><p>其中$A = \sigma_{n}^{- 2}XX^{\top} + \Sigma_{p}^{-<br>1}$，对于后验概率，其均值是很重要的mode, 可以通过最大化后验概率(<strong>Maximum a posteriori MAP</strong>)的均值来求解$\mathbf{w}$。请注意这里$-<br>\frac{1}{2}w^{\top}\Sigma_{p}^{- 1}w$刚好起到了<strong>岭回归中的正则化</strong>的效果。</p>
+<p>对于要预测的输入$\mathbf{x}_{<em>}$所对应的标签$f\left( x_{</em>}<br>\right)$，其分布可以描述为所有可能的参数概率，与响应参数下的预测值的积分，$p\left(<br>\mathbf{w} \middle| X,\mathbf{y}<br>\right)$为参数$\mathbf{w}$的概率密度，$p\left( f_{<em>} \middle|<br>\mathbf{x}_{</em>},\mathbf{w} \right)$为参数下的输出值</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{X}, \mathrm{y}\right)& =\int \mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{w}\right) \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
+& =\int \mathrm{X}_{*}^{\top} \mathrm{W} \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
+& =\mathcal{N}\left(\frac{1}{\sigma_{\mathrm{n}}^{2}} \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{Xy}, \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{x}_{*}\right) \\
+\end{aligned}</script><p><strong>这个怎么推出来的就不知道了，反正积分结果还是一个高斯分布,到这里就是线性GP的解。</strong></p>
+<h2 id="将输入引入特征空间"><a href="#将输入引入特征空间" class="headerlink" title="将输入引入特征空间"></a>将输入引入特征空间</h2><p>明天继续</p>
+<h1 id="方差无偏估计"><a href="#方差无偏估计" class="headerlink" title="方差无偏估计"></a>方差无偏估计</h1><p>已知随机变量$X$的期望值为$\mu$，方差可以表示为：</p>
+<script type="math/tex; mode=display">
+\sigma^{2} = E\left\lbrack {(X - \mu)}^{2} \right\rbrack</script><p>上式需要知道$X$的分布，而现实问题往往是不知道分布的，且难以估计分布，因此用采样之后的点来估计方差，即为用$S^{2}$来近似$\sigma^{2}$：</p>
+<script type="math/tex; mode=display">
+S^{2} = \frac{1}{n}\sum_{i = 1}^{n}{(X_{i} - \mu)}^{2}</script><p>因为：</p>
+<script type="math/tex; mode=display">
+E\left\lbrack \sum_{i = 1}^{n}{(X_{i} - \mu)}^{2} \right\rbrack = \sigma^{2}</script><p>$S^{2}$的采样值会在真实的$\sigma^{2}$附近游动，呈正态分布，因此是<strong>无偏估计</strong>。</p>
+<p>其实现实问题中，随机变量的期望值$\mu$也是不知道的，因此用均值来代替期望：</p>
+<script type="math/tex; mode=display">
+\overset{\overline{}}{X} = \frac{1}{n}\sum_{i = 1}^{n}X_{i}</script><p>我们想象一下，如果采样点都大于期望$\mu$，那么均值$\overset{\overline{}}{X}$也是大于$\mu$的，此时用期望计算的方差值是很大的，而用均值计算的方差可能很小，也就是说：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1}^{n}{(X_{i} - \overset{\overline{}}{X})}^{2} \leq \sum_{i = 1}^{n}{(X_{i} - \mu)}^{2}</script><p>这样的话，用均值计算的方差总是小一点，是一个有偏估计，具体小了多少呢：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E\left[S^{2}\right]
+&=E\left[\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\overline{X}\right)^{2}\right]\\
+&= E\left[\frac{1}{n} \sum_{i=1}^{n}\left(\left(X_{i}-\mu\right)-(\overline{X}-\mu)\right)^{2}\right] \\
+& =E\left[\frac{1}{n} \sum_{i=1}^{n}\left(\left(X_{i}-\mu\right)^{2}+(\overline{X}-\mu)^{2}-2\left(X_{i}-\mu\right)(\overline{X}-\mu)\right)\right] \\
+\end{aligned}</script><p>此处：</p>
+<script type="math/tex; mode=display">
+\overset{\overline{}}{X} - \mu = \frac{1}{n}\sum_{i = 1}^{n}\left( X_{i} - \mu \right)</script><p>所以：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E\left[S^{2}\right]
+& =E\left[\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\mu\right)^{2}+(\overline{X}-\mu)^{2}-2(\overline{X}-\mu)^{2}\right] \\
+& =E\left[\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\mu\right)^{2}-(\overline{X}-\mu)^{2}\right] \\
+& =\sigma^{2}-E\left[(\overline{X}-\mu)^{2}\right]\\
+\end{aligned}</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E\left[(\overline{X}-\mu)^{2}\right]
+&=E\left[\left(\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\mu\right)\right)^{2}\right]\\
+& =\frac{1}{n} E\left[\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\mu\right)^{2}\right]=\frac{1}{n} \sigma^{2} \\
+\end{aligned}</script><p>所以：</p>
+<script type="math/tex; mode=display">
+{E\left\lbrack S^{2} \right\rbrack = \sigma^{2} - \frac{1}{n}\sigma^{2} = \frac{n - 1}{n}\sigma^{2}}</script><script type="math/tex; mode=display">
+{E\left\lbrack {\frac{n}{n - 1}S}^{2} \right\rbrack = \sigma^{2}}</script><p>所以$S^{2}$的形式被修正为：</p>
+<script type="math/tex; mode=display">
+S^{2} = \frac{1}{n - 1}\sum_{i = 1}^{n}{(X_{i} - \overset{\overline{}}{X})}^{2}</script><h1 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h1><p>高斯分布即为正态分布：</p>
+<script type="math/tex; mode=display">
+X\mathcal{\sim N}\left( \mu,\sigma^{2} \right)</script><p>高斯分布的概率密度函数为：</p>
+<script type="math/tex; mode=display">
+p(y) = \frac{1}{\sigma\sqrt{2\pi}}e^{- \frac{(y - \mu)^{2}}{2\sigma^{2}}}</script><p>带参数的表示为：</p>
+<script type="math/tex; mode=display">
+p\left( y \middle| \mu,\sigma \right) = \frac{1}{\sigma\sqrt{2\pi}}e^{- \frac{\left( y - \mu \right)^{2}}{2\sigma^{2}}}</script><p><img src="/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg" alt=""></p>
+<h1 id="协方差"><a href="#协方差" class="headerlink" title="协方差"></a><a href="http://jermmy.xyz/2017/03/19/2017-3-19-covariance-matrix/" target="_blank" rel="noopener">协方差</a></h1><blockquote>
+<p>  协方差是用于衡量两个变量的总体误差，而方差是协方差的一种特例。当协方差为正时，两个变量呈正相关，当协方差为负的时候，两个变量呈负相关。协方差矩阵只是讲所有变量之间的协方差表示成一个矩阵，可以更方便用于计算。</p>
+<p>  比如计算$x$和$y$两个变量集合的协方差表示为：</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\text{Cov}\left( X,Y \right) = \frac{\sum_{i = 1}^{n}{\left( x_{i} - \overline{x} \right)\left( y_{i} - \overline{y} \right)}}{n - 1}</script><h1 id="多元高斯分布"><a href="#多元高斯分布" class="headerlink" title="多元高斯分布"></a><a href="https://www.cnblogs.com/jermmyhsu/p/8251013.html" target="_blank" rel="noopener">多元高斯分布</a></h1><p>假设多元变量$\overset{\overline{}}{x} = \begin{bmatrix} x_{1} \ x_{2} \\<br>\end{bmatrix}$，他们的均值为$\overset{\overline{}}{\mu} = \begin{bmatrix}<br>\mu_{1} \ \mu_{2} \ \end{bmatrix}$，方差为$\overset{\overline{}}{\sigma} =<br>\begin{bmatrix} \sigma_{1} \ \sigma_{2} \\<br>\end{bmatrix}$，为了推到高维，此处定义协方差矩阵$\Sigma$，对于二维向量，其协方差矩阵为：$\Sigma<br>= \begin{bmatrix} \sigma_{1}^{2} &amp; \sigma_{12} \ \sigma_{21} &amp; \sigma_{2}^{2}<br>\\<br>\end{bmatrix}$，由于两个变量时相互独立的，所以斜对角两个元素为0，此时$\Sigma =<br>\begin{bmatrix} \sigma_{1}^{2} &amp; 0 \ 0 &amp; \sigma_{2}^{2} \ \end{bmatrix}$。</p>
+<p>假设多个变量之间是相互独立的，那么分布函数可以相乘：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f\left( x \right) & = f\left( x_{1},x_{2} \right) = f\left( x_{1} \right)f\left( x_{2} \right) \\
+& = \frac{1}{\sqrt{2\pi\sigma_{1}^{2}}}\exp\left( - \frac{1}{2} \right) \times \frac{1}{\sqrt{2\pi\sigma_{2}^{2}}}\exp\left( - \frac{1}{2}\left( \frac{x_{2} - u_{2}}{\sigma_{2}} \right)^{2} \right)\\
+& = \frac{1}{2\pi\sigma_{1}^{\ }\sigma_{2}^{\ }}\exp\left( - \frac{1}{2}\left\lbrack \left( \frac{x_{1} - u_{1}}{\sigma_{1}} \right)^{2} + \left( \frac{x_{2} - u_{2}}{\sigma_{2}} \right)^{2} \right\rbrack^{\ } \right) \\
+& = \frac{1}{2\pi\sigma_{1}^{\ }\sigma_{2}^{\ }}\exp\left( - \frac{1}{2\sigma_{1}^{2}\sigma_{2}^{2}}\left\lbrack {\sigma_{2}^{2}\left( x_{1} - u_{1} \right)}^{2} + \sigma_{1}^{2}\left( x_{2} - u_{2} \right)^{2} \right\rbrack^{\ } \right)\\
+&= \frac{1}{2\pi\sigma_{1}^{\ }\sigma_{2}^{\ }}\exp\left( - \frac{1}{2}{\begin{bmatrix}
+x_{1} - u_{1} & x_{2} - u_{2} \\
+\end{bmatrix}\frac{1}{\sigma_{1}^{2}\sigma_{2}^{2}}\begin{bmatrix}
+\sigma_{1}(x_{1} - u_{1}) \\
+\sigma_{2}(x_{2} - u_{2}) \\
+\end{bmatrix}}^{\ } \right) \\
+& = \frac{1}{2\pi\left| \Sigma \right|^{1/2}}\exp\left( - \frac{1}{2}{\left( \mathbf{x} - \mathbf{u} \right)^{\top}\Sigma^{- 1}\left( \mathbf{x} - \mathbf{u} \right)^{\top}}^{\ } \right)\\
+\end{aligned}</script><p>以上时用元素的方式推导，下面用矩阵的方式推导，也重新说一下多元高斯分布的协方差。首先假设多元变量的全都是均值0，方差1，那么一元高斯分布为：</p>
+<script type="math/tex; mode=display">
+f\left( x \right) = \frac{1}{\sqrt{2\pi}}\exp\left( - \frac{x^{2}}{2} \right)</script><p>此时就是标准正态分布，那么二元高斯分布为：</p>
+<script type="math/tex; mode=display">
+{f\left( x \right) = f\left( x \right)f\left( y \right)}{= \frac{1}{(2\pi)^{2/2}}\exp\left( - \frac{x^{2} + y^{2}}{2} \right)}</script><p>如果把多元变量写成向量的形式$\mathbf{v}$，那么标准多元高斯分布为：</p>
+<script type="math/tex; mode=display">
+f\left( \mathbf{v} \right) = \frac{1}{(2\pi)^{D/2}}\exp\left( - \frac{\mathbf{v}^{\top}\mathbf{v}}{2} \right)</script><p>如果不是标准正态分布呢，也就时说每个维度的均值和方差都有不一样，相当于把一组标准正交基进行了线性变换，$\mathbf{v<br>= A(}\mathbf{x}\mathbf{- u)}$， 此时多元高斯分布为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f\left( \mathbf{x} \right) 
+& = \frac{|det(A|}{(2\pi)^{D/2}}\exp\left( - \frac{\left\lbrack \mathbf{A}\left( \mathbf{x}\mathbf{- u} \right) \right\rbrack^{\top}\mathbf{A}\left( \mathbf{x}\mathbf{- u} \right)}{2} \right) \\
+& = \frac{1}{(2\pi)^{D/2}\left| \Sigma \right|^{1/2}}\exp\left( - \frac{1}{2}{\mathbf{(}\mathbf{x}\mathbf{- u)}}^{\top}\mathbf{A}^{\top}\mathbf{A(}\mathbf{x}\mathbf{- u)} \right) \\
+& = \frac{1}{(2\pi)^{D/2}\left| \Sigma \right|^{1/2}}\exp\left( - \frac{1}{2}{\mathbf{(}\mathbf{x}\mathbf{- u)}}^{\top}\Sigma^{- 1}\mathbf{(}\mathbf{x}\mathbf{- u)} \right) \\
+\end{aligned}</script><p>其中$\Sigma = \left( A^{\top}A \right)^{- 1}$</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GP回归/" rel="tag"># GP回归</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/09/Type-1-Fuzzy-Systems/" rel="next" title="Type-1 Fuzzy Systems">
+                <i class="fa fa-chevron-left"></i> Type-1 Fuzzy Systems
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTgyNC8xODM3MA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Gengxiang">
+            
+              <p class="site-author-name" itemprop="name">Gengxiang</p>
+              <p class="site-description motion-element" itemprop="description">某航空人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gengxiangc" title="GitHub &rarr; https://github.com/gengxiangc" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:cgx@nuaa.edu.com" title="E-Mail &rarr; mailto:cgx@nuaa.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/Tangmei_can" title="Weibo &rarr; https://weibo.com/Tangmei_can" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性模型的参数估计"><span class="nav-number">1.</span> <span class="nav-text">线性模型的参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将输入引入特征空间"><span class="nav-number">2.</span> <span class="nav-text">将输入引入特征空间</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#方差无偏估计"><span class="nav-number"></span> <span class="nav-text">方差无偏估计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高斯分布"><span class="nav-number"></span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协方差"><span class="nav-number"></span> <span class="nav-text">协方差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多元高斯分布"><span class="nav-number"></span> <span class="nav-text">多元高斯分布</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.miitbeian.gov.cn" rel="noopener" target="_blank">苏ICP备18055599号 </a>&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengxiang</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+   
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+   
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      window.livereOptions = {
+        refer: '2019/09/06/GP回归：权重解释角度/'
+      };
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
