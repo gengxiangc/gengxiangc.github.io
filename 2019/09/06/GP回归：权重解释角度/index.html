@@ -111,15 +111,15 @@
   <meta name="description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
 <meta name="keywords" content="GP回归">
 <meta property="og:type" content="article">
-<meta property="og:title" content="&#39;GP回归：权重解释角度&#39;">
+<meta property="og:title" content="GP回归：权重解释角度">
 <meta property="og:url" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
-<meta property="og:updated_time" content="2019-09-06T14:24:31.667Z">
+<meta property="og:updated_time" content="2019-09-06T14:28:02.616Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="&#39;GP回归：权重解释角度&#39;">
+<meta name="twitter:title" content="GP回归：权重解释角度">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
 <meta name="twitter:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>'GP回归：权重解释角度' | Tangmeii_Sites</title>
+  <title>GP回归：权重解释角度 | Tangmeii_Sites</title>
   
 
 
@@ -363,7 +363,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">'GP回归：权重解释角度'
+          <h1 class="post-title" itemprop="name headline">GP回归：权重解释角度
               
             
           </h1>
@@ -388,7 +388,7 @@
                 
               
 
-              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:24:31" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
+              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:28:02" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
             
 
             
@@ -495,7 +495,7 @@ p\left( w \middle| X,y \right) \sim \mathcal{N}\left( \overline{w} = \frac{1}{\s
 & =\int \mathrm{X}_{*}^{\top} \mathrm{W} \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
 & =\mathcal{N}\left(\frac{1}{\sigma_{\mathrm{n}}^{2}} \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{Xy}, \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{x}_{*}\right) \\
 \end{aligned}</script><p><strong>这个怎么推出来的就不知道了，反正积分结果还是一个高斯分布,到这里就是线性GP的解。</strong></p>
-<h2 id="将输入引入特征空间"><a href="#将输入引入特征空间" class="headerlink" title="将输入引入特征空间"></a>将输入引入特征空间</h2><p>明天继续</p>
+<h2 id="将输入引入特征空间"><a href="#将输入引入特征空间" class="headerlink" title="将输入引入特征空间"></a>将输入引入特征空间</h2><h2 id="涉及的基础知识"><a href="#涉及的基础知识" class="headerlink" title="涉及的基础知识"></a>涉及的基础知识</h2><p>明天继续</p>
 <h1 id="方差无偏估计"><a href="#方差无偏估计" class="headerlink" title="方差无偏估计"></a>方差无偏估计</h1><p>已知随机变量$X$的期望值为$\mu$，方差可以表示为：</p>
 <script type="math/tex; mode=display">
 \sigma^{2} = E\left\lbrack {(X - \mu)}^{2} \right\rbrack</script><p>上式需要知道$X$的分布，而现实问题往往是不知道分布的，且难以估计分布，因此用采样之后的点来估计方差，即为用$S^{2}$来近似$\sigma^{2}$：</p>
@@ -812,7 +812,7 @@ f\left( \mathbf{x} \right)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性模型的参数估计"><span class="nav-number">1.</span> <span class="nav-text">线性模型的参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将输入引入特征空间"><span class="nav-number">2.</span> <span class="nav-text">将输入引入特征空间</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#方差无偏估计"><span class="nav-number"></span> <span class="nav-text">方差无偏估计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高斯分布"><span class="nav-number"></span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协方差"><span class="nav-number"></span> <span class="nav-text">协方差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多元高斯分布"><span class="nav-number"></span> <span class="nav-text">多元高斯分布</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性模型的参数估计"><span class="nav-number">1.</span> <span class="nav-text">线性模型的参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将输入引入特征空间"><span class="nav-number">2.</span> <span class="nav-text">将输入引入特征空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#涉及的基础知识"><span class="nav-number">3.</span> <span class="nav-text">涉及的基础知识</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#方差无偏估计"><span class="nav-number"></span> <span class="nav-text">方差无偏估计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高斯分布"><span class="nav-number"></span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协方差"><span class="nav-number"></span> <span class="nav-text">协方差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多元高斯分布"><span class="nav-number"></span> <span class="nav-text">多元高斯分布</span></a></li></div>
             
 
           </div>
