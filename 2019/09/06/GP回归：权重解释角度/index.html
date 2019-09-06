@@ -117,7 +117,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
-<meta property="og:updated_time" content="2019-09-06T14:28:02.616Z">
+<meta property="og:updated_time" content="2019-09-06T14:30:22.976Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GP回归：权重解释角度">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
@@ -388,7 +388,7 @@
                 
               
 
-              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:28:02" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
+              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:30:22" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
             
 
             
@@ -488,7 +488,7 @@ p\left( w \middle| X,y \right)
 \end{aligned}</script><p>其中$\overline{w} = \sigma_{n}^{- 2}\left( \sigma_{n}^{- 2}XX^{\top} +<br>\Sigma_{p}^{- 1} \right)^{-<br>1}\text{Xy}$，【这一步化简还是挺复杂的，参照高斯分布相乘的标准求解】所以可以得到后验的分布为，均值$\overline{w}$，方差为$A^{- 1}$的高斯分布：</p>
 <script type="math/tex; mode=display">
 p\left( w \middle| X,y \right) \sim \mathcal{N}\left( \overline{w} = \frac{1}{\sigma_{n}^{2}}A^{- 1}Xy,A^{- 1} \right)</script><p>其中$A = \sigma_{n}^{- 2}XX^{\top} + \Sigma_{p}^{-<br>1}$，对于后验概率，其均值是很重要的mode, 可以通过最大化后验概率(<strong>Maximum a posteriori MAP</strong>)的均值来求解$\mathbf{w}$。请注意这里$-<br>\frac{1}{2}w^{\top}\Sigma_{p}^{- 1}w$刚好起到了<strong>岭回归中的正则化</strong>的效果。</p>
-<p>对于要预测的输入$\mathbf{x}_{<em>}$所对应的标签$f\left( x_{</em>}<br>\right)$，其分布可以描述为所有可能的参数概率，与响应参数下的预测值的积分，$p\left(<br>\mathbf{w} \middle| X,\mathbf{y}<br>\right)$为参数$\mathbf{w}$的概率密度，$p\left( f_{<em>} \middle|<br>\mathbf{x}_{</em>},\mathbf{w} \right)$为参数下的输出值</p>
+<p>对于要预测的输入$\mathbf{x}_{<em>}$所对应的标签$f\left( x_{</em>}\right)$，其分布可以描述为所有可能的参数概率，与响应参数下的预测值的积分，$p\left(\mathbf{w} \middle| X,\mathbf{y}\right)$为参数$\mathbf{w}$的概率密度，$p\left( f_{<em>} \middle|\mathbf{x}_{</em>},\mathbf{w} \right)$为参数下的输出值</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{X}, \mathrm{y}\right)& =\int \mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{w}\right) \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
