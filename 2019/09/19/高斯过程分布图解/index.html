@@ -108,25 +108,39 @@
 
 
 
-  <meta name="description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
-<meta name="keywords" content="windows,CMD">
+  <meta name="description" content="图解多元高斯过程假设有二元高斯分布，传统的显示方式呢，就是横纵坐标分别显示某个数值，这里引入高斯过程，先从易于理解的方式说起，两个变量的数值分别显示在x=0，和x=1，的位置并且连成一条线，当协方差矩阵为$\Sigma= \begin{bmatrix} 1 &amp;amp; 0 \ 0 &amp;amp; 1 \\\end{bmatrix}$时，就是两个变量之间的独立的，此时采样结果可以看出来，两个变量之间时无">
+<meta name="keywords" content="GP回归">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何把CMD添加到右键">
-<meta property="og:url" content="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/index.html">
+<meta property="og:title" content="高斯过程分布图解">
+<meta property="og:url" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
+<meta property="og:description" content="图解多元高斯过程假设有二元高斯分布，传统的显示方式呢，就是横纵坐标分别显示某个数值，这里引入高斯过程，先从易于理解的方式说起，两个变量的数值分别显示在x=0，和x=1，的位置并且连成一条线，当协方差矩阵为$\Sigma= \begin{bmatrix} 1 &amp;amp; 0 \ 0 &amp;amp; 1 \\\end{bmatrix}$时，就是两个变量之间的独立的，此时采样结果可以看出来，两个变量之间时无">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-04T09:37:07.000Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/1731113e79252c1af88e8c1c0fe353d9.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/6cffed33bd16d2f5c328c57c26cd5e29.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/4fe9b30ac45cdf51ecf651e5c266af67.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/6fcc5c913634dcd03869d77cd2b43ee8.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/303ec485f0082842425d8580d50014ae.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/1fd569a3493dc1a8998d10ff2b902cac.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/cc1015b0cac3acb45f7d5577cc1a03b6.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/ccb97e674bdc390eb805c3ade302f2ae.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/2fd5b974b11ceafe5e209b5381e7b8a5.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/d748c6e76c88ac9278bba5fc573308e0.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/ce785940b329357fa4fa055cb329e3ca.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/6a3f8e14b232daae935adc43ed341d26.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/1047cc845d969dddb51747be54e4a506.png">
+<meta property="og:updated_time" content="2019-09-19T12:47:07.002Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何把CMD添加到右键">
-<meta name="twitter:description" content="处理CSV1pd.read_csv() 读取类数据123456data = pd[&apos;typeA&apos;]data = pd.typeAclass = [&apos;typeA&apos;,&apos;typeB&apos;,&apos;typeC&apos;]data = pd[class]  %% 多个data.describe() %% 描述数据的统计特性data.head()  %% 列出前几个 提交比赛答案123my_submission = pd.Da">
+<meta name="twitter:title" content="高斯过程分布图解">
+<meta name="twitter:description" content="图解多元高斯过程假设有二元高斯分布，传统的显示方式呢，就是横纵坐标分别显示某个数值，这里引入高斯过程，先从易于理解的方式说起，两个变量的数值分别显示在x=0，和x=1，的位置并且连成一条线，当协方差矩阵为$\Sigma= \begin{bmatrix} 1 &amp;amp; 0 \ 0 &amp;amp; 1 \\\end{bmatrix}$时，就是两个变量之间的独立的，此时采样结果可以看出来，两个变量之间时无">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/09/19/高斯过程分布图解/1731113e79252c1af88e8c1c0fe353d9.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/">
+  <link rel="canonical" href="http://tangmeii.cn/2019/09/19/高斯过程分布图解/">
 
 
 
@@ -136,7 +150,7 @@
   };
 </script>
 
-  <title>如何把CMD添加到右键 | Tangmeii_Sites</title>
+  <title>高斯过程分布图解 | Tangmeii_Sites</title>
   
 
 
@@ -344,7 +358,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2018/12/03/如何把CMD添加到右键/">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/09/19/高斯过程分布图解/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gengxiang">
@@ -361,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何把CMD添加到右键
+          <h1 class="post-title" itemprop="name headline">高斯过程分布图解
               
             
           </h1>
@@ -386,24 +400,12 @@
                 
               
 
-              <time title="创建时间：2018-12-03 22:50:24" itemprop="dateCreated datePublished" datetime="2018-12-03T22:50:24+08:00">2018-12-03</time>
+              <time title="创建时间：2019-09-19 20:36:21 / 修改时间：20:47:07" itemprop="dateCreated datePublished" datetime="2019-09-19T20:36:21+08:00">2019-09-19</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-12-04 17:37:07" itemprop="dateModified" datetime="2018-12-04T17:37:07+08:00">2018-12-04</time>
               
             
           </span>
@@ -461,11 +463,45 @@
       
 
       
-        <h4 id="处理CSV"><a href="#处理CSV" class="headerlink" title="处理CSV"></a>处理CSV</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">pd</span><span class="selector-class">.read_csv</span>()</span><br></pre></td></tr></table></figure>
-<h4 id="读取类数据"><a href="#读取类数据" class="headerlink" title="读取类数据"></a>读取类数据</h4><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = pd[<span class="string">'typeA'</span>]</span><br><span class="line">data = pd.typeA</span><br><span class="line">class = [<span class="string">'typeA'</span>,<span class="string">'typeB'</span>,<span class="string">'typeC'</span>]</span><br><span class="line">data = pd[class]  <span class="meta">%</span><span class="meta">%</span> 多个</span><br><span class="line">data.describe<span class="comment">()</span> <span class="meta">%</span><span class="meta">%</span> 描述数据的统计特性</span><br><span class="line">data.head<span class="comment">()</span>  <span class="meta">%</span><span class="meta">%</span> 列出前几个</span><br></pre></td></tr></table></figure>
-<h4 id="提交比赛答案"><a href="#提交比赛答案" class="headerlink" title="提交比赛答案"></a>提交比赛答案</h4><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">my_submission = pd.DataFrame(&#123;<span class="string">'Id'</span>: test.Id, <span class="string">'SalePrice'</span>: predicted_prices&#125;)</span><br><span class="line"><span class="comment"># you could use any filename. We choose submission here</span></span><br><span class="line">my_submission.to_csv(<span class="string">'submission.csv'</span>, <span class="keyword">index</span>=False)</span><br></pre></td></tr></table></figure>
-<h4 id="字典用法-巧用key"><a href="#字典用法-巧用key" class="headerlink" title="字典用法 巧用key"></a>字典用法 巧用key</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">candidate = [5, 25, 50, 100, 200] </span><br><span class="line">scores = &#123;leaf_size: get_mae(leaf_size, train_X, val_X, train_y, val_y) for leaf_size in candidate&#125; </span><br><span class="line"><span class="comment">## 这里直接把leaf_size 当作key</span></span><br><span class="line">best_tree_size = min(scores, key=scores.get)</span><br><span class="line">plt.plot(scores.keys(),scores.values())</span><br></pre></td></tr></table></figure>
-
+        <h2 id="图解多元高斯过程"><a href="#图解多元高斯过程" class="headerlink" title="图解多元高斯过程"></a><a href="http://bridg.land/posts/gaussian-processes-1" target="_blank" rel="noopener">图解多元高斯过程</a></h2><p>假设有二元高斯分布，传统的显示方式呢，就是横纵坐标分别显示某个数值，这里引入高斯过程，先从易于理解的方式说起，两个变量的数值分别显示在x=0，和x=1，的位置并且连成一条线，当协方差矩阵为$\Sigma<br>= \begin{bmatrix} 1 &amp; 0 \ 0 &amp; 1 \\<br>\end{bmatrix}$时，就是两个变量之间的独立的，此时采样结果可以看出来，两个变量之间时无关的。采样结果如图：</p>
+<p><img src="/2019/09/19/高斯过程分布图解/1731113e79252c1af88e8c1c0fe353d9.png" alt=""><br><img src="/2019/09/19/高斯过程分布图解/6cffed33bd16d2f5c328c57c26cd5e29.png" alt=""></p>
+<p>左边是坐标轴采样图，右边是高斯过程采样图，每根线是一次采样，两元高斯分布，所以每次采样是两个点。左图只能显示二维的分布，而右图可以显示高维的分布。当$\Sigma<br>= \begin{bmatrix} 1 &amp; 0.98 \ 0.98 &amp; 1 \\<br>\end{bmatrix}$时候，相当于协方差矩阵做了变换，两个变量强相关，此时采样图如下，可以看到，几乎是，$x_{1}<br>= x_{2}$，右边表现出的也是两个变量保持几乎相等。</p>
+<p><img src="/2019/09/19/高斯过程分布图解/4fe9b30ac45cdf51ecf651e5c266af67.png" alt=""></p>
+<p><img src="/2019/09/19/高斯过程分布图解/6fcc5c913634dcd03869d77cd2b43ee8.png" alt=""></p>
+<p>当$\Sigma = \begin{bmatrix} 1 &amp; - 1 \  - 1 &amp; 1 \\<br>\end{bmatrix}$时，相当于协方差矩阵做了变换: 横纵坐标对换。写成函数的形式就是<br>$x_{1} = {- x}_{2}$，此时采样图如下：</p>
+<p><img src="/2019/09/19/高斯过程分布图解/303ec485f0082842425d8580d50014ae.png" alt=""></p>
+<p><img src="/2019/09/19/高斯过程分布图解/1fd569a3493dc1a8998d10ff2b902cac.png" alt=""></p>
+<p>OK，我们继续高维模式，我们构造一个20维高斯分布，采样5次，先假设协方差为对角矩阵，即20个元素相互独立，高斯过程如图，点的个数即为多元高斯过程的维度，每个横坐标都对应的是一个分布。可以看出，现在多组分布之间是无关的。</p>
+<p><img src="/2019/09/19/高斯过程分布图解/cc1015b0cac3acb45f7d5577cc1a03b6.png" alt=""></p>
+<p><img src="/2019/09/19/高斯过程分布图解/ccb97e674bdc390eb805c3ade302f2ae.png" alt=""></p>
+<p>多组分布之间的关系是协方差矩阵控制的。在协方差矩阵是$\begin{bmatrix} 1 &amp; 0.98<br>\ 0.98 &amp; 1 \\<br>\end{bmatrix}$时，我们可以发现对角两组分布的协方差越接近1，就越“同步”，也就是说，如果$x_{1}<script type="math/tex">和$x_{2}</script>的协方差接近1，那么当$x_{1}<br>= a$时，$x_{1} \approx<br>a$。现在我们希望高斯过程曲线不这么凌乱，希望相邻的两个数据之间更加平滑，也就是相邻分布之间相关性更强，越远的点相关性更差。因此构造协方差为：</p>
+<script type="math/tex; mode=display">
+\kappa\left( x,x^{'} \right) = \exp\left( - \frac{\left( x - x^{'} \right)^{2}}{2} \right)</script><p>若10维高斯分布，协方差矩阵是：</p>
+<p><img src="/2019/09/19/高斯过程分布图解/2fd5b974b11ceafe5e209b5381e7b8a5.png" alt=""></p>
+<p>此时的高斯过程采样如图，这个协方差矩阵对应的约束即为：随机平滑曲线。</p>
+<p><img src="/2019/09/19/高斯过程分布图解/d748c6e76c88ac9278bba5fc573308e0.png" alt=""></p>
+<p><img src="/2019/09/19/高斯过程分布图解/ce785940b329357fa4fa055cb329e3ca.png" alt=""></p>
+<p>维度100时：</p>
+<p><img src="/2019/09/19/高斯过程分布图解/6a3f8e14b232daae935adc43ed341d26.png" alt=""></p>
+<h2 id="图解高斯过程回归"><a href="#图解高斯过程回归" class="headerlink" title="图解高斯过程回归"></a>图解高斯过程回归</h2><p>给定目标拟合函数，一条五次曲线：</p>
+<script type="math/tex; mode=display">
+f\left( x \right) = 0.03x^{5} + 0.2x^{4} - 0.1x^{3} - 2.4x^{2} - 2.5x + 6</script><p><img src="/2019/09/19/高斯过程分布图解/1047cc845d969dddb51747be54e4a506.png" alt=""></p>
+<p>我们的目的是得到分布用无限个高斯分布来描述$\mathbf{p}\left( \mathbf{y}<br>\middle| \mathbf{x} \right)$：</p>
+<script type="math/tex; mode=display">
+p\left( y \middle| x \right)\mathcal{= N}\left( \mathbf{y} \middle| m\left( x \right),\mathbf{K} \right)</script><p>其中均值$m\left( \mathbf{x} \right) = 0$，协方差矩阵为$K = \kappa\left( x,x<br>\right)$，这里的$p\left( \mathbf{y} \middle| \mathbf{x}<br>\right)$算是先验分布，因为我们还没用观测点呢。定义观测值为$(\mathbf{x,y)}$，对于测试点$x_{<em>}$，我们希望预测$\mathbf{y}_{\mathbf{</em>}}\mathbf{=<br>f}\left( \mathbf{x}_{\mathbf{*}} \right)$，那么观测点和测试点加一起的分布为：</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+\mathbf{y} \\
+\mathbf{y}_{\mathbf{*}} \\
+\end{pmatrix}\sim\mathcal{N}\left( \begin{pmatrix}
+m\left( \mathbf{x} \right) \\
+{m\left( \mathbf{x} \right)}_{\mathbf{*}} \\
+\end{pmatrix},\begin{pmatrix}
+\mathbf{K} & \mathbf{K}_{\mathbf{*}} \\
+\mathbf{K}_{\mathbf{*}}^{\mathbf{T}} & \mathbf{K}_{\mathbf{**}} \\
+\end{pmatrix} \right)</script><p>其中$K = \kappa\left( x,x \right),K_{<em>} = \kappa\left( x,x_{</em>}<br>\right)\mathrm{\text{ and }}K_{<em>*} = \kappa\left( x_{</em>},x_{<em>}<br>\right)$，我们暂且取均值为零。以上式子其实为条件分布$p\left( y,y_{</em>} \middle|<br>x,x_{<em>} \right)$，而我们只需要求解$\mathbf{y}_{</em>}$，这里只给出结果：</p>
+<script type="math/tex; mode=display">
+{p\left( y_{*} \middle| x_{*},x,y \right)\mathcal{= N}\left( y_{*} \middle| \mu_{*},\Sigma_{*} \right)\backslash n}{\mu_{*} = m\left( x_{*} \right) + K_{*}^{T}K^{- 1}\left( y - m\left( x \right) \right)\backslash n}{\Sigma_{*} = K_{**} - K_{*}^{T}K^{- 1}K_{*}}</script>
       
     </div>
 
@@ -488,9 +524,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/windows/" rel="tag"># windows</a>
-          
-            <a href="/tags/CMD/" rel="tag"># CMD</a>
+            <a href="/tags/GP回归/" rel="tag"># GP回归</a>
           
         </div>
       
@@ -503,8 +537,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/03/hello-world/" rel="next" title="Hexo 重要操作">
-                <i class="fa fa-chevron-left"></i> Hexo 重要操作
+              <a href="/2019/09/06/GP回归：权重解释角度/" rel="next" title="GP回归：权重解释角度">
+                <i class="fa fa-chevron-left"></i> GP回归：权重解释角度
               </a>
             
           </div>
@@ -512,10 +546,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/04/20181204周末电影/" rel="prev" title="电影推荐模型的思想训练过程">
-                电影推荐模型的思想训练过程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -708,7 +738,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理CSV"><span class="nav-number">1.</span> <span class="nav-text">处理CSV</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取类数据"><span class="nav-number">2.</span> <span class="nav-text">读取类数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提交比赛答案"><span class="nav-number">3.</span> <span class="nav-text">提交比赛答案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字典用法-巧用key"><span class="nav-number">4.</span> <span class="nav-text">字典用法 巧用key</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#图解多元高斯过程"><span class="nav-number">1.</span> <span class="nav-text">图解多元高斯过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图解高斯过程回归"><span class="nav-number">2.</span> <span class="nav-text">图解高斯过程回归</span></a></li></ol></div>
             
 
           </div>
@@ -892,7 +922,7 @@
   
     <script type="text/javascript">
       window.livereOptions = {
-        refer: '2018/12/03/如何把CMD添加到右键/'
+        refer: '2019/09/19/高斯过程分布图解/'
       };
       (function(d, s) {
         var j, e = d.getElementsByTagName(s)[0];
@@ -934,6 +964,43 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+
+    
   
 
 
