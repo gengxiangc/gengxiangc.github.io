@@ -117,7 +117,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tangmeii.cn/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg">
-<meta property="og:updated_time" content="2019-09-06T14:30:22.976Z">
+<meta property="og:updated_time" content="2019-09-19T12:14:24.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GP回归：权重解释角度">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;GP回归对多源回归迁移作用很大，因此现在好好学一下。高斯过程回归的加权理解整体做法是，根据少量观测值，预测某组参数的似然概率，然后对所有可能的模型按照概率进行加权，所以这一节定义为’weight-space view’，就是高斯过程回归的加权空间解释。其认为出输出是各种输入的可能性叠加。模型输入包括噪声的方差$\sigma_{n}^{}$，以及参数的协方差矩阵$\Sigm">
@@ -388,12 +388,24 @@
                 
               
 
-              <time title="创建时间：2019-09-06 21:48:43 / 修改时间：22:30:22" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
+              <time title="创建时间：2019-09-06 21:48:43" itemprop="dateCreated datePublished" datetime="2019-09-06T21:48:43+08:00">2019-09-06</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-19 20:14:24" itemprop="dateModified" datetime="2019-09-19T20:14:24+08:00">2019-09-19</time>
               
             
           </span>
@@ -488,15 +500,15 @@ p\left( w \middle| X,y \right)
 \end{aligned}</script><p>其中$\overline{w} = \sigma_{n}^{- 2}\left( \sigma_{n}^{- 2}XX^{\top} +<br>\Sigma_{p}^{- 1} \right)^{-<br>1}\text{Xy}$，【这一步化简还是挺复杂的，参照高斯分布相乘的标准求解】所以可以得到后验的分布为，均值$\overline{w}$，方差为$A^{- 1}$的高斯分布：</p>
 <script type="math/tex; mode=display">
 p\left( w \middle| X,y \right) \sim \mathcal{N}\left( \overline{w} = \frac{1}{\sigma_{n}^{2}}A^{- 1}Xy,A^{- 1} \right)</script><p>其中$A = \sigma_{n}^{- 2}XX^{\top} + \Sigma_{p}^{-<br>1}$，对于后验概率，其均值是很重要的mode, 可以通过最大化后验概率(<strong>Maximum a posteriori MAP</strong>)的均值来求解$\mathbf{w}$。请注意这里$-<br>\frac{1}{2}w^{\top}\Sigma_{p}^{- 1}w$刚好起到了<strong>岭回归中的正则化</strong>的效果。</p>
-<p>对于要预测的输入$\mathbf{x}_{<em>}$所对应的标签$f\left( x_{</em>}\right)$，其分布可以描述为所有可能的参数概率，与响应参数下的预测值的积分，$p\left(\mathbf{w} \middle| X,\mathbf{y}\right)$为参数$\mathbf{w}$的概率密度，$p\left( f_{<em>} \middle|\mathbf{x}_{</em>},\mathbf{w} \right)$为参数下的输出值</p>
+<p>对于要预测的输入$x_<em>$所对应的标签$f(x_</em>)$，其分布可以描述为所有可能的参数概率，与响应参数下的预测值的积分，$p\left(\mathbf{w} \middle| X,\mathbf{y}\right)$为参数$\mathbf{w}$的概率密度，$p\left( f_{<em>} \middle|\mathbf{x}_{</em>},\mathbf{w} \right)$为参数下的输出值</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{X}, \mathrm{y}\right)& =\int \mathrm{p}\left(\mathrm{f}_{*} | \mathrm{x}_{*}, \mathrm{w}\right) \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
 & =\int \mathrm{X}_{*}^{\top} \mathrm{W} \mathrm{p}(\mathrm{w} | \mathrm{X}, \mathrm{y}) \mathrm{d} \mathrm{w} \\
 & =\mathcal{N}\left(\frac{1}{\sigma_{\mathrm{n}}^{2}} \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{Xy}, \mathrm{x}_{*}^{\top} \mathrm{A}^{-1} \mathrm{x}_{*}\right) \\
 \end{aligned}</script><p><strong>这个怎么推出来的就不知道了，反正积分结果还是一个高斯分布,到这里就是线性GP的解。</strong></p>
-<h2 id="将输入引入特征空间"><a href="#将输入引入特征空间" class="headerlink" title="将输入引入特征空间"></a>将输入引入特征空间</h2><h2 id="涉及的基础知识"><a href="#涉及的基础知识" class="headerlink" title="涉及的基础知识"></a>涉及的基础知识</h2><p>明天继续</p>
-<h1 id="方差无偏估计"><a href="#方差无偏估计" class="headerlink" title="方差无偏估计"></a>方差无偏估计</h1><p>已知随机变量$X$的期望值为$\mu$，方差可以表示为：</p>
+<h2 id="将输入引入特征空间"><a href="#将输入引入特征空间" class="headerlink" title="将输入引入特征空间"></a>将输入引入特征空间</h2><h3 id="kernel"><a href="#kernel" class="headerlink" title="kernel"></a>kernel</h3><p>This is kernel</p>
+<h2 id="涉及的基础知识"><a href="#涉及的基础知识" class="headerlink" title="涉及的基础知识"></a>涉及的基础知识</h2><h3 id="方差无偏估计"><a href="#方差无偏估计" class="headerlink" title="方差无偏估计"></a>方差无偏估计</h3><p>已知随机变量$X$的期望值为$\mu$，方差可以表示为：</p>
 <script type="math/tex; mode=display">
 \sigma^{2} = E\left\lbrack {(X - \mu)}^{2} \right\rbrack</script><p>上式需要知道$X$的分布，而现实问题往往是不知道分布的，且难以估计分布，因此用采样之后的点来估计方差，即为用$S^{2}$来近似$\sigma^{2}$：</p>
 <script type="math/tex; mode=display">
@@ -534,19 +546,19 @@ E\left[(\overline{X}-\mu)^{2}\right]
 {E\left\lbrack S^{2} \right\rbrack = \sigma^{2} - \frac{1}{n}\sigma^{2} = \frac{n - 1}{n}\sigma^{2}}</script><script type="math/tex; mode=display">
 {E\left\lbrack {\frac{n}{n - 1}S}^{2} \right\rbrack = \sigma^{2}}</script><p>所以$S^{2}$的形式被修正为：</p>
 <script type="math/tex; mode=display">
-S^{2} = \frac{1}{n - 1}\sum_{i = 1}^{n}{(X_{i} - \overset{\overline{}}{X})}^{2}</script><h1 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h1><p>高斯分布即为正态分布：</p>
+S^{2} = \frac{1}{n - 1}\sum_{i = 1}^{n}{(X_{i} - \overset{\overline{}}{X})}^{2}</script><h3 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h3><p>高斯分布即为正态分布：</p>
 <script type="math/tex; mode=display">
 X\mathcal{\sim N}\left( \mu,\sigma^{2} \right)</script><p>高斯分布的概率密度函数为：</p>
 <script type="math/tex; mode=display">
 p(y) = \frac{1}{\sigma\sqrt{2\pi}}e^{- \frac{(y - \mu)^{2}}{2\sigma^{2}}}</script><p>带参数的表示为：</p>
 <script type="math/tex; mode=display">
 p\left( y \middle| \mu,\sigma \right) = \frac{1}{\sigma\sqrt{2\pi}}e^{- \frac{\left( y - \mu \right)^{2}}{2\sigma^{2}}}</script><p><img src="/2019/09/06/GP回归：权重解释角度/Normal_Distribution_PDF.svg" alt=""></p>
-<h1 id="协方差"><a href="#协方差" class="headerlink" title="协方差"></a><a href="http://jermmy.xyz/2017/03/19/2017-3-19-covariance-matrix/" target="_blank" rel="noopener">协方差</a></h1><blockquote>
+<h3 id="协方差"><a href="#协方差" class="headerlink" title="协方差"></a><a href="http://jermmy.xyz/2017/03/19/2017-3-19-covariance-matrix/" target="_blank" rel="noopener">协方差</a></h3><blockquote>
 <p>  协方差是用于衡量两个变量的总体误差，而方差是协方差的一种特例。当协方差为正时，两个变量呈正相关，当协方差为负的时候，两个变量呈负相关。协方差矩阵只是讲所有变量之间的协方差表示成一个矩阵，可以更方便用于计算。</p>
 <p>  比如计算$x$和$y$两个变量集合的协方差表示为：</p>
 </blockquote>
 <script type="math/tex; mode=display">
-\text{Cov}\left( X,Y \right) = \frac{\sum_{i = 1}^{n}{\left( x_{i} - \overline{x} \right)\left( y_{i} - \overline{y} \right)}}{n - 1}</script><h1 id="多元高斯分布"><a href="#多元高斯分布" class="headerlink" title="多元高斯分布"></a><a href="https://www.cnblogs.com/jermmyhsu/p/8251013.html" target="_blank" rel="noopener">多元高斯分布</a></h1><p>假设多元变量$\overset{\overline{}}{x} = \begin{bmatrix} x_{1} \ x_{2} \\<br>\end{bmatrix}$，他们的均值为$\overset{\overline{}}{\mu} = \begin{bmatrix}<br>\mu_{1} \ \mu_{2} \ \end{bmatrix}$，方差为$\overset{\overline{}}{\sigma} =<br>\begin{bmatrix} \sigma_{1} \ \sigma_{2} \\<br>\end{bmatrix}$，为了推到高维，此处定义协方差矩阵$\Sigma$，对于二维向量，其协方差矩阵为：$\Sigma<br>= \begin{bmatrix} \sigma_{1}^{2} &amp; \sigma_{12} \ \sigma_{21} &amp; \sigma_{2}^{2}<br>\\<br>\end{bmatrix}$，由于两个变量时相互独立的，所以斜对角两个元素为0，此时$\Sigma =<br>\begin{bmatrix} \sigma_{1}^{2} &amp; 0 \ 0 &amp; \sigma_{2}^{2} \ \end{bmatrix}$。</p>
+\text{Cov}\left( X,Y \right) = \frac{\sum_{i = 1}^{n}{\left( x_{i} - \overline{x} \right)\left( y_{i} - \overline{y} \right)}}{n - 1}</script><h3 id="多元高斯分布"><a href="#多元高斯分布" class="headerlink" title="多元高斯分布"></a><a href="https://www.cnblogs.com/jermmyhsu/p/8251013.html" target="_blank" rel="noopener">多元高斯分布</a></h3><p>假设多元变量$\overset{\overline{}}{x} = \begin{bmatrix} x_{1} \ x_{2} \\<br>\end{bmatrix}$，他们的均值为$\overset{\overline{}}{\mu} = \begin{bmatrix}<br>\mu_{1} \ \mu_{2} \ \end{bmatrix}$，方差为$\overset{\overline{}}{\sigma} =<br>\begin{bmatrix} \sigma_{1} \ \sigma_{2} \\<br>\end{bmatrix}$，为了推到高维，此处定义协方差矩阵$\Sigma$，对于二维向量，其协方差矩阵为：$\Sigma<br>= \begin{bmatrix} \sigma_{1}^{2} &amp; \sigma_{12} \ \sigma_{21} &amp; \sigma_{2}^{2}<br>\\<br>\end{bmatrix}$，由于两个变量时相互独立的，所以斜对角两个元素为0，此时$\Sigma =<br>\begin{bmatrix} \sigma_{1}^{2} &amp; 0 \ 0 &amp; \sigma_{2}^{2} \ \end{bmatrix}$。</p>
 <p>假设多个变量之间是相互独立的，那么分布函数可以相乘：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -812,7 +824,7 @@ f\left( \mathbf{x} \right)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性模型的参数估计"><span class="nav-number">1.</span> <span class="nav-text">线性模型的参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将输入引入特征空间"><span class="nav-number">2.</span> <span class="nav-text">将输入引入特征空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#涉及的基础知识"><span class="nav-number">3.</span> <span class="nav-text">涉及的基础知识</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#方差无偏估计"><span class="nav-number"></span> <span class="nav-text">方差无偏估计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高斯分布"><span class="nav-number"></span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协方差"><span class="nav-number"></span> <span class="nav-text">协方差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多元高斯分布"><span class="nav-number"></span> <span class="nav-text">多元高斯分布</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性模型的参数估计"><span class="nav-number">1.</span> <span class="nav-text">线性模型的参数估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将输入引入特征空间"><span class="nav-number">2.</span> <span class="nav-text">将输入引入特征空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kernel"><span class="nav-number">2.1.</span> <span class="nav-text">kernel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#涉及的基础知识"><span class="nav-number">3.</span> <span class="nav-text">涉及的基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方差无偏估计"><span class="nav-number">3.1.</span> <span class="nav-text">方差无偏估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高斯分布"><span class="nav-number">3.2.</span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协方差"><span class="nav-number">3.3.</span> <span class="nav-text">协方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多元高斯分布"><span class="nav-number">3.4.</span> <span class="nav-text">多元高斯分布</span></a></li></ol></li></ol></div>
             
 
           </div>
