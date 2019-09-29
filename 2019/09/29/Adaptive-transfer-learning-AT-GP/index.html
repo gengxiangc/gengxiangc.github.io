@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="- The Adaptive Transfer Learning Model via Gaussian ProcessAAAI Adaptive transfer leanring 为了使得源和目标任务之间能迁移知识，我们首先要定义两者之间的联系。一种方式就是使源和目标的核函数共享一些相同的参数$\mathbf{\theta}$，核函数代表了平滑性，共享核函数参数意味着两任务回归函数的平滑性相似。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-29T10:11:14.469Z">
+<meta property="og:updated_time" content="2019-09-29T10:15:53.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Adaptive transfer learning AT-GP">
 <meta name="twitter:description" content="- The Adaptive Transfer Learning Model via Gaussian ProcessAAAI Adaptive transfer leanring 为了使得源和目标任务之间能迁移知识，我们首先要定义两者之间的联系。一种方式就是使源和目标的核函数共享一些相同的参数$\mathbf{\theta}$，核函数代表了平滑性，共享核函数参数意味着两任务回归函数的平滑性相似。">
@@ -386,7 +386,7 @@
                 
               
 
-              <time title="创建时间：2019-09-29 17:41:31 / 修改时间：18:11:14" itemprop="dateCreated datePublished" datetime="2019-09-29T17:41:31+08:00">2019-09-29</time>
+              <time title="创建时间：2019-09-29 17:41:31 / 修改时间：18:15:53" itemprop="dateCreated datePublished" datetime="2019-09-29T17:41:31+08:00">2019-09-29</time>
             
 
             
@@ -503,7 +503,7 @@ p\left( y_{*} \middle| \mathbf{y}^{\left( \mathcal{T} \right)},\mathbf{y}^{\left
 </blockquote>
 <script type="math/tex; mode=display">
 m\left( \mathbf{x}_{\mathbf{*}} \right) = \mathbf{k}_{\mathbf{x}}{\tilde{\mathbf{C}}}^{- 1}\mathbf{y},\ \ \sigma^{2}\left( \mathbf{x}_{\mathbf{*}} \right) = c - {\mathbf{k}_{\mathbf{x}}\tilde{\mathbf{C}}}^{- 1}\mathbf{k}_{\mathbf{x}}</script><script type="math/tex; mode=display">
-m\left( \mathbf{x}_{\mathbf{*}} \right) = \sum_{\mathbf{x}_{j} \in X^{\left( \mathcal{T} \right)}}^{}{\alpha_{j}k\left( \mathbf{x}_{\mathbf{*}},\mathbf{x}_{j} \right)} + \sum_{\mathbf{x}_{i} \in X^{\left( \mathcal{S} \right)}}^{}{\lambda\alpha_{i}k\left( \mathbf{x}_{\mathbf{*}},\mathbf{x}_{i} \right)}</script><p>其中$\lambda = 2\left( \frac{1}{1 + \mu} \right)^{b} -<br>1$，且$\alpha_{i}$是${\tilde{\mathbf{C}}}^{- 1}\mathbf{y} \in \mathbb{R}^{(N+ M) \times1}$的第$i^{\text{th}}$个元素，由于 $\mathbf{x}_{<em>1}$ 属于目标集因此对于$\mathbf{x}_j<br>\in X^{\left( \mathcal{T} \right)}$，权重为零，对于$\mathbf{x}_{i} \in<br>X^{\left( \mathcal{S} \right)}$，$k\left(<br>\mathbf{x}_{\mathbf{</em>}},\mathbf{x}_{i} \right)$来自不同集，$\zeta\left(<br>\mathbf{x}_{n},\mathbf{x}_{m} \right) =<br>1$，所以权重为$\lambda$。式子中，第一项为目标数据对测试点的影响，第二项为源数据对测试数据的影响，并且考虑了任务相似性。</p>
+m\left( \mathbf{x}_{\mathbf{*}} \right) = \sum_{\mathbf{x}_{j} \in X^{\left( \mathcal{T} \right)}}^{}{\alpha_{j}k\left( \mathbf{x}_{\mathbf{*}},\mathbf{x}_{j} \right)} + \sum_{\mathbf{x}_{i} \in X^{\left( \mathcal{S} \right)}}^{}{\lambda\alpha_{i}k\left( \mathbf{x}_{\mathbf{*}},\mathbf{x}_{i} \right)}</script><p>其中$\lambda = 2\left( \frac{1}{1 + \mu} \right)^{b} -<br>1$，且$\alpha_{i}$是${\tilde{\mathbf{C}}}^{- 1}\mathbf{y} \in \mathbb{R}^{(N+ M) \times1}$的第$i^{\text{th}}$个元素，测试数据属于目标集，因此对于权重为1，测试数据核总训练数据的交叉核权重为$\lambda$。式子中，第一项为目标数据对测试点的影响，第二项为源数据对测试数据的影响，并且考虑了任务相似性。</p>
 <h3 id="参数学习"><a href="#参数学习" class="headerlink" title="- 参数学习"></a>- 参数学习</h3><p>对于上一节中，未知参数有核参数$\mathbf{\theta}$，和Gamma分布的参数$b,\mu$，也可以当作$\theta$向量的扩充两个维度，这样所有未知数就是$\mathbf{\theta}$。优化参数可以通过最大化<strong>边界似然</strong>得到，就是$p(\mathbf{y}^{\left(<br>\mathcal{T} \right)},\mathbf{y}^{\left( \mathcal{S} \right)},\mathbf{X}^{\left(<br>\mathcal{T} \right)},\mathbf{X}^{\left( \mathcal{S}<br>\right)})$.【注意：参数的似然是指定参数条件下观测值出现的概率，边界似然是观测值出现的概率】，由于目标数据和源数据比例不一样，如果最小化边界似然的话，会使得模型偏向考虑源数据。因此在这里优化条件概率代替：</p>
 <script type="math/tex; mode=display">
 p(\mathbf{y}^{\left( \mathcal{T} \right)}|\mathbf{y}^{\left( \mathcal{S} \right)},\mathbf{X}^{\left( \mathcal{T} \right)},\mathbf{X}^{\left( \mathcal{S} \right)})</script><blockquote>
