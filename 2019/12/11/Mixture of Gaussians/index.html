@@ -116,13 +116,13 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布，潜变量的引入可以把复杂的分布拆解成简单的分布。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576069844335.png">
-<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576070953981.png">
-<meta property="og:updated_time" content="2019-12-12T09:16:10.248Z">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/1576069844335.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/1576070953981.png">
+<meta property="og:updated_time" content="2019-12-12T09:23:37.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 9 Mixture of Gaussians and EM">
 <meta name="twitter:description" content="如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布，潜变量的引入可以把复杂的分布拆解成简单的分布。">
-<meta name="twitter:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576069844335.png">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/1576069844335.png">
 
 
 
@@ -406,7 +406,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-12 17:16:10" itemprop="dateModified" datetime="2019-12-12T17:16:10+08:00">2019-12-12</time>
+                <time title="修改时间：2019-12-12 17:23:37" itemprop="dateModified" datetime="2019-12-12T17:23:37+08:00">2019-12-12</time>
               
             
           </span>
@@ -498,7 +498,7 @@ p(\mathbf{x})=\sum_{\mathbf{z}} p(\mathbf{x,z}) =\sum_{\mathbf{z}} p(\mathbf{z})
 <p>现在我们把求解边缘分布 $p(\mathbf{x})$ 的问题转化成了求解联合分布 $p(\mathbf{x,z})$的问题，这在后面会显著简化问题。</p>
 <p>这里再引入一个非常重要的概率，即给定观测值下属于某个高斯分布的概率，也就是后验概率，很自然，后验概率 $\gamma(z_{k})$ 即为观测值下为所有分布在此观测位置的累计加权的比例值，这个概率是个复合因素，既有归属系数，又有高斯分布的概率：</p>
 <script type="math/tex; mode=display">
-\begin{aligned} \gamma\left(z_{k}\right) \equiv p\left(z_{k}=1 | \mathbf{x}\right)=& \frac{p\left(z_{k}=1\right) p\left(\mathbf{x} | z_{k}=1\right)}{\sum_{j=1}^{K} p\left(z_{j}=1\right) p\left(\mathbf{x} | z_{j}=1\right)} \\=& \frac{\pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)} \end{aligned}</script><h3 id="9-2-1-Mximum-likelihood"><a href="#9-2-1-Mximum-likelihood" class="headerlink" title="9.2.1 Mximum likelihood"></a>9.2.1 Mximum likelihood</h3><p>假设数据集$\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}$由 $N×D$ 的矩阵$\mathbf{X}$，其中第$n$行表示为 $\mathbf{x}_{n}^{\top}$，相似地，隐变量由 $N×K$ 的矩阵$\mathbf{Z}$，其中第$n$行表示为 $\mathbf{z}_{n}^{\top}$，如果数据满足独立同分布，那么此时概率图表示为：<img src="/2019/12/11/Mixture of Gaussians/OneDrive - nuaa.edu.cn/Myblog/blog/source/_posts/Mixture of Gaussians/1576069844335.png" alt="1576069844335"></p>
+\begin{aligned} \gamma\left(z_{k}\right) \equiv p\left(z_{k}=1 | \mathbf{x}\right)=& \frac{p\left(z_{k}=1\right) p\left(\mathbf{x} | z_{k}=1\right)}{\sum_{j=1}^{K} p\left(z_{j}=1\right) p\left(\mathbf{x} | z_{j}=1\right)} \\=& \frac{\pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)} \end{aligned}</script><h3 id="9-2-1-Mximum-likelihood"><a href="#9-2-1-Mximum-likelihood" class="headerlink" title="9.2.1 Mximum likelihood"></a>9.2.1 Mximum likelihood</h3><p>假设数据集$\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}$由 $N×D$ 的矩阵$\mathbf{X}$，其中第$n$行表示为 $\mathbf{x}_{n}^{\top}$，相似地，隐变量由 $N×K$ 的矩阵$\mathbf{Z}$，其中第$n$行表示为 $\mathbf{z}_{n}^{\top}$，如果数据满足独立同分布，那么此时概率图表示为：<img src="/2019/12/11/Mixture of Gaussians/1576069844335.png" alt="1576069844335"></p>
 <p>按照式子(5)描述的GMM，其对数似然函数可以表示为：</p>
 <script type="math/tex; mode=display">
 \ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma})=\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}</script><p>直接最大似然以上函数存在多个问题：</p>
@@ -507,7 +507,7 @@ p(\mathbf{x})=\sum_{\mathbf{z}} p(\mathbf{x,z}) =\sum_{\mathbf{z}} p(\mathbf{z})
 <li>解出一组参数后，不知那个对应1号，那个对应2号，即不可确认性</li>
 <li>对数没有直接作用于概率，而是作用于求和公式，此时求导得不到闭环解</li>
 </ul>
-<p><img src="/2019/12/11/Mixture of Gaussians/OneDrive - nuaa.edu.cn/Myblog/blog/source/_posts/Mixture of Gaussians/1576070953981.png" alt="1576070953981"></p>
+<p><img src="/2019/12/11/Mixture of Gaussians/1576070953981.png" alt="1576070953981"></p>
 <p>由于以上问题的存在，上面似然只能用非常困难的，约束很多的基于梯度的优化方法，反正难整。</p>
 <h3 id="9-2-2-EM-for-Gaussian-mixtures"><a href="#9-2-2-EM-for-Gaussian-mixtures" class="headerlink" title="9.2.2 EM for Gaussian mixtures"></a>9.2.2 EM for Gaussian mixtures</h3><p>对于带隐变量模型的最大似然求解，一个优雅而强大的方法就是EM(expectation-maximization)算法，EM非常强大，这里首先展示一下EM如何求解GMM的。</p>
 <p>首先把似然函数对$\boldsymbol{\mu}_{k}$求导：</p>
