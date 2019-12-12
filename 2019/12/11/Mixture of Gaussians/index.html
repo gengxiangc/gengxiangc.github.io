@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布，潜变量的引入可以把复杂的分布拆解成简单的分布。">
+<meta name="keywords" content="GMM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chapter 9 Mixture of Gaussians and EM">
+<meta property="og:url" content="http://tangmeii.cn/2019/12/11/Mixture of Gaussians/index.html">
+<meta property="og:site_name" content="Tangmeii_Sites">
+<meta property="og:description" content="如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布，潜变量的引入可以把复杂的分布拆解成简单的分布。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576069844335.png">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576070953981.png">
+<meta property="og:updated_time" content="2019-12-12T09:08:22.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 9 Mixture of Gaussians and EM">
+<meta name="twitter:description" content="如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布，潜变量的引入可以把复杂的分布拆解成简单的分布。">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/12/11/Mixture%20of%20Gaussians/OneDrive%20-%20nuaa.edu.cn/Myblog/blog/source/_posts/Mixture%20of%20Gaussians/1576069844335.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://tangmeii.cn/2019/12/11/Mixture of Gaussians/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Chapter 9 Mixture of Gaussians and EM | Tangmeii_Sites</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tangmeii_Sites</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/12/11/Mixture of Gaussians/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gengxiang">
+      <meta itemprop="description" content="某航空人">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tangmeii_Sites">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chapter 9 Mixture of Gaussians and EM
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-11 19:08:46" itemprop="dateCreated datePublished" datetime="2019-12-11T19:08:46+08:00">2019-12-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-12 17:08:22" itemprop="dateModified" datetime="2019-12-12T17:08:22+08:00">2019-12-12</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如果我们定义了一个观测变量和隐变量的联合分布，那么观测变量的分布就可以通过对隐变量边缘化得到，也就是把隐变量积分掉。因此，<strong>可以把难以求解的观测变量的边缘分布扩展至一种相对容易处理的方式，即扩展到由观测变量和隐变量构成的联合分布</strong>，潜变量的引入可以把复杂的分布拆解成简单的分布。<br><a id="more"></a>  </p>
+<p>[TOC]</p>
+<p>混合模型一方面可以用于表达更复杂的分布，另一方面可以用于聚类。我们从聚类问题引入混合模型，首先讲经典的非概率聚类算法$K$-means 算法，在这个算法中，隐变量可以解释为一个样本点对所属类别的分配系数。对于带有隐变量的模型，一种经典的最大似然估计器是expectation-maximization(EM)算法，我们首先用混合高斯分布来引入EM算法，然后用严谨的方式推广到一般型隐变量视角。可以发现，$K$-means其实EM算法应用在高斯混合模型(GMM)上的一种非概率简化。</p>
+<p>GMM广泛应用于数据挖掘、模式识别、机器学习和统计分析等领域，在大部分应用场景下，GMM的参数都是由最大似然得到的，尤其是EM法。当然，最大似然法是由许多显著缺陷的，后面章节会用变分推断来解决这个问题。相当于对EM算法做了一些扩充，变分推断解决了MLE的一些本质缺陷，并且可以自动设置混合模型中组件的数量。</p>
+<h2 id="9-1-K-means-Clustering"><a href="#9-1-K-means-Clustering" class="headerlink" title="9.1 $K$-means Clustering"></a>9.1 $K$-means Clustering</h2><p>首先考虑多维空间的聚类问题，假设数据集$\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}$由$N$个$D$维欧式空间上的变量$\mathbf{x}$构成，我们的目标是把这些数据划分为$K$个聚集，首先假定$K$的数值是已知的，直觉上，分到一个簇的点，应该对这个簇中心的距离，小于对其他簇中心的距离，定义$D$维向量$\pmb{\mu}_{k}$表示第$k$个簇的中心坐标，其中$k=1,…,K$，那么我们聚类的目的就是找到每个点所属的簇，使得所有点到其簇中心的平方距离之和最小。</p>
+<p>为了方便描述一个点对于一个簇的所属情况，我们引入一个二进制变量$r_{n k} \in\{0,1\}$，表示第$n$个点对第$k$个簇的归属情况，如果归属，则值为$r_{n k} =1$，如果不归属，则$r_{n k} =0$。这种编码方式称作1-of-$K$编码。此时，聚类问题的目标函数可以定义如下，也叫<strong><em>distortion measure</em></strong>:</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+J=\sum_{n=1}^{N} \sum_{k=1}^{K} r_{n k}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right\|^{2}
+\end{equation}</script><p>聚类目标为求解使得$J$达到最小时的$r_{n k}$和$\pmb{\mu}_{k}$，这个问题可以通过迭代优化求解，首先初始化$\pmb{\mu}_{k}$并固定，然后最小化$J$优化$r_{n k}$，然后再固定$r_{n k}$优化$\pmb{\mu}_{k}$，如此迭代直到收敛。在EM算法框架下，优化$r_{n k}$的过程就叫做Step Expectation，优化$\pmb{\mu}_{k}$的过程就叫做Step Maximization。当然，解决$K$-means问题本身不需要EM这么复杂的方式，这里只是抛砖引玉。</p>
+<p>如果有了聚类中心$\pmb{\mu}_{k}$，每个样本的归属情况是可以直接计算出来的，样本最近的簇中心即为归属簇，用公式表示为：</p>
+<script type="math/tex; mode=display">
+r_{n k}=\left\{\begin{array}{ll}{1} & {\text { if } k=\arg \min _{j}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{j}\right\|^{2}} \\ {0} & {\text { otherwise }}\end{array}\right.</script><p>得到归属情况$r_{n k}$后，就可以通过最小化$J$来求解下一轮的聚类中心$\pmb{\mu}_{k}$，通过对$J$求导，再使导数为零，可以得到聚类中心即为簇中所有点的平均值：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\mu}_{k}=\frac{\sum_{n} r_{n k} \mathbf{x}_{n}}{\sum_{n} r_{n k}}</script><p>以上即为$K$-means方法的两个迭代步骤，直到点的归属情况不变，就算收敛了，此算法的收敛过程是经过证明的，但是也可能收敛到局部最优化。事实上，$K$-means方法可以用于GMM的参数初始化。</p>
+<p>注意，上面$\pmb{\mu}_{k}$的计算也可以用梯度下降法。距离函数也可不用平方误差，可以换成任意距离函数，如下：</p>
+<script type="math/tex; mode=display">
+\widetilde{J}=\sum_{n=1}^{N} \sum_{k=1}^{K} r_{n k} \mathcal{V}\left(\mathbf{x}_{n}, \boldsymbol{\mu}_{k}\right)</script><p>$K$-means算法是一种硬聚类方法，接下来引入一种基于概率的软聚类方法。</p>
+<h2 id="9-2-Mixture-of-Gaussians"><a href="#9-2-Mixture-of-Gaussians" class="headerlink" title="9.2 Mixture of Gaussians"></a>9.2 Mixture of Gaussians</h2><p>从分布角度来看，混合高斯模型就是多个高斯分布的线性叠加，可以用于描述更加复杂的分布情况，并没有什么玄乎的。我们现在来考虑离散隐变量下的混合高斯模型，从而引入到EM算法。</p>
+<p>首先，混合高斯模型的概率密度函数可以表示为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p>对于变量$\mathbf{x}$，我们引入一个1-of-$K$表示的归属变量 $\mathbf{z}$ ，是个向量，只有一个元素为1，其余都为零，也就是满足$\sum_{k} z_{k}=1$，因此向量  $\mathbf{z}$ 共有 $K$ 种状态。此时我们可以定义联合分布$p(\mathbf{x}, \mathbf{z})$，边缘分布 $p( \mathbf{z})$ 和条件分布 $p(\mathbf{x}| \mathbf{z})$， 边缘分布的概率，可以由GMM的混合系数$\pi_{k}$来表示：</p>
+<script type="math/tex; mode=display">
+p\left(z_{k}=1\right)=\pi_{k} ，  p\left(z_{k}=0\right)=1-\pi_{k}</script><p>注意，混合参数满足$0 \leqslant \pi_{k} \leqslant 1$ 且 $\sum_{k=1}^{K} \pi_{k}=1$。由于向量中只有一个量为1，其他量都是0，那么 $p(\mathbf{z})$ 表示为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{z})=\prod_{k=1}^{K} \pi_{k}^{z_{k}}</script><p>式子中的指数项目只有一个位置是1，其他都是0。事件 $\mathbf{z}$ 发生的意思就是 $z_{k}=1$ ，此时样本只属于某一个高斯分布，于是条件概率即为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x} | \mathbf{z})=\prod_{k=1}^{K} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)^{z_{k}}</script><p>可以看出，指数项只有一个是1，其他都是0，因此就是一个单元高斯分布而已，联合分布表示为边缘分布 $p( \mathbf{z})p(\mathbf{x}| \mathbf{z})$，然后再把 $\mathbf{z}$ 边缘化(求和或者积分)，就得到了$p( \mathbf{x})$，如下，向量  $\mathbf{z}$ 共有 $K$ 种状态，因此变化化也就是对 $K$ 种状态下的联合分布求和，注意这里没有指数项：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\sum_{\mathbf{z}} p(\mathbf{x,z}) =\sum_{\mathbf{z}} p(\mathbf{z})p(\mathbf{x} | \mathbf{z})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p>请注意，对于每个观测样本 $\mathbf{x}_{n}$ 都有一个对应的隐变量 $\mathbf{z}_{n}$ 。</p>
+<p>可以看到，式子(10)和式子(5)是相同的，也就是说，我们现在已经把混合高斯模型转换成了包含隐变量的形式，到目前位置这么做好像没有任何意义，往下看。</p>
+<p>现在我们把求解边缘分布 $p(\mathbf{x})$ 的问题转化成了求解联合分布 $p(\mathbf{x,z})$的问题，这在后面会显著简化问题。</p>
+<p>这里再引入一个非常重要的概率，即给定观测值下属于某个高斯分布的概率，也就是后验概率，很自然，后验概率 $\gamma(z_{k})$ 即为观测值下为所有分布在此观测位置的累计加权的比例值，这个概率是个复合因素，既有归属系数，又有高斯分布的概率：</p>
+<script type="math/tex; mode=display">
+\begin{aligned} \gamma\left(z_{k}\right) \equiv p\left(z_{k}=1 | \mathbf{x}\right)=& \frac{p\left(z_{k}=1\right) p\left(\mathbf{x} | z_{k}=1\right)}{\sum_{j=1}^{K} p\left(z_{j}=1\right) p\left(\mathbf{x} | z_{j}=1\right)} 
+\\=& \frac{\pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)} 
+\end{aligned}</script><h3 id="9-2-1-Mximum-likelihood"><a href="#9-2-1-Mximum-likelihood" class="headerlink" title="9.2.1 Mximum likelihood"></a>9.2.1 Mximum likelihood</h3><p>假设数据集$\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}$由 $N×D$ 的矩阵$\mathbf{X}$，其中第$n$行表示为 $\mathbf{x}_{n}^{\top}$，相似地，隐变量由 $N×K$ 的矩阵$\mathbf{Z}$，其中第$n$行表示为 $\mathbf{z}_{n}^{\top}$，如果数据满足独立同分布，那么此时概率图表示为：<img src="/2019/12/11/Mixture of Gaussians/OneDrive - nuaa.edu.cn\Myblog\blog\source\_posts\Mixture of Gaussians\1576069844335.png" alt="1576069844335"></p>
+<p>按照式子(5)描述的GMM，其对数似然函数可以表示为：</p>
+<script type="math/tex; mode=display">
+\ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma})=\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}</script><p>直接最大似然以上函数存在多个问题：</p>
+<ul>
+<li>对于多元高斯，可能其中一个高斯坍缩到一个点，方差无穷小，导致似然函数最大</li>
+<li>解出一组参数后，不知那个对应1号，那个对应2号，即不可确认性</li>
+<li>对数没有直接作用于概率，而是作用于求和公式，此时求导得不到闭环解</li>
+</ul>
+<p><img src="/2019/12/11/Mixture of Gaussians/OneDrive - nuaa.edu.cn\Myblog\blog\source\_posts\Mixture of Gaussians\1576070953981.png" alt="1576070953981"></p>
+<p>由于以上问题的存在，上面似然只能用非常困难的，约束很多的基于梯度的优化方法，反正难整。</p>
+<h3 id="9-2-2-EM-for-Gaussian-mixtures"><a href="#9-2-2-EM-for-Gaussian-mixtures" class="headerlink" title="9.2.2 EM for Gaussian mixtures"></a>9.2.2 EM for Gaussian mixtures</h3><p>对于带隐变量模型的最大似然求解，一个优雅而强大的方法就是EM(expectation-maximization)算法，EM非常强大，这里首先展示一下EM如何求解GMM的。</p>
+<p>首先把似然函数对$\boldsymbol{\mu}_{k}$求导：</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}{\frac{\partial}{\partial \boldsymbol{\mu}_{k}}\left(\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}\right)} 
+
+\\ {=\sum_{i=1}^{N}\left(\frac{\pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}  \right) \frac{\partial}{\partial \boldsymbol{\mu}_{k}}\left(-\frac{\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)^{\top} \boldsymbol{\Sigma}_{k}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)}{2}\right)} 
+
+\\ {=\sum_{i=1}^{N} \gamma\left(z_{n k}\right) \frac{\partial}{\partial \boldsymbol{\mu}_{k}}\left(-\frac{\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)^{\top} \boldsymbol{\Sigma}_{k}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)}{2}\right)} 
+
+\\ {=\sum_{i=1}^{N} \gamma\left(z_{n k}\right)  \boldsymbol{\Sigma}_{k}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)} =0
+
+\end{array}</script><p>使其导数等于0，其中协方差对于N是常数，因此可以约掉，得到：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\mu}_{k}=\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right) \mathbf{x}_{n}</script><p>其中$N_{k}=\sum_{n=1}^{N} \gamma\left(z_{n k}\right)$，在$K$-means 中，可以理解为分配到 $k$  簇的点的数量</p>
+<p>同理，对协方差矩阵 <script type="math/tex">\boldsymbol{\Sigma}_{k}</script> 求导并置零，可以解出闭环解：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\Sigma}_{k}=\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)^{\mathrm{T}}</script><p>注意以上情况并没有考虑混合系数加起来等于1的约束，因此最后再求解混合系数 $ \pi_{k}$ , 用拉格朗日算子把系数约束加入最大似然：</p>
+<script type="math/tex; mode=display">
+\ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \mathbf{\Sigma})+\lambda\left(\sum_{k=1}^{K} \pi_{k}-1\right)</script><p>对 $ \pi_{k}$ 求导并置零，得到如下，可见前项又是后验概率：</p>
+<script type="math/tex; mode=display">
+0=\sum_{n=1}^{N} \frac{\mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{j} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}+\lambda</script><p>上式根据参数和约束，可以解出$\lambda=-N$ ，且混合系数为：</p>
+<script type="math/tex; mode=display">
+\pi_{k}=\frac{N_{k}}{N}</script><p>可以看出，式子(12)(13)(17)依次更新了均值，协方差和混合系数，不过由于后验参数$\gamma (z_{n k})$ 的存在，上面三个系数只能和后验参数之间迭代优化，首先随机初始化均值、协方差和混合系数，然后开始迭代更新，这就是GMM的EM方法，用当前参数值求解后验$p(\mathbf{z}| \mathbf{x})$的过程，叫做E-step, 用后验概率带入似然，再最大似然求解参数，这个过程叫做M-step。</p>
+<p>总结一下EM for Gaussian Mixtures:</p>
+<ol>
+<li><p>初始化均值 $\mu_{k}$, 协方差 $\Sigma_{k}$ 和混合系数 $\pi_{k}$, 并计算似然函数初始值</p>
+</li>
+<li><p><strong>E step</strong>. 根据参数求解后验概率，即 $p(\mathbf{z}| \mathbf{x})$ ：</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+{\qquad \gamma\left(z_{n k}\right)=\frac{\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}}</script><ol>
+<li><strong>M step</strong>.根据后验概率更新模型参数：</li>
+</ol>
+<script type="math/tex; mode=display">
+{\mu}_{k}^{\mathrm{new}} =\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right) \mathbf{x}_{n}</script><script type="math/tex; mode=display">
+{\Sigma}_{k}^{\mathrm{new}} =\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}^{\mathrm{new}}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}^{\mathrm{new}}\right)^{\mathrm{T}}</script><script type="math/tex; mode=display">
+\pi_{k}^{\mathrm{new}} =\frac{N_{k}}{N}</script><p>​    其中</p>
+<script type="math/tex; mode=display">
+\qquad N_{k}=\sum_{n=1}^{N} \gamma\left(z_{n k}\right)</script><ol>
+<li>计算似然函数值：</li>
+</ol>
+<script type="math/tex; mode=display">
+\ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma})=\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}</script><p>​    根据似然的收敛情况继续迭代Step2。</p>
+<h2 id="9-3-An-alternative-view-of-EM"><a href="#9-3-An-alternative-view-of-EM" class="headerlink" title="9.3 An alternative view of EM"></a>9.3 An alternative view of EM</h2><p>EM 算法的目标是找到带隐变量模型的最大似然解，假设数据集$\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}$由 $N×D$ 的矩阵$\mathbf{X}$，其中第$n$行表示为 $\mathbf{x}_{n}^{\top}$，相似地，隐变量由 $N×K$ 的矩阵$\mathbf{Z}$，其中第$n$行表示为 $\mathbf{z}_{n}^{\top}$，模型参数用 $\boldsymbol{\theta}$ 表示，那么对数似然函数可以表示为：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}( \boldsymbol{\theta})=\ln p(\mathbf{X} | \boldsymbol{\theta})</script><p>由于似然函数是带有隐变量的，并不是一个数值，因此最大化 $\mathcal{L}$ 实际应该是最大化$\mathbb{E}_{\mathbf{z}}[\mathcal{L}]$ ，所以：</p>
+<script type="math/tex; mode=display">
+\mathbb{E}_{\mathbf{z}}[\mathcal{L}]=\mathbb{E}_{\mathbf{z}}[\ln p(\mathbf{X,Z} | \boldsymbol{\theta})]</script><p>上式中，带隐变量的似然也就是把联合分布对隐变量求<strong>期望</strong>。对于每个观测变量 $\mathbf{X}$ 都有一个对应的隐变量 $\mathbf{Z}$ ，也就是说 $\{\mathbf{X}, \mathbf{Z}\}$ 在一起是一组完整的数据，称作<em><code>complete</code></em> 数据，对于单独一个 $\mathbf{X}$ 是不完全数据，称作<em><code>incomplete</code></em> 数据。对于一般问题，我们掌握的往往是不完全数据 $\mathbf{X}$ 而不是完全数据 $\{\mathbf{X}, \mathbf{Z}\}$ ，而我们对隐变量的认知一般表示为后验概率$p(\mathbf{Z} |\mathbf{X}, \boldsymbol{\theta})$，因此我们往往先根据观测值和初始参数，求解隐变量的后验概率，后验得到之后，期望也就可以表示出来了，因此这一步就是E-step, 后面的M-step就是最大化期望求解新的 $\boldsymbol{\theta}$。</p>
+<p>在<strong>E-step</strong>中，用当前的参数 $\boldsymbol{\theta}^{old}$ 来求解后验 $p(\mathbf{Z} |\mathbf{X}, \boldsymbol{\theta}^{old})$ ，从而表示完全数据的期望，有了隐变量的分布，就可以用积分求期望了，此处引入目标期望的新表示$\mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text {old }}\right)$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text {old }}\right)
+=&\mathbb{E}_{\mathbf{z}}[\mathcal{L}] 
+= \int_{z} p(\mathbf{Z})\mathcal{L}  d z
+\\=& \int_{z} p(\mathbf{Z})\ln p(\mathbf{X,Z} | \boldsymbol{\theta})  d z
+\\=& \int_{z} p(\mathbf{Z} |\mathbf{X}, \boldsymbol{\theta}^{old})\ln p(\mathbf{X,Z} | \boldsymbol{\theta})  d z
+\\离散情况=& \sum_{\mathbf{Z}}p(\mathbf{Z} |\mathbf{X}, \boldsymbol{\theta}^{old})\ln p(\mathbf{X,Z} | \boldsymbol{\theta})
+\end{aligned}</script><p>请注意，这个期望函数是人为设计成这样的，对数$\ln$ 直接作用在联合分布上，是为了最大化方便求解，其收敛性得到证明了。</p>
+<p>在M-step中，通过最大化期望值来更新参数得到 $\boldsymbol{\theta}^{new}$ :</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\theta}^{\text {new }}=\underset{\boldsymbol{\theta}}{\arg \max } \mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text {old }}\right)</script><p>以上两步就是EM的通用更新方式，理论上，每次更新 $\boldsymbol{\theta}^{new}$ 都会使得$\mathbb{E}_{\mathbf{z}}[\mathcal{L}]$ 更大，直到收敛到极值。如果给了参数的先验知识 $p(\boldsymbol{\theta})$ ，EM算法也可以用于求解最大后验概率MAP，E-step是一样的，只是M-step加上了一项：$\mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text {old }}\right)+\ln p(\boldsymbol{\theta})$ ，有了先验之后，GMM的奇异值问题就不会出现了。此外，EM算法也可以用于处理缺失值情况。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GMM/" rel="tag"># GMM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/16/Pytorch语法/" rel="next" title="Pytorch语法">
+                <i class="fa fa-chevron-left"></i> Pytorch语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTgyNC8xODM3MA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Gengxiang">
+            
+              <p class="site-author-name" itemprop="name">Gengxiang</p>
+              <p class="site-description motion-element" itemprop="description">某航空人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gengxiangc" title="GitHub &rarr; https://github.com/gengxiangc" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:cgx@nuaa.edu.com" title="E-Mail &rarr; mailto:cgx@nuaa.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/Tangmei_can" title="Weibo &rarr; https://weibo.com/Tangmei_can" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-K-means-Clustering"><span class="nav-number">1.</span> <span class="nav-text">9.1 $K$-means Clustering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2-Mixture-of-Gaussians"><span class="nav-number">2.</span> <span class="nav-text">9.2 Mixture of Gaussians</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-1-Mximum-likelihood"><span class="nav-number">2.1.</span> <span class="nav-text">9.2.1 Mximum likelihood</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-2-EM-for-Gaussian-mixtures"><span class="nav-number">2.2.</span> <span class="nav-text">9.2.2 EM for Gaussian mixtures</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3-An-alternative-view-of-EM"><span class="nav-number">3.</span> <span class="nav-text">9.3 An alternative view of EM</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">苏ICP备18055599号 </a>&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengxiang</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+   
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+   
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      window.livereOptions = {
+        refer: '2019/12/11/Mixture of Gaussians/'
+      };
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
