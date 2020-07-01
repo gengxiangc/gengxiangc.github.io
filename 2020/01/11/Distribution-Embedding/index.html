@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+<meta name="keywords" content="迁移学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Distribution Embedding">
+<meta property="og:url" content="http://tangmeii.cn/2020/01/11/Distribution-Embedding/index.html">
+<meta property="og:site_name" content="Tangmeii_Sites">
+<meta property="og:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-13T06:48:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Distribution Embedding">
+<meta name="twitter:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+
+
+
+
+
+
+  <link rel="canonical" href="http://tangmeii.cn/2020/01/11/Distribution-Embedding/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Distribution Embedding | Tangmeii_Sites</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tangmeii_Sites</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2020/01/11/Distribution-Embedding/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gengxiang">
+      <meta itemprop="description" content="某航空人">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tangmeii_Sites">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Distribution Embedding
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-11 21:04:32" itemprop="dateCreated datePublished" datetime="2020-01-11T21:04:32+08:00">2020-01-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-13 14:48:53" itemprop="dateModified" datetime="2020-01-13T14:48:53+08:00">2020-01-13</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。</p>
+<h3 id="条件嵌入算子"><a href="#条件嵌入算子" class="headerlink" title="条件嵌入算子"></a>条件嵌入算子</h3><p>交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。</p>
+<script type="math/tex; mode=display">
+\mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(Y) \otimes \phi(X)]=\mu_{\mathbb{P}_{Y X}}</script><p>边缘嵌入算子定义</p>
+<script type="math/tex; mode=display">
+\mu_{\mathbb{P}}=\mathbb{E}_{\mathbf{x} \sim \mathbb{P}}[\varphi(\mathbf{x}-\cdot)]=\varphi * \mathbb{P}</script><p>边缘嵌入算子的估计值：可以理解为半个映射</p>
+<script type="math/tex; mode=display">
+\hat{\mu}_{\mathbb{P}}:=\frac{1}{n} \sum_{i=1}^{n} k\left(\mathbf{x}_{i}, \cdot\right)</script><p>条件嵌入算子 $\mathcal{U}_{Y | X}: \mathscr{H} \rightarrow \mathscr{G}$ 为算子，是分布$P(Y | X)$的均值嵌入，即函数到函数的映射</p>
+<script type="math/tex; mode=display">
+\mathcal{U}_{Y | X}:=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1}</script><p>而条件嵌入值 $\mathcal{U}_{Y | \mathbf{x}_<em>} \in \mathscr{G}$ 为预测值，是分布$P(Y | X=\mathbf{x}_</em>)$的嵌入:</p>
+<script type="math/tex; mode=display">
+\mathcal{U}_{Y | \mathbf{x}_*}:=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1} k(\mathbf{x}_*, \cdot)</script><h3 id="条件嵌入算子估计"><a href="#条件嵌入算子估计" class="headerlink" title="条件嵌入算子估计"></a>条件嵌入算子估计</h3><p>当我们有观测值$\mathbf{X},\mathbf{Y}$的时侯，条件嵌入算子就可以估计了。设映射$\phi:\mathcal{X} \rightarrow \mathscr{H} \text { and } \varphi: \mathcal{Y} \rightarrow \mathscr{G}$, 且$\Phi:=\left[\varphi\left(\mathbf{y}_{1}\right), \ldots, \varphi\left(\mathbf{y}_{n}\right)\right]^{\top} \text { 且} \Upsilon:=\left[\phi\left(\mathbf{x}_{1}\right), \ldots, \phi\left(\mathbf{x}_{n}\right)\right]^{\top}$ ，则有：</p>
+<p>条件均值嵌入估计，即给定$\mathbf{X,Y}$预测$\mathbf{x_*}$：</p>
+<script type="math/tex; mode=display">
+\begin{array}
+\hat{\mu}_{Y | \mathbf{x}_*}&=\widehat{\mathcal{C}}_{Y X}\left(\widehat{\mathcal{C}}_{X X}+\lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
+&=\frac{1}{n} \Phi \Upsilon^{\top}\left(\frac{1}{n} \Upsilon \Upsilon^{\top}+\lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
+&=\Phi \Upsilon^{\top}\left(\Upsilon \Upsilon^{\top}+n \lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
+&=\Phi\left(\Upsilon^{\top} \Upsilon+n \lambda \mathbf{I}_{n}\right)^{-1} \Upsilon^{\top} k(\mathbf{x}_*, \cdot) \\
+&=\Phi\left(\mathbf{K}+n \lambda \mathbf{I}_{n}\right)^{-1} \mathbf{k}_{\mathbf{Xx}_*}
+\end{array}</script><p>请注意，<strong>条件均值嵌入</strong>非常像最小二乘解析解，其实一个道理，具体如下：</p>
+<script type="math/tex; mode=display">
+\begin{array}
+1\mathbf{w}\mathbf{X} =\mathbf{Y}\\
+\mathbf{w}\mathbf{X}\mathbf{X}^{\top}=\mathbf{Y}\mathbf{X}^{\top}\\
+\mathbf{w}=\mathbf{Y}\mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}\\
+\mathbf{w}=\mathbf{K}_\mathbf{YX}(\mathbf{K}_\mathbf{XX}+\lambda\mathbf{I})^{-1}\\
+有条件： \mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})=\mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})\\
+ 先右乘： (\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}再左乘 \mathbf{Y}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}\\
+ 即得到：\mathbf{w}=\mathbf{Y}(\mathbf{X}^{\top}\mathbf{X}+\lambda\mathbf{I})^{-1}\mathbf{X}^{\top}\\
+ 核表示：\mathbf{w}=\Phi(\mathbf{K}_{\mathbf{x}\mathbf{x}}+\lambda\mathbf{I})^{-1}\Upsilon\\
+
+\end{array}</script><h3 id="核运算规则"><a href="#核运算规则" class="headerlink" title="核运算规则"></a>核运算规则</h3><p>条件算子到边缘算子的关系为：</p>
+<script type="math/tex; mode=display">
+\mu_{X}=\mathbb{E}_{Y}\left[\mathcal{U}_{X | Y} \varphi(Y)\right]=\mathcal{U}_{X | Y} \mathbb{E}_{Y}[\varphi(Y)]=\mathcal{U}_{X | Y} \mu_{Y}</script><p>边缘算子的估计值为【注意这里$XY$和上问有调换，其实都一样】：</p>
+<script type="math/tex; mode=display">
+\hat{\mu}_{X}=\hat{\mathcal{U}}_{X | Y} \hat{\mu}_{Y}=\widehat{\mathcal{C}}_{X Y} \hat{\mathcal{C}}_{Y Y}^{-1} \hat{\mu}_{Y}=\Upsilon(\mathbf{L}+n \lambda \mathbf{I})^{-1} \tilde{\mathbf{L}} \alpha</script><p>请注意，这里的意思是 $\hat{\mathcal{U}}_{X | Y}$已知的情况下，如何根据给定的 $\hat{\mu}_{Y}$ 得到对应的 $\hat{\mu}_{X}$。换成上面的核岭回归就容易理解了， $\hat{\mathcal{U}}_{X | Y}$ 相当于求解出的系数$\mathbf{w}$，有了系数之后，给输入$Y$，即可得到输出$X$。</p>
+<p>联合分布嵌入算子表示为：</p>
+<script type="math/tex; mode=display">
+\mu_{X Y}=\mathcal{U}_{X | Y} \mu_{Y}^{\otimes}=\mathcal{U}_{Y | X} \mu_{X}^{\otimes}</script><p>其中$\mu_{X}^{\otimes}:=\mathbb{E}_{X}[\phi(X) \otimes \phi(X)]$ and $\mu_{Y}^{\otimes}:=\mathbb{E}_{Y}[\varphi(Y) \otimes \varphi(Y)]$ , 用方差算子的方式表示为：</p>
+<script type="math/tex; mode=display">
+\mathcal{C}_{X Y}=\mathcal{U}_{X | Y} \mathcal{C}_{Y Y} \quad and \quad \mathcal{C}_{Y X}=\mathcal{U}_{Y | X} \mathcal{C}_{X X}</script><h3 id="条件独立判据"><a href="#条件独立判据" class="headerlink" title="条件独立判据"></a>条件独立判据</h3><p>假设联合分布满足：$P(X,Y,Z)=P(X|Z)P(Y|Z)P(Z)$，即$X,Y$是条件$Z$下的两个独立变量：</p>
+<p>2008年提出标准化条件交叉方差算子：</p>
+<script type="math/tex; mode=display">
+\mathcal{V}_{Y X | Z}:=\mathcal{V}_{Y X}-\mathcal{V}_{Y Z} \mathcal{V}_{Z X}</script><p>其中 $\mathcal{C}_{Y X}=\mathcal{C}_{Y Y}^{1 / 2} \mathcal{V}_{Y X} \mathcal{C}_{X X}^{1 / 2}$ ，类似于协方差矩阵标准化一样，基于此定义，可以得到偏差判据：</p>
+<script type="math/tex; mode=display">
+I_{condition}(X, Y | Z)=\left\|V_{\ddot{Y} \dot{X} | Z}\right\|_{H S}^{2}</script><p>那么这个判据可以盘算$X,Y$是否条件独立。 </p>
+<h3 id="条件嵌入分布差异判据"><a href="#条件嵌入分布差异判据" class="headerlink" title="条件嵌入分布差异判据"></a>条件嵌入分布差异判据</h3><p>目前有Zhang和Wang两种，经过分析，还是决定用Wang的HS判据</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/迁移学习/" rel="tag"># 迁移学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/09/GMMTL_2020/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/18/近似推断/" rel="prev" title="Hexo 重要操作">
+                Hexo 重要操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTgyNC8xODM3MA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Gengxiang">
+            
+              <p class="site-author-name" itemprop="name">Gengxiang</p>
+              <p class="site-description motion-element" itemprop="description">某航空人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gengxiangc" title="GitHub &rarr; https://github.com/gengxiangc" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:cgx@nuaa.edu.com" title="E-Mail &rarr; mailto:cgx@nuaa.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/Tangmei_can" title="Weibo &rarr; https://weibo.com/Tangmei_can" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件嵌入算子"><span class="nav-number">1.</span> <span class="nav-text">条件嵌入算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件嵌入算子估计"><span class="nav-number">2.</span> <span class="nav-text">条件嵌入算子估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核运算规则"><span class="nav-number">3.</span> <span class="nav-text">核运算规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件独立判据"><span class="nav-number">4.</span> <span class="nav-text">条件独立判据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件嵌入分布差异判据"><span class="nav-number">5.</span> <span class="nav-text">条件嵌入分布差异判据</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">苏ICP备18055599号 </a>&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengxiang</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+   
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+   
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      window.livereOptions = {
+        refer: '2020/01/11/Distribution-Embedding/'
+      };
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

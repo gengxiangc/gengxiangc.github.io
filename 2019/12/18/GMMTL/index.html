@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="2019年12月20日[TOC] 1. 问题定义假设已有源回归任务包含大量训练数据 $\mathcal{D}_S=\left\{\left(\mathbf{x}_1^s,y_1^s\right),\ldots,\left(\mathbf{x}_{n_s}^s,y_{n_s}^s\right)\right\}$ , 其中 $\mathbf{x}_i^s\in\mathcal{X}_S$ 是源数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tangmeii_Sites">
+<meta property="og:url" content="http://tangmeii.cn/2019/12/18/GMMTL/index.html">
+<meta property="og:site_name" content="Tangmeii_Sites">
+<meta property="og:description" content="2019年12月20日[TOC] 1. 问题定义假设已有源回归任务包含大量训练数据 $\mathcal{D}_S=\left\{\left(\mathbf{x}_1^s,y_1^s\right),\ldots,\left(\mathbf{x}_{n_s}^s,y_{n_s}^s\right)\right\}$ , 其中 $\mathbf{x}_i^s\in\mathcal{X}_S$ 是源数据">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/18/GMMTL/Fig1%20Illustration%20of%20conditional%20distribution%20shift.svg">
+<meta property="og:image" content="http://tangmeii.cn/2019/12/18/GMMTL/Fig2%20GMMTL.svg">
+<meta property="og:updated_time" content="2019-12-27T01:27:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tangmeii_Sites">
+<meta name="twitter:description" content="2019年12月20日[TOC] 1. 问题定义假设已有源回归任务包含大量训练数据 $\mathcal{D}_S=\left\{\left(\mathbf{x}_1^s,y_1^s\right),\ldots,\left(\mathbf{x}_{n_s}^s,y_{n_s}^s\right)\right\}$ , 其中 $\mathbf{x}_i^s\in\mathcal{X}_S$ 是源数据">
+<meta name="twitter:image" content="http://tangmeii.cn/2019/12/18/GMMTL/Fig1%20Illustration%20of%20conditional%20distribution%20shift.svg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://tangmeii.cn/2019/12/18/GMMTL/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | Tangmeii_Sites</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tangmeii_Sites</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2019/12/18/GMMTL/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gengxiang">
+      <meta itemprop="description" content="某航空人">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tangmeii_Sites">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-18 20:21:58" itemprop="dateCreated datePublished" datetime="2019-12-18T20:21:58+08:00">2019-12-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-27 09:27:22" itemprop="dateModified" datetime="2019-12-27T09:27:22+08:00">2019-12-27</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<hr>
+<h1 id="2019年12月20日"><a href="#2019年12月20日" class="headerlink" title="2019年12月20日"></a><strong>2019年12月20日</strong></h1><p>[TOC]</p>
+<h3 id="1-问题定义"><a href="#1-问题定义" class="headerlink" title="1. 问题定义"></a>1. 问题定义</h3><p>假设已有源回归任务包含大量训练数据 $\mathcal{D}_S=\left\{\left(\mathbf{x}_1^s,y_1^s\right),\ldots,\left(\mathbf{x}_{n_s}^s,y_{n_s}^s\right)\right\}$ , 其中 $\mathbf{x}_i^s\in\mathcal{X}_S$ 是源数据特征， $y_i^s\in\mathcal{Y}_S$ 是源数据标签，回归任务因此标签为连续变量。同时有另一个相似的回归任务，仅有少量的标签数据 $\mathcal{D}_T=\left\{\left(\mathbf{x}_1^t,y_1^t\right),\ldots,\left(\mathbf{x}_{n_t}^t,y_{n_t}^t\right)\right\}$ , 其中 $\mathbf{x}_i^t  \in \mathcal{X}_T$ 是输入， $y_i^t\in\mathcal{Y}_T$ 对应的输出。此处所关注的是两个回归任务的条件偏移场景，即假设边缘分布相同 ​，而条件分布不同，即$P\left(y_s\middle|\mathbf{x}_s\right)\neq P\left(y_t\middle|\mathbf{x}_t\right)$。</p>
+<p>为了后面更加清晰描述，此处定义清楚两数据集的所需表示：</p>
+<p>源数据    $\mathcal{D}_s$, 包含输入特征矩阵 ${\mathbf{X}}_s\in\mathbb{R}^{n_s\times d}$ 和输出标签向量 ${\mathbf{y}}_s\in\mathbb{R}^{n_s\times 1}$ :</p>
+<script type="math/tex; mode=display">
+\mathbf{X}_{s}=\left[\mathbf{x}_{1}^{s}, \mathbf{x}_{2}^{s}, \ldots, \mathbf{x}_{n_{s}}^{s}\right]^{\top}, \mathbf{y}_{s}=\left[y_{1}^{s}, y_{2}^{s}, \ldots, y_{n_{s}}^{s}\right]^{\top}</script><p>目标数据 $\mathcal{D}_t$, 包含输入特征矩阵 ${\mathbf{X}}_t\in\mathbb{R}^{n_t\times d}$ 和输出标签向量 ${\mathbf{y}}_t\in\mathbb{R}^{n_t\times 1}$ :</p>
+<script type="math/tex; mode=display">
+\mathbf{X}_{t}=\left[\mathbf{x}_{1}^{t}, \mathbf{x}_{2}^{t}, \ldots, \mathbf{x}_{n_{t}}^{t}\right]^{\top}, \mathbf{y}_{t}=\left[y_{1}^{t}, y_{2}^{t}, \ldots, y_{n_{t}}^{t}\right]^{\top}</script><h3 id="2-问题转化"><a href="#2-问题转化" class="headerlink" title="2. 问题转化"></a>2. 问题转化</h3><p>回归问题的条件分布差异表示如下图，一般来说，在不考虑输出不确定度的情况下，我们用条件分布的期望来表示回归函数的输出，即 $\mathbb{E}[y_s|x]$ 。</p>
+<p><img src="/2019/12/18/GMMTL/Fig1 Illustration of conditional distribution shift.svg" style="zoom:70%;"></p>
+<p>因此，条件分布的差异在回归问题上体现为条件期望的差异 $\mathbb{E}[y_s|\mathbf{x}]\neq\mathbb{E}[y_t|\mathbf{x}]$ ，在整个特征空间范围内，将条件分布差异定义为偏差项(discrepance)定义为 $h(\mathbf{x})$，由于期望取值为连续变量，因此残差项总可以表示为：</p>
+<script type="math/tex; mode=display">
+h(\mathbf{x})=\mathbb{E}[y_s|\mathbf{x}]-\mathbb{E}[y_t|\mathbf{x}]</script><p>因此迁移问题转换成求解偏差函数 $h(\mathbf{x})$的问题，若目标数据的数量 $\mathcal{D}_T$ 是足够多的，那么问题很简单，可以表示最小化如下损失函数：</p>
+<script type="math/tex; mode=display">
+J=\int_{\mathcal{X}_T} \{h(\mathbf{x})+\mathbb{E}[y_t|\mathbf{x}]-\mathbb{E}[y_s|\mathbf{x}]\}^{2} p(\mathbf{x}) \mathrm{d} \mathbf{x}</script><p>问题是，之所以需要迁移，是因为目标数据的数量是不充分的，对于直接求解 $\mathbb{E}[y_t|\mathbf{x}]$ 是不充分的也就是说对于直接求解 $\mathbb{E}[L]$是不充分的，因此我们需要利用其他假设信息来对问题进行转化，考虑到 $P(\mathbf{x}_s)=P(\mathbf{x}_t)$ ，因此我们用一组$K$维混合高斯分布来描述两个领域的特征空间分布：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p>即$P(\mathbf{x}_s)=P(\mathbf{x}_t)=p(\mathbf{x})$，其中$\sum_{k=1}^{K} \pi_{k}=1$ 为高斯混合模型的混合系数。此时，为了描述变量对与每个高斯高斯分布的归属情况， 我们引入变量 $\mathbf{z}\in\mathbb{R}^{K\times 1}$ ，向量 $\mathbf{z}$ 只有一个元素为1，其他元素都为0，也就是$\sum_{k} z_{k}=1$， 因此向量 $\mathbf{z}$ 共有 $K$ 种状态，对于样本 $\mathbf{x}$ 归属于第 $k$ 个高斯分布的情况，即 $z_k=1$，其概率可以表示为高斯混合模型的混合系数，即$p\left(z_{k}=1\right)=\pi_{k}$。由于向量中只有一个量为1，其他都为0，那么向量 $\mathbf{z}$ 的概率可以表示为 $p(\mathbf{z})=\prod_{k=1}^{K} \pi_{k}^{z_{k}}$。</p>
+<p>在隐变量 $\mathbf{z}$ 的存在之下，观测样本的概率可以表示为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\int_{\mathbf{z}}p(\mathbf{x}, \mathbf{z})\mathrm{d}\mathbf{z}=\int_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} | \mathbf{z})\mathrm{d}\mathbf{z}=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p><strong>请注意，重要的一步，由于变量 $\mathbf{x}$ 的概率由变量 $\mathbf{z}$ 隐式定义，那么我们认为变量 $\mathbf{x}$ 的偏差函数可以由变量 $\mathbf{z}$ 的偏差函数定义，因此定义隐变量的偏差函数 $w(\mathbf{\mathbf{z}})$，将 $\mathbf{x}$ 的偏差函数表示为</strong>：</p>
+<script type="math/tex; mode=display">
+h(\mathbf{x})=\int_{\mathbf{z}}w(\mathbf{z})p(\mathbf{z} | \mathbf{x})\mathrm{d}\mathbf{z}=\sum_{k=1}^{K} w(z_{k}=1)p(z_{k}=1 | \mathbf{x})</script><p>经过转化可见，求解$h(\mathbf{x})$的问题转化为更容易求解的 $r(\mathbf{\mathbf{z}})$，由于变量 $\mathbf{z}$ 共有$K$个状态，因此$w(z_{k}=1)$ 可以简化表示为 $w(k)$。此时损失函数(4)可以表示为：</p>
+<script type="math/tex; mode=display">
+J=\sum_{n=1}^{n_t}\sum_{k=1}^{K} \{w(k)p(z_{k}=1 | \mathbf{x}_n^t)+\mathbb{E}[y_t|\mathbf{x}_n^t]-\mathbb{E}[y_s|\mathbf{x}_n^t]\}^{2}</script><h3 id="3-求解隐变量偏差函数"><a href="#3-求解隐变量偏差函数" class="headerlink" title="3 求解隐变量偏差函数"></a>3 求解隐变量偏差函数</h3><p>关于偏差函数  $w(\mathbf{\mathbf{z}})$，以下给出三种解法。</p>
+<h4 id="3-1-Method-A-最小平方误差求解"><a href="#3-1-Method-A-最小平方误差求解" class="headerlink" title="3.1 Method A: 最小平方误差求解"></a>3.1 Method A: 最小平方误差求解</h4><p>对于损失函数(8)，对于给定目标数据集 $\mathcal{D}_T$, $\mathbb{E}[y_t|\mathbf{x}_n^t]=y^t_n$ 为已知量。设基于源数据 $\mathcal{D}_S$训练回归模型$f_s(\mathbf{x})$，那么可得 $\mathbb{E}[y_s|\mathbf{x}_n^t]=f_s(\mathbf{x}_n^t)$ 。另一个未知量$p(\mathbf{z} | \mathbf{x})$可由贝叶斯公式得到：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{z} | \mathbf{x})=\frac{p(\mathbf{x} | \mathbf{z})p( \mathbf{z})}{p(\mathbf{x})}={\frac{ \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right) \prod_{k=1}^{K} \pi_{k}^{z_{k}}}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}}</script><p>令$\gamma\left(z_{n k}\right)= p\left(z_{k}=1 | \mathbf{x}_n\right)$，那么：</p>
+<script type="math/tex; mode=display">
+\gamma\left(z_{n k}\right)=\frac{\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}</script><p>令因此，损失函数可以表示为：</p>
+<script type="math/tex; mode=display">
+J=\sum_{n=1}^{n_t}\sum_{k=1}^{K} \{w(k)\gamma(z_{n k})+y^t_n-f_s(\mathbf{x}_n^t)\}^{2}+\lambda\mathbf{w}^{\top}\mathbf{w}</script><p>对损失函数求导，并令导数等于零得：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Gamma}\mathbf{w}+\mathbf{y}_{t}-f_s(\mathbf{X}_{t})=0</script><p>因此可得最小二乘解：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}=(\mathbf{\Gamma}^{\top}\mathbf{\Gamma}+\lambda\mathbf{I})^{-1}\mathbf{\Gamma}^{\top}(f_s(\mathbf{X}_{t})-\mathbf{y}_{t})</script><p>式子中矩阵 $\Gamma\in\mathbb{R}^{n_t\times K}$ 的每个元素为$\gamma(z_{n k})=p(z_k=1 | \mathbf{x}_t^n)$ , $\mathbf{w}\in\mathbb{R}^{K\times 1}$。</p>
+<h4 id="3-2-Method-B-Method-What"><a href="#3-2-Method-B-Method-What" class="headerlink" title="3.2 Method B: Method What?"></a>3.2 Method B: Method What?</h4><p>第二种思路没想好对应的什么理论。逆向思维思考问题，首先我有：</p>
+<script type="math/tex; mode=display">
+h(\mathbf{x})=\int_{\mathbf{z}}w(\mathbf{z})p(\mathbf{z} | \mathbf{x})\mathrm{d}\mathbf{z}</script><p><strong>直观上的一组解法如下，不过我不知道为什么可以这么解：</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w(\mathbf{z})=&\frac{\int_{n_t}h(\mathbf{x})p(\mathbf{x} | \mathbf{z})\mathrm{d}\mathbf{x}}{\int_{n_t}p(\mathbf{x} | \mathbf{z})\mathrm{d}\mathbf{x}}
+
+\end{aligned}</script><p>$w(\mathbf{z})$ 对应的是$K$ 个规则的偏差值，因此每个规则对应的偏差值可以表示为：</p>
+<script type="math/tex; mode=display">
+w_k=\frac{\sum_{n=1}^{n_t}h(\mathbf{x}_n^t)p(\mathbf{x}|z_{k}=1 )}{\sum_{n=1}^{n_t}p(\mathbf{x}_n^t|z_{k}=1 )}
+=\frac{\sum_{n=1}^{n_t}h(\mathbf{x}_n^t)\pi_{k} \mathcal{N}\left(\mathbf{x}_n^t | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{n=1}^{n_t}\pi_{k} \mathcal{N}\left(\mathbf{x}_n^t | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}</script><p>即为：</p>
+<script type="math/tex; mode=display">
+w_k=\frac{\sum_{n=1}^{n_t}(f_s(\mathbf{x}_n^t)-y^t_n)\pi_{k} \mathcal{N}\left(\mathbf{x}_n^t | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}{\sum_{n=1}^{n_t}\pi_{k} \mathcal{N}\left(\mathbf{x}_n^t | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)}</script><h4 id="3-3-Method-C-条件分布核适配"><a href="#3-3-Method-C-条件分布核适配" class="headerlink" title="3.3  Method C: 条件分布核适配"></a>3.3  Method C: 条件分布核适配</h4><p>参照CMU的论文，可以以适配条件分布核均值为约束，优化参数  $\mathbf{w}$，具体如下：</p>
+<p>我们目标定义为最佳偏置函数应满足条件嵌入算子匹配，即损失函数定义为</p>
+<script type="math/tex; mode=display">
+L=\left\|\hat{\mathcal{U}}\left[P_{\mathbf{y}_{s}^{new}| X_{s}} \right]-\hat{\mathcal{U}}\left[P_{\mathbf{y}_{t} | X_{t}}\right]\right\|_\mathscr{H}^{2}+\lambda\mathbf{w}^{\top}\mathbf{w}</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\mathbf{y}_{s}^{new}=\mathbf{y}_{s}-h(\mathbf{X}_s)=\mathbf{y}_{s}-\mathbf{\Gamma}_s\mathbf{w}</script><p>式子中矩阵 $\Gamma_s\in\mathbb{R}^{n_s\times K}$ 的每个元素为 $\gamma(z_{n k})=p(z_k=1 | \mathbf{x}_s^n)$ ， $\mathbf{w}\in\mathbb{R}^{K\times 1}$。</p>
+<p>条件嵌入算子表示为：</p>
+<script type="math/tex; mode=display">
+\hat{\mathcal{U}}\left[P_{Y | X}\right]=\Psi(Y)\left(K_{X X}+\lambda I\right)^{-1} \Phi^{\top}(X)</script><p>因此最终损失函数表示为：</p>
+<script type="math/tex; mode=display">
+L=\left\|\psi\left(\mathbf{y}_{s}^{new}\right)\left(K_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda I\right)^{-1} \phi^{\top}\left(\mathbf{X}_{s}\right)-\psi\left(\mathbf{y}_{t}\right)\left(K_{\mathbf{X}_{t} \mathbf{X}_{t}}+\lambda I\right)^{-1} \phi^{\top}\left(\mathbf{X}_{t}\right)\right\|_\mathscr{H}^{2}</script><p>可以用梯度下降法求解 $\mathbf{w}$ 。</p>
+<h3 id="4-曲线实验"><a href="#4-曲线实验" class="headerlink" title="4. 曲线实验"></a>4. 曲线实验</h3><p>sin曲线上实际测试如下，其中Method C的参数实在难调：</p>
+<p><img src="/2019/12/18/GMMTL/Fig2 GMMTL.svg" style="zoom:67%;"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/11/Mixture of Gaussians/" rel="next" title="Chapter 9 Mixture of Gaussians and EM">
+                <i class="fa fa-chevron-left"></i> Chapter 9 Mixture of Gaussians and EM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/27/GMMTL_Z/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTgyNC8xODM3MA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Gengxiang">
+            
+              <p class="site-author-name" itemprop="name">Gengxiang</p>
+              <p class="site-description motion-element" itemprop="description">某航空人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gengxiangc" title="GitHub &rarr; https://github.com/gengxiangc" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:cgx@nuaa.edu.com" title="E-Mail &rarr; mailto:cgx@nuaa.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/Tangmei_can" title="Weibo &rarr; https://weibo.com/Tangmei_can" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2019年12月20日"><span class="nav-number">1.</span> <span class="nav-text">2019年12月20日</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题定义"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 问题定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-问题转化"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 问题转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-求解隐变量偏差函数"><span class="nav-number">1.0.3.</span> <span class="nav-text">3 求解隐变量偏差函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Method-A-最小平方误差求解"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">3.1 Method A: 最小平方误差求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Method-B-Method-What"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">3.2 Method B: Method What?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-Method-C-条件分布核适配"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">3.3  Method C: 条件分布核适配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-曲线实验"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 曲线实验</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">苏ICP备18055599号 </a>&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengxiang</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+   
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+   
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      window.livereOptions = {
+        refer: '2019/12/18/GMMTL/'
+      };
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

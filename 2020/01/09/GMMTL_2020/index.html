@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="2020年01月09日 方案示例[TOC] 0.七个问题背景：数据驱动方法广泛应用于各个领域，而且需要标签数据。制造领域许多问题的标签数据获取成本非常高，因此一个重要的思路的就是迁移学习，而制造领域中常见的一类问题是条件分布偏差的回归问题，几乎没有得到关注。 问题：如何解决条件分布差异的回归迁移问题 现状：如下  将目标求解问题转化为求权重问题，基于目标数据求源数据的权重 将目标求解问题转化为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tangmeii_Sites">
+<meta property="og:url" content="http://tangmeii.cn/2020/01/09/GMMTL_2020/index.html">
+<meta property="og:site_name" content="Tangmeii_Sites">
+<meta property="og:description" content="2020年01月09日 方案示例[TOC] 0.七个问题背景：数据驱动方法广泛应用于各个领域，而且需要标签数据。制造领域许多问题的标签数据获取成本非常高，因此一个重要的思路的就是迁移学习，而制造领域中常见的一类问题是条件分布偏差的回归问题，几乎没有得到关注。 问题：如何解决条件分布差异的回归迁移问题 现状：如下  将目标求解问题转化为求权重问题，基于目标数据求源数据的权重 将目标求解问题转化为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tangmeii.cn/2020/01/09/GMMTL_2020/Fig1%20Illustration%20of%20conditional%20distribution%20shift.svg">
+<meta property="og:image" content="http://tangmeii.cn/2020/01/09/GMMTL_2020/Fig2%20GMMTL.svg">
+<meta property="og:updated_time" content="2020-06-02T13:43:47.487Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tangmeii_Sites">
+<meta name="twitter:description" content="2020年01月09日 方案示例[TOC] 0.七个问题背景：数据驱动方法广泛应用于各个领域，而且需要标签数据。制造领域许多问题的标签数据获取成本非常高，因此一个重要的思路的就是迁移学习，而制造领域中常见的一类问题是条件分布偏差的回归问题，几乎没有得到关注。 问题：如何解决条件分布差异的回归迁移问题 现状：如下  将目标求解问题转化为求权重问题，基于目标数据求源数据的权重 将目标求解问题转化为">
+<meta name="twitter:image" content="http://tangmeii.cn/2020/01/09/GMMTL_2020/Fig1%20Illustration%20of%20conditional%20distribution%20shift.svg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://tangmeii.cn/2020/01/09/GMMTL_2020/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | Tangmeii_Sites</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tangmeii_Sites</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tangmeii.cn/2020/01/09/GMMTL_2020/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gengxiang">
+      <meta itemprop="description" content="某航空人">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tangmeii_Sites">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-09 09:48:37" itemprop="dateCreated datePublished" datetime="2020-01-09T09:48:37+08:00">2020-01-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-02 21:43:47" itemprop="dateModified" datetime="2020-06-02T21:43:47+08:00">2020-06-02</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<hr>
+<h1 id="2020年01月09日-方案示例"><a href="#2020年01月09日-方案示例" class="headerlink" title="2020年01月09日 方案示例"></a><strong>2020年01月09日</strong> 方案示例</h1><p>[TOC]</p>
+<h3 id="0-七个问题"><a href="#0-七个问题" class="headerlink" title="0.七个问题"></a>0.七个问题</h3><p><strong>背景</strong>：数据驱动方法广泛应用于各个领域，而且需要标签数据。制造领域许多问题的标签数据获取成本非常高，因此一个重要的思路的就是迁移学习，而制造领域中常见的一类问题是条件分布偏差的回归问题，几乎没有得到关注。</p>
+<p><strong>问题：</strong>如何解决条件分布差异的回归迁移问题</p>
+<p><strong>现状</strong>：如下</p>
+<ul>
+<li>将目标求解问题<strong>转化</strong>为求<strong>权重</strong>问题，基于目标数据求源数据的权重</li>
+<li>将目标求解问题<strong>转化</strong>为求<strong>映射</strong>问题，基于目标数据求映射</li>
+<li>将目标求解问题<strong>转化</strong>为求<strong>残差</strong>问题，基于目标数据求残差函数</li>
+</ul>
+<p><strong>GAP</strong>:  现有方法难以保证精度和稳定性，仍依赖大量目标数据</p>
+<p><strong>难点</strong>：现有的转化方式并没有改变‘<strong>目标不充分</strong>’问题的本质，仍是<strong>非适定问题</strong>。</p>
+<p><strong>创新点</strong>：利用边缘分布相等条件，将目标模型求解问题转化为解空间更小的低维问题。引入隐变量，使得难以求解的函数转化为有限个隐变量参数。</p>
+<p><strong>方案</strong>：</p>
+<ul>
+<li>迁移问题转换</li>
+<li>变量求解</li>
+<li>求边界泛化</li>
+</ul>
+<p><strong>验证</strong>：</p>
+<ul>
+<li><p>刀尖模态参数预测问题</p>
+</li>
+<li><p>末端负载预测问题</p>
+</li>
+<li><p>再找其他数据集</p>
+</li>
+</ul>
+<h3 id="1-问题定义"><a href="#1-问题定义" class="headerlink" title="1.问题定义"></a>1.问题定义</h3><p>假设已有源回归任务包含大量训练数据 $\mathcal{D}_S=\left\{\left(\mathbf{x}_1^s,y_1^s\right),\ldots,\left(\mathbf{x}_{n_s}^s,y_{n_s}^s\right)\right\}$ , 其中 $\mathbf{x}_i^s\in\mathcal{X}_S$ 是源数据特征， $y_i^s\in\mathcal{Y}_S$ 是源数据标签，回归任务因此标签为连续变量。同时有另一个相似的回归任务，仅有少量的标签数据 $\mathcal{D}_T=\left\{\left(\mathbf{x}_1^t,y_1^t\right),\ldots,\left(\mathbf{x}_{n_t}^t,y_{n_t}^t\right)\right\}$ , 其中 $\mathbf{x}_i^t  \in \mathcal{X}_T$ 是输入， $y_i^t\in\mathcal{Y}_T$ 对应的输出。此处所关注的是两个回归任务的条件偏移场景，即假设边缘分布相同 ​，而条件分布不同，即$p\left(y_s\middle|\mathbf{x}_s\right)\neq p\left(y_t\middle|\mathbf{x}_t\right)$。</p>
+<p>为了后面更加清晰描述，此处定义清楚两数据集的所需表示：</p>
+<p>源数据    $\mathcal{D}_s$, 包含输入特征矩阵 ${\mathbf{X}}_s\in\mathbb{R}^{n_s\times d}$ 和输出标签向量 ${\mathbf{y}}_s\in\mathbb{R}^{n_s\times 1}$ :</p>
+<script type="math/tex; mode=display">
+\mathbf{X}_{s}=\left[\mathbf{x}_{1}^{s}, \mathbf{x}_{2}^{s}, \ldots, \mathbf{x}_{n_{s}}^{s}\right]^{\top}, \mathbf{y}_{s}=\left[y_{1}^{s}, y_{2}^{s}, \ldots, y_{n_{s}}^{s}\right]^{\top}</script><p>目标数据 $\mathcal{D}_t$, 包含输入特征矩阵 ${\mathbf{X}}_t\in\mathbb{R}^{n_t\times d}$ 和输出标签向量 ${\mathbf{y}}_t\in\mathbb{R}^{n_t\times 1}$ :</p>
+<script type="math/tex; mode=display">
+\mathbf{X}_{t}=\left[\mathbf{x}_{1}^{t}, \mathbf{x}_{2}^{t}, \ldots, \mathbf{x}_{n_{t}}^{t}\right]^{\top}, \mathbf{y}_{t}=\left[y_{1}^{t}, y_{2}^{t}, \ldots, y_{n_{t}}^{t}\right]^{\top}</script><h3 id="2-问题转化"><a href="#2-问题转化" class="headerlink" title="2. 问题转化"></a>2. 问题转化</h3><p><img src="/2020/01/09/GMMTL_2020/Fig1 Illustration of conditional distribution shift.svg" style="zoom:60%;"></p>
+<h4 id="2-1-引出偏差分布"><a href="#2-1-引出偏差分布" class="headerlink" title="2.1 引出偏差分布"></a>2.1 引出偏差分布</h4><p>首先假设源模型和目标模型分别为$f_s(\mathbf{x})$ 和 $f_t(\mathbf{x})$，观测标签值表示为：</p>
+<script type="math/tex; mode=display">
+y_s=f_s(\mathbf{x})+\epsilon ,\ \ y_t=f_s(\mathbf{x})+\epsilon</script><p>由于源数据数量充分，因此认为$f_s(\mathbf{x})$ 是已知函数， $f_t(\mathbf{x})$是未知函数，待求。</p>
+<p>其中噪声服从均值0，方差$\sigma_n^2$ 的高斯分布，即：</p>
+<script type="math/tex; mode=display">
+\varepsilon \sim \mathcal{N}\left(0, \sigma_{n}^{2}\right)</script><p>因此，条件概率可以表示为：</p>
+<script type="math/tex; mode=display">
+p(y_s|\mathbf{x})=\mathcal{N}\left(f_s(\mathbf{x}), \sigma_{n}^{2}\right)</script><script type="math/tex; mode=display">
+p(y_t|\mathbf{x})=\mathcal{N}\left(f_t(\mathbf{x}), \sigma_{n}^{2}\right)</script><p>带入所有的样本，表示为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{y}_s|\mathbf{X}_s)=\mathcal{N}\left(f_s(\mathbf{X}_s), \sigma_{n}^{2}\right)</script><script type="math/tex; mode=display">
+p(\mathbf{y}_t|\mathbf{X}_t)=\mathcal{N}\left(f_t(\mathbf{X}_t), \sigma_{n}^{2}\right)</script><p>在整个特征空间范围内，将条件分布差异定义为偏差项(<code>discrepance</code>)定义为 $h(\mathbf{x})$，由于期望取值为连续变量，因此残差项总可以表示为：</p>
+<p><strong>这里是示意，概率是不能相减的</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+
+p(h|\mathbf{x}) &=\  p(y_t|\mathbf{x})-p(y_s|\mathbf{x})\\
+ &= \mathcal{N}\left(f_t(\mathbf{x}), \sigma_{n}^{2}\right)-\mathcal{N}\left(f_s(\mathbf{x}), \sigma_{n}^{2}\right) \\
+ &=\mathcal{N}(f_t(\mathbf{x})-f_s(\mathbf{x}),2\sigma_{n}^{2})
+\end{aligned}</script><p>因此迁移问题转换成求解偏差条件分布 $p(h|\mathbf{x})$， 由于$f_s(\mathbf{x})$ 和$f_t(\mathbf{x})$ 都是未知的，对于已有的目标数据 $\mathcal{D}_S$和 $\mathcal{D}_T$，数据样本也不一样，因此无法直接求解 $p(h|\mathbf{x})$ ，只能使得源数据加上偏差项之后，条件分布尽可能逼近目标数据，即：</p>
+<p>定义加偏置项之后的源数据为$[\mathbf{X}_s,\mathbf{y}_s^{new}]$，则有: </p>
+<script type="math/tex; mode=display">
+p(\mathbf{y}_s^{new}|\mathbf{X}_s) =  p(\mathbf{h}|\mathbf{X}_s)+p(y_s|\mathbf{X}_s)</script><p>从而满足</p>
+<script type="math/tex; mode=display">
+\mathbf{h}=\arg \min _{ \mathbf{h}\in \mathbb{R}^{ns}} Dist[(p(\mathbf{y}_s^{new}|\mathbf{X}_s) ,p(\mathbf{y}_t|\mathbf{X}_t) ]</script><p>此处的距离函数可以用核均值距离，也可以用条件期望代替每个分布，从而简化问题。然而，无论如何转化，所求解的未知量$\mathbf{h}\in \mathbb{R}^{ns}$ 的维度是很大的（$ns&lt;&lt;nt$），仅以此约束求解是相当不稳定的。<strong>在此我们要利用边缘分布相同条件，引入隐变量，使得难以求解的问题，转换为一个更加简单的问题</strong>。</p>
+<h4 id="2-2-高斯混合模型描述特征空间分布"><a href="#2-2-高斯混合模型描述特征空间分布" class="headerlink" title="2.2 高斯混合模型描述特征空间分布"></a>2.2 高斯混合模型描述特征空间分布</h4><p>考虑到 $p(\mathbf{x}_s)=p(\mathbf{x}_t)$ ，因此我们用一组$K$维混合高斯分布来描述两个领域的特征空间分布：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p>即$p(\mathbf{x}_s)=p(\mathbf{x}_t)=p(\mathbf{x})$，其中$\sum_{k=1}^{K} \pi_{k}=1$ 为高斯混合模型的混合系数。此时，为了描述变量对与每个高斯高斯分布的归属情况， 我们引入变量 $\mathbf{z}\in\mathbb{R}^{K\times 1}$ ，向量 $\mathbf{z}$ 只有一个元素为1，其他元素都为0，也就是$\sum_{k} z_{k}=1$， 因此向量 $\mathbf{z}$ 共有 $K$ 种状态，对于样本 $\mathbf{x}$ 归属于第 $k$ 个高斯分布的情况，即 $z_k=1$，其概率可以表示为高斯混合模型的混合系数，即$p\left(z_{k}=1\right)=\pi_{k}$。由于向量中只有一个量为1，其他都为0，那么向量 $\mathbf{z}$ 的概率可以表示为 $p(\mathbf{z})=\prod_{k=1}^{K} \pi_{k}^{z_{k}}$。</p>
+<p>在隐变量 $\mathbf{z}$ 的存在之下，观测样本$\mathbf{x}$的概率可以表示为：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x})=\int_{\mathbf{z}}p(\mathbf{x}, \mathbf{z})\mathrm{d}\mathbf{z}=\int_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} | \mathbf{z})\mathrm{d}\mathbf{z}=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \mathbf{\Sigma}_{k}\right)</script><p>在隐变量 $\mathbf{z}$ 的存在之下，偏差变量 $h$ 的概率可以表示为联合概率对隐变量的边缘化：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+p(h\mathbf{|x})& =\int_{\mathbf{z}}p(h, \mathbf{z}|\mathbf{x})\mathrm{d}\mathbf{z}\\
+注意区分概率，和ｘ取值，这个式子是错的
+\\
+p(h\mathbf{|x})& =\int_{\mathbf{z}} p(h|\mathbf{z}) p(\mathbf{z} | \mathbf{x})\mathrm{d}\mathbf{z} \\
+& =\sum_{k=1}^{K} p(h|z_{k}=1)p(z_{k}=1 | \mathbf{x})
+\end{aligned}</script><p>因此求解函数 $p(h\mathbf{|x})$ 的问题转变成了求解有限维隐变量偏差分布 $ p(h|\mathbf{z})$ 的问题。另一个未知量$p(\mathbf{z} | \mathbf{x})$可由贝叶斯公式得到：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{z} | \mathbf{x})=\frac{p(\mathbf{x} | \mathbf{z})p( \mathbf{z})}{p(\mathbf{x})}={\frac{ \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right) \prod_{k=1}^{K} \pi_{k}^{z_{k}}}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}}</script><p>令$\gamma\left(z_{n k}\right)= p\left(z_{k}=1 | \mathbf{x}_n\right)$，那么：</p>
+<script type="math/tex; mode=display">
+\gamma\left(z_{n k}\right)=\frac{\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} | \boldsymbol{\mu}_{j}, \mathbf{\Sigma}_{j}\right)}</script><p>令 $w_1=p(h|z_{k}=1)$<strong>这里错误</strong> , $\mathbf{w}=[w_1, w_2, …, w_k]^{\top}$ ， 则：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+p(h\mathbf{|x}) &=\sum_{k=1}^{K} w_k \gamma\left(z_{k}\right)\\ 不对
+\end{aligned}</script><p>此时，求解 $\mathbf{h}\in \mathbb{R}^{ns}$ 的问题，转换成了求解 $\mathbf{w}\in \mathbb{R}^{K}$ 如下，求解难度大大降低。</p>
+<h3 id="3-求解隐变量偏差函数"><a href="#3-求解隐变量偏差函数" class="headerlink" title="3 求解隐变量偏差函数"></a>3 求解隐变量偏差函数</h3><h4 id="3-1-以条件分布算子的HS范数定义损失函数"><a href="#3-1-以条件分布算子的HS范数定义损失函数" class="headerlink" title="3.1 以条件分布算子的HS范数定义损失函数"></a>3.1 以条件分布算子的HS范数定义损失函数</h4><p>因此以条件分布距离最近为约束，优化参数  $\mathbf{w}$：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}=\arg \min _{ \mathbf{w}\in \mathbb{R}^{K}} Dist[(p(\mathbf{y}_s^{new}|\mathbf{X}_s) ,p(\mathbf{y}_t|\mathbf{X}_t) ]</script><p>其中 $\mathbf{y}_{s}^{new}=\mathbf{y}_{s}+\mathbf{\Gamma}_s\mathbf{w}$, 式中矩阵 $\Gamma_s\in\mathbb{R}^{n_s\times K}$ 的每个元素为 $\gamma(z_{n k})=p(z_k=1 | \mathbf{x}_s^n)$ ， $\mathbf{w}\in\mathbb{R}^{K\times 1}$。</p>
+<p>为了更方便估计条件分布，我们可以将其嵌入至再生核希尔伯特空间中。条件分布$P_{Y | {X}}$ 可以嵌入为算子$\mathcal{U}_{Y | X}: \mathscr{H} \rightarrow \mathscr{G}$ ，具体定义为 $\mathcal{U}_{Y | X}:=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1}$， 其中 $\mathcal{C}_{Y X}$ 和  $\mathcal{C}_{Y X}$ 分别是交叉方差算子和自方差算子，即有：</p>
+<script type="math/tex; mode=display">
+\begin{array}
+1 \mathcal{U}_{Y | X}&=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1} \\
+&=\mathbb{E}_{Y X}[\Psi(Y) \otimes \Phi(X)]\mathbb{E}_{Y X}^{-1}[\Phi(x) \otimes \Phi(X)]
+\end{array}</script><p>对于给定观测值 $\mathbf{X_t,y_t}$，条件嵌入算子的经验估计为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\hat{\mathcal{U}}_{\mathbf{y}_{t} | \mathbf{X}_{t}}&=\frac{1}{n_t}\sum_{i=1}^{n_t} \varphi(y_{i}^{t})  \phi(\mathbf{x}_{i}^{t})\frac{1}{n_t}\sum_{i=1}^{n_t} [\phi(\mathbf{x}_{i}^{t})  \phi(\mathbf{x}_{i}^{t})+\lambda \mathbf{I}]^{-1} \\
+&=\Psi\left(\mathbf{y}_{t}\right)\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+n_t\lambda \mathbf{I}\right)^{-1} \phi^{\top}\left(\mathbf{X}_{t}\right)
+\end{aligned}</script><p>其中$\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}$为对应核矩阵。同理，对于条件分布$p(\mathbf{y}_s^{new}|\mathbf{X}_s)$的经验估计为:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\hat{\mathcal{U}}_{\mathbf{y}_s^{new} | \mathbf{X}_{s}}&=\frac{1}{n_s}\sum_{i=1}^{n_s} \varphi(y_{i}^{s})  \phi(\mathbf{x}_{i}^{s})\frac{1}{n_s}\sum_{i=1}^{n_s} [\phi(\mathbf{x}_{i}^{s})  \phi(\mathbf{x}_{i}^{s})+\lambda \mathbf{I}]^{-1} \\
+&=\psi\left(\mathbf{y}_s^{new}\right)\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+n_s\lambda \mathbf{I}\right)^{-1} \phi^{\top}\left(\mathbf{X}_{s}\right)
+\end{aligned}</script><p>至此，条件分布距离衡量函数定义为：</p>
+<script type="math/tex; mode=display">
+Dist[(p(\mathbf{y}_s^{new}|\mathbf{X}_s) ,p(\mathbf{y}_t|\mathbf{X}_t) ]=\left\|\hat{\mathcal{U}}\left[P_{\mathbf{y}_{s}^{new}| \mathbf{X}_{s}} \right]-\hat{\mathcal{U}}\left[P_{\mathbf{y}_{t} | \mathbf{X}_{t}}\right]\right\|_{HS}^{2}</script><p>此时损失函数定义为：</p>
+<script type="math/tex; mode=display">
+J(\mathbf{w})=\left\|\hat{\mathcal{U}}\left[P_{\mathbf{y}_{s}^{new}| \mathbf{X}_{s}} \right]-\hat{\mathcal{U}}\left[P_{\mathbf{y}_{t} | \mathbf{X}_{t}}\right]\right\|_{HS}^{2}+\lambda_c\mathbf{w}^{\top}\mathbf{w}</script><h4 id="3-2-损失函数求导及优化"><a href="#3-2-损失函数求导及优化" class="headerlink" title="3.2 损失函数求导及优化"></a>3.2 损失函数求导及优化</h4><p>因此最终损失函数表示为：</p>
+<script type="math/tex; mode=display">
+J=\left\|\Psi\left(\mathbf{y}_{s}^{new}\right)\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{s}\right)-\Psi\left(\mathbf{y}_{t}\right)\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{t}\right)\right\|^{2}+\lambda_c\mathbf{w}^{\top}\mathbf{w}</script><p>将其展开为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+J&=\left\|\Psi\left(\mathbf{y}_{s}^{new}\right)\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{s}\right)-\Psi\left(\mathbf{y}_{t}\right)\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{t}\right)\right\|^{2}+\lambda_c\mathbf{w}^{\top}\mathbf{w}\\
+&= A+B-2C + \lambda_c\mathbf{w}^{\top}\mathbf{w}\\
+\end{aligned}</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A&=\operatorname{Tr}\left\{\Phi\left(\mathbf{X}_{s}\right)\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+n_s\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+ n_s\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{s}\right)\right\}\\
+&=\operatorname{Tr}\left\{\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+n_s\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+ n_s\lambda \mathbf{I}\right)^{-1} \mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}\right\}\\
+B&=\operatorname{Tr}\left\{\Phi\left(\mathbf{X}_{t}\right)\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+n_t\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}^t\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+ n_t\lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{t}\right)\right\}\\
+&=\operatorname{Tr}\left\{\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+n_t\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}^t\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+ n_t\lambda \mathbf{I}\right)^{-1} \mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}\right\}\\
+C&=\operatorname{Tr}\left\{\Phi\left(\mathbf{X}_{s}\right)\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+n_s\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}^c\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+n_t \lambda \mathbf{I}\right)^{-1} \Phi^{\top}\left(\mathbf{X}_{t}\right)\right\}\\
+&=\operatorname{Tr}\left\{\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+n_s\lambda \mathbf{I}\right)^{-1} \tilde{\mathbf{K}}^c\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+ n_t\lambda \mathbf{I}\right)^{-1} \mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{s}}\right\}
+\end{aligned}</script><p>其中$\tilde{\mathbf{K}}=\mathbf{K}_{\mathbf{y}_{s}^{new} \mathbf{y}_{t}^{new}}$，$\tilde{\mathbf{K}}^c=\mathbf{K}_{\mathbf{y}_{s}^{new} \mathbf{y}_{t}}$，$\tilde{\mathbf{K}}^t=\mathbf{K}_{\mathbf{y}_{t} \mathbf{y}_{t}}$，$\tilde{\mathbf{K}}^t$为常数，求导时忽略。此时$L$对 $\mathbf{w}$的导数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ \frac{\partial J}{\partial \tilde{\mathbf{K}}}&=\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda \mathbf{I}\right)^{-1} \mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}^{\top}\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda \mathbf{I}\right)^{-1}\\
+\frac{\partial J}{\partial \tilde{\mathbf{K}}^c}&=\left(\mathbf{K}_{\mathbf{X}_{s} \mathbf{X}_{s}}+\lambda \mathbf{I}\right)^{-1} \mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{s}}^{\top}\left(\mathbf{K}_{\mathbf{X}_{t} \mathbf{X}_{t}}+\lambda \mathbf{I}\right)^{-1}\\
+\frac{\partial J}{\partial \mathbf{w}}&=\operatorname{Tr}\left[\left(\frac{\partial L}{\partial \tilde{\mathbf{K}}}\right)^{\top}\left(\frac{\partial \tilde{\mathbf{K}}}{\partial \mathbf{w}}\right)\right]-2\operatorname{Tr}\left[\left(\frac{\partial L}{\partial \tilde{\mathbf{K}}_{c}}\right)^{\top}\left(\frac{\partial \tilde{\mathbf{K}}^{c}}{\partial \mathbf{w}}\right)\right]+2\lambda_c\mathbf{w}\\
+&=\operatorname{Tr}\left[\left(\frac{\partial L}{\partial \tilde{\mathbf{K}}}\right)^{\top}\left(\tilde{\mathbf{K}} \odot \mathbf{D}\right)\right]-2\operatorname{Tr}\left[\left(\frac{\partial L}{\partial \tilde{\mathbf{K}}^{c}}\right)^{\top}\left(\tilde{\mathbf{K}}_{c} \odot \mathbf{E}\right)\right]+2\lambda_c\mathbf{w}\\
+\left[\mathbf{D}\right]_{i j}&=-\frac{1}{\sigma^{2}}\left(\mathbf{y}_{i}^{n e w}-\mathbf{y}_{j}^{n e w}\right)\left\{\mathbf{\Gamma}_{i}^{s} \mathbf{I}(i=p)-\mathbf{\Gamma}_{j}^{s} \mathbf{I}(j=p)\right\}\\
+\left[\mathbf{E}\right]_{i j}&=-\frac{1}{\sigma^{2}}\left(\mathbf{y}_{i}^{n e w}-\mathbf{y}_{j}^{t L}\right) \mathbf{\Gamma}_{i}^{s} \mathbf{I}(i=p)
+\end{aligned}</script><p>此时可以梯度下降法求解$\mathbf{w}$ </p>
+<h3 id="4-泛化边界"><a href="#4-泛化边界" class="headerlink" title="4. 泛化边界"></a>4. 泛化边界</h3><p>我们将给出基于稳定性分析泛化误差，首先引入定理1：</p>
+<p><strong>定理1</strong>：<em>对于未知分布$D$ 中采样的训练集：</em></p>
+<script type="math/tex; mode=display">
+S=\left\{z_{1}=\left(x_{1}, y_{1}\right), \ldots, z_{m}=\left(x_{m}, y_{m}\right)\right\}</script><p><em>设 $F$ 是一个具有核 $k$ 的再生核希尔伯特空间，且 $\forall x \in X, k(x, x) \leq \kappa^{2}&lt;\infty$ ，设 $l$ 关于 $F$ 是 $\sigma$ -admissible的，且损失函数 $l\leq4M^2 $ 。学习算法$A_s$ 定义为：</em></p>
+<script type="math/tex; mode=display">
+A_{S}=\arg \min _{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} l\left(f, z_{i}\right)+\lambda\|f\|_{k}^{2}</script><p><em>则学习算法对于损失函数 $l$ 的稳定边界为：</em></p>
+<script type="math/tex; mode=display">
+\beta \leq \frac{\sigma^{2} \kappa^{2}}{2 \lambda m}</script><p><em>令$R=\mathbb{E}_{z}\left[l\left(A_{S}, z\right)\right]$ 为算法泛化误差 ，$R_{e m p}=\frac{1}{m} \sum_{i=1}^{m} l\left(A_{S}, z_{i}\right) $ 为算法的经验误差，则至少以概率 $1-\delta$ ，使以下不等式成立：</em></p>
+<script type="math/tex; mode=display">
+R \leq R_{e m p}+\frac{\sigma^{2} \kappa^{2}}{\lambda m}+\left(\frac{2 \sigma^{2} \kappa^{2}}{\lambda}+4 M^{2}\right) \sqrt{\frac{\ln (1 / \delta)}{2 m}}</script><p>令 $\tilde{z}_{i}=\left(\tilde{\mathbf{x}}_{i}, \tilde{y}_{i}\right) \in(\tilde{\mathbf{X}}, \tilde{\mathbf{y}})$ ，其中 $\tilde{\mathbf{X}}=\mathbf{X}_s\cup\mathbf{X}_t$，  $\tilde{\mathbf{y}}=\mathbf{y}_s^{new}\cup\mathbf{y}_t$ ，定义最终目标模型为在融合数据上$\tilde{z}_{i}$ 上训练的模型：</p>
+<p><strong>定理2</strong>：设$| \hat{\mathcal{U}}\left[P_{\mathbf{y}_{s}^{new} | \mathbf{X}_{s}}\right]-\hat{\mathcal{U}}\left[P_{\mathbf{y}_{t} | \mathbf{X}_{s}}\right] |\leq\epsilon$ ，$l_s\leq4M_s^2 $ ，$l_h\leq4M_h^2 $ ，则至少以概率 $1-\delta$ ，使以下不等式成立：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\left|\frac{1}{n_s+n_t} \sum_{i=1}^{n_s+n_t} l\left(f_t, \tilde{z}_{i}\right)-E_{z^{t}}\left[l\left(f_t, z^{t}\right)\right]\right| \\
+&\leq 4 M\left(\epsilon \kappa+C\left(\lambda_{c}^{1 / 2}+\left(n_{l} \lambda_{c}\right)^{-1 / 2}\right)\right)\\
+&+ \frac{\sigma^{2} \kappa^{2}}{\lambda_{t}(n_s+n_t)}+\left(\frac{2 \sigma^{2} \kappa^{2}}{\lambda_{t}}+4 M^{2}\right) \sqrt{\frac{\ln (1 / \delta)}{2(n_s+n_t)}}
+\end{aligned}</script><h3 id="5-曲线实验"><a href="#5-曲线实验" class="headerlink" title="5. 曲线实验"></a>5. 曲线实验</h3><p>本次不再加入仿真曲线验证，直接找三个数据集验证：</p>
+<p><img src="/2020/01/09/GMMTL_2020/Fig2 GMMTL.svg" style="zoom:67%;"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/27/GMMTL_Z/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/11/Distribution-Embedding/" rel="prev" title="Distribution Embedding">
+                Distribution Embedding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTgyNC8xODM3MA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Gengxiang">
+            
+              <p class="site-author-name" itemprop="name">Gengxiang</p>
+              <p class="site-description motion-element" itemprop="description">某航空人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gengxiangc" title="GitHub &rarr; https://github.com/gengxiangc" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:cgx@nuaa.edu.com" title="E-Mail &rarr; mailto:cgx@nuaa.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/Tangmei_can" title="Weibo &rarr; https://weibo.com/Tangmei_can" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2020年01月09日-方案示例"><span class="nav-number">1.</span> <span class="nav-text">2020年01月09日 方案示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-七个问题"><span class="nav-number">1.0.1.</span> <span class="nav-text">0.七个问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题定义"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.问题定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-问题转化"><span class="nav-number">1.0.3.</span> <span class="nav-text">2. 问题转化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-引出偏差分布"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">2.1 引出偏差分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-高斯混合模型描述特征空间分布"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">2.2 高斯混合模型描述特征空间分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-求解隐变量偏差函数"><span class="nav-number">1.0.4.</span> <span class="nav-text">3 求解隐变量偏差函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-以条件分布算子的HS范数定义损失函数"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">3.1 以条件分布算子的HS范数定义损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-损失函数求导及优化"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">3.2 损失函数求导及优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-泛化边界"><span class="nav-number">1.0.5.</span> <span class="nav-text">4. 泛化边界</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-曲线实验"><span class="nav-number">1.0.6.</span> <span class="nav-text">5. 曲线实验</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">苏ICP备18055599号 </a>&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gengxiang</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+   
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+   
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+    <script type="text/javascript">
+      window.livereOptions = {
+        refer: '2020/01/09/GMMTL_2020/'
+      };
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
