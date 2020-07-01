@@ -751,7 +751,7 @@ x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1}</script>
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:48:53" itemprop="dateModified" datetime="2020-01-13T14:48:53+08:00">2020-01-13</time>
+                <time title="修改时间：2020-07-01 11:36:03" itemprop="dateModified" datetime="2020-07-01T11:36:03+08:00">2020-07-01</time>
               
             
           </span>
@@ -785,57 +785,16 @@ x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1}</script>
 
       
         
+          <p>衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。</p>
+          <!--noindex-->
           
-            <p>衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。</p>
-<h3 id="条件嵌入算子"><a href="#条件嵌入算子" class="headerlink" title="条件嵌入算子"></a>条件嵌入算子</h3><p>交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。</p>
-<script type="math/tex; mode=display">
-\mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(Y) \otimes \phi(X)]=\mu_{\mathbb{P}_{Y X}}</script><p>边缘嵌入算子定义</p>
-<script type="math/tex; mode=display">
-\mu_{\mathbb{P}}=\mathbb{E}_{\mathbf{x} \sim \mathbb{P}}[\varphi(\mathbf{x}-\cdot)]=\varphi * \mathbb{P}</script><p>边缘嵌入算子的估计值：可以理解为半个映射</p>
-<script type="math/tex; mode=display">
-\hat{\mu}_{\mathbb{P}}:=\frac{1}{n} \sum_{i=1}^{n} k\left(\mathbf{x}_{i}, \cdot\right)</script><p>条件嵌入算子 $\mathcal{U}_{Y | X}: \mathscr{H} \rightarrow \mathscr{G}$ 为算子，是分布$P(Y | X)$的均值嵌入，即函数到函数的映射</p>
-<script type="math/tex; mode=display">
-\mathcal{U}_{Y | X}:=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1}</script><p>而条件嵌入值 $\mathcal{U}_{Y | \mathbf{x}_<em>} \in \mathscr{G}$ 为预测值，是分布$P(Y | X=\mathbf{x}_</em>)$的嵌入:</p>
-<script type="math/tex; mode=display">
-\mathcal{U}_{Y | \mathbf{x}_*}:=\mathcal{C}_{Y X} \mathcal{C}_{X X}^{-1} k(\mathbf{x}_*, \cdot)</script><h3 id="条件嵌入算子估计"><a href="#条件嵌入算子估计" class="headerlink" title="条件嵌入算子估计"></a>条件嵌入算子估计</h3><p>当我们有观测值$\mathbf{X},\mathbf{Y}$的时侯，条件嵌入算子就可以估计了。设映射$\phi:\mathcal{X} \rightarrow \mathscr{H} \text { and } \varphi: \mathcal{Y} \rightarrow \mathscr{G}$, 且$\Phi:=\left[\varphi\left(\mathbf{y}_{1}\right), \ldots, \varphi\left(\mathbf{y}_{n}\right)\right]^{\top} \text { 且} \Upsilon:=\left[\phi\left(\mathbf{x}_{1}\right), \ldots, \phi\left(\mathbf{x}_{n}\right)\right]^{\top}$ ，则有：</p>
-<p>条件均值嵌入估计，即给定$\mathbf{X,Y}$预测$\mathbf{x_*}$：</p>
-<script type="math/tex; mode=display">
-\begin{array}
-\hat{\mu}_{Y | \mathbf{x}_*}&=\widehat{\mathcal{C}}_{Y X}\left(\widehat{\mathcal{C}}_{X X}+\lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
-&=\frac{1}{n} \Phi \Upsilon^{\top}\left(\frac{1}{n} \Upsilon \Upsilon^{\top}+\lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
-&=\Phi \Upsilon^{\top}\left(\Upsilon \Upsilon^{\top}+n \lambda \mathcal{I}\right)^{-1} k(\mathbf{x}_*, \cdot) \\
-&=\Phi\left(\Upsilon^{\top} \Upsilon+n \lambda \mathbf{I}_{n}\right)^{-1} \Upsilon^{\top} k(\mathbf{x}_*, \cdot) \\
-&=\Phi\left(\mathbf{K}+n \lambda \mathbf{I}_{n}\right)^{-1} \mathbf{k}_{\mathbf{Xx}_*}
-\end{array}</script><p>请注意，<strong>条件均值嵌入</strong>非常像最小二乘解析解，其实一个道理，具体如下：</p>
-<script type="math/tex; mode=display">
-\begin{array}
-1\mathbf{w}\mathbf{X} =\mathbf{Y}\\
-\mathbf{w}\mathbf{X}\mathbf{X}^{\top}=\mathbf{Y}\mathbf{X}^{\top}\\
-\mathbf{w}=\mathbf{Y}\mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}\\
-\mathbf{w}=\mathbf{K}_\mathbf{YX}(\mathbf{K}_\mathbf{XX}+\lambda\mathbf{I})^{-1}\\
-有条件： \mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})=\mathbf{X}^{\top}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})\\
- 先右乘： (\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}再左乘 \mathbf{Y}(\mathbf{X}\mathbf{X}^{\top}+\lambda\mathbf{I})^{-1}\\
- 即得到：\mathbf{w}=\mathbf{Y}(\mathbf{X}^{\top}\mathbf{X}+\lambda\mathbf{I})^{-1}\mathbf{X}^{\top}\\
- 核表示：\mathbf{w}=\Phi(\mathbf{K}_{\mathbf{x}\mathbf{x}}+\lambda\mathbf{I})^{-1}\Upsilon\\
-
-\end{array}</script><h3 id="核运算规则"><a href="#核运算规则" class="headerlink" title="核运算规则"></a>核运算规则</h3><p>条件算子到边缘算子的关系为：</p>
-<script type="math/tex; mode=display">
-\mu_{X}=\mathbb{E}_{Y}\left[\mathcal{U}_{X | Y} \varphi(Y)\right]=\mathcal{U}_{X | Y} \mathbb{E}_{Y}[\varphi(Y)]=\mathcal{U}_{X | Y} \mu_{Y}</script><p>边缘算子的估计值为【注意这里$XY$和上问有调换，其实都一样】：</p>
-<script type="math/tex; mode=display">
-\hat{\mu}_{X}=\hat{\mathcal{U}}_{X | Y} \hat{\mu}_{Y}=\widehat{\mathcal{C}}_{X Y} \hat{\mathcal{C}}_{Y Y}^{-1} \hat{\mu}_{Y}=\Upsilon(\mathbf{L}+n \lambda \mathbf{I})^{-1} \tilde{\mathbf{L}} \alpha</script><p>请注意，这里的意思是 $\hat{\mathcal{U}}_{X | Y}$已知的情况下，如何根据给定的 $\hat{\mu}_{Y}$ 得到对应的 $\hat{\mu}_{X}$。换成上面的核岭回归就容易理解了， $\hat{\mathcal{U}}_{X | Y}$ 相当于求解出的系数$\mathbf{w}$，有了系数之后，给输入$Y$，即可得到输出$X$。</p>
-<p>联合分布嵌入算子表示为：</p>
-<script type="math/tex; mode=display">
-\mu_{X Y}=\mathcal{U}_{X | Y} \mu_{Y}^{\otimes}=\mathcal{U}_{Y | X} \mu_{X}^{\otimes}</script><p>其中$\mu_{X}^{\otimes}:=\mathbb{E}_{X}[\phi(X) \otimes \phi(X)]$ and $\mu_{Y}^{\otimes}:=\mathbb{E}_{Y}[\varphi(Y) \otimes \varphi(Y)]$ , 用方差算子的方式表示为：</p>
-<script type="math/tex; mode=display">
-\mathcal{C}_{X Y}=\mathcal{U}_{X | Y} \mathcal{C}_{Y Y} \quad and \quad \mathcal{C}_{Y X}=\mathcal{U}_{Y | X} \mathcal{C}_{X X}</script><h3 id="条件独立判据"><a href="#条件独立判据" class="headerlink" title="条件独立判据"></a>条件独立判据</h3><p>假设联合分布满足：$P(X,Y,Z)=P(X|Z)P(Y|Z)P(Z)$，即$X,Y$是条件$Z$下的两个独立变量：</p>
-<p>2008年提出标准化条件交叉方差算子：</p>
-<script type="math/tex; mode=display">
-\mathcal{V}_{Y X | Z}:=\mathcal{V}_{Y X}-\mathcal{V}_{Y Z} \mathcal{V}_{Z X}</script><p>其中 $\mathcal{C}_{Y X}=\mathcal{C}_{Y Y}^{1 / 2} \mathcal{V}_{Y X} \mathcal{C}_{X X}^{1 / 2}$ ，类似于协方差矩阵标准化一样，基于此定义，可以得到偏差判据：</p>
-<script type="math/tex; mode=display">
-I_{condition}(X, Y | Z)=\left\|V_{\ddot{Y} \dot{X} | Z}\right\|_{H S}^{2}</script><p>那么这个判据可以盘算$X,Y$是否条件独立。 </p>
-<h3 id="条件嵌入分布差异判据"><a href="#条件嵌入分布差异判据" class="headerlink" title="条件嵌入分布差异判据"></a>条件嵌入分布差异判据</h3><p>目前有Zhang和Wang两种，经过分析，还是决定用Wang的HS判据</p>
-
-          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/01/11/Distribution-Embedding/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
         
       
     </div>

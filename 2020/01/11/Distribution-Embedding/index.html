@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+  <meta name="description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。">
 <meta name="keywords" content="迁移学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Distribution Embedding">
 <meta property="og:url" content="http://tangmeii.cn/2020/01/11/Distribution-Embedding/index.html">
 <meta property="og:site_name" content="Tangmeii_Sites">
-<meta property="og:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+<meta property="og:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:48:53.000Z">
+<meta property="og:updated_time" content="2020-07-01T03:36:03.678Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Distribution Embedding">
-<meta name="twitter:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。 条件嵌入算子交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。  \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(">
+<meta name="twitter:description" content="衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。">
 
 
 
@@ -403,7 +403,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:48:53" itemprop="dateModified" datetime="2020-01-13T14:48:53+08:00">2020-01-13</time>
+                <time title="修改时间：2020-07-01 11:36:03" itemprop="dateModified" datetime="2020-07-01T11:36:03+08:00">2020-07-01</time>
               
             
           </span>
@@ -444,6 +444,7 @@
 
       
         <p>衡量分布距离在机器学习算法中非常常用，然而分布估计往往运算量大，又不够准确。将分布映射到RKHS上，可以带来很好的性质，因此本篇介绍一下分布嵌入算子，包括边缘嵌入算子，条件嵌入算子和联合嵌入算子。</p>
+ <a id="more"></a>  
 <h3 id="条件嵌入算子"><a href="#条件嵌入算子" class="headerlink" title="条件嵌入算子"></a>条件嵌入算子</h3><p>交叉协方差算子，Cross-covariance operators，注意，元素相乘，并不是内积。</p>
 <script type="math/tex; mode=display">
 \mathcal{C}_{Y X}:=\mathbb{E}_{Y X}[\varphi(Y) \otimes \phi(X)]=\mu_{\mathbb{P}_{Y X}}</script><p>边缘嵌入算子定义</p>
