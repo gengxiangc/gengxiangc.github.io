@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Tangmeii_Sites">
 <meta property="og:description" content="1.  离散卡尔曼滤波待估计的过程卡尔曼滤波解决的是离散控制过程状态估计问题，状态$x \in \Re^{n}$， 系统由线性随机差分方程控制：  x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1}">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-01T03:26:56.393Z">
+<meta property="og:updated_time" content="2020-07-01T08:33:10.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kalman Filter">
 <meta name="twitter:description" content="1.  离散卡尔曼滤波待估计的过程卡尔曼滤波解决的是离散控制过程状态估计问题，状态$x \in \Re^{n}$， 系统由线性随机差分方程控制：  x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1}">
@@ -386,7 +386,7 @@
                 
               
 
-              <time title="创建时间：2020-07-01 11:10:23 / 修改时间：11:26:56" itemprop="dateCreated datePublished" datetime="2020-07-01T11:10:23+08:00">2020-07-01</time>
+              <time title="创建时间：2020-07-01 11:10:23 / 修改时间：16:33:10" itemprop="dateCreated datePublished" datetime="2020-07-01T11:10:23+08:00">2020-07-01</time>
             
 
             
@@ -457,7 +457,37 @@ x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1}</script> <a id="more"></a>
 z_k = Hx_k + v_k</script><p>式中随机变量$w_{k-1}$和$v_k$表示为系统运行误差和测量误差，假设均为白噪声正态分布：</p>
 <script type="math/tex; mode=display">
 p(w) \sim N(0, Q)\\
-p(v) \sim N(0, R)</script><p>过程噪声方差$Q$和测量噪声方差$R$认为不变。$n \times n$ 的矩阵$A$表示在不考虑控制函数和噪声的情况下，上一个时刻的状态与当前时刻状态之间的关系，实际问题中矩阵$A$可能是变化的，但是此处假设是不变的。$n \times l$ 表示表示控制输入$u \in \Re^{l}$ </p>
+p(v) \sim N(0, R)</script><p>过程噪声方差$Q$和测量噪声方差$R$ 认为不变。$n \times n$ 的矩阵$A$表示在不考虑控制函数和噪声的情况下，上一个时刻的状态与当前时刻状态之间的关系，实际问题中矩阵$A$可能是变化的，但是此处假设是不变的。$n \times l$ 的矩阵 $B$ 表示表示控制输入$u \in \Re^{l}$ 与状态之间的关心， $m \times n$ 的矩阵 $H$ 是测量矩阵。</p>
+<h4 id="滤波器的计算基础"><a href="#滤波器的计算基础" class="headerlink" title="滤波器的计算基础"></a>滤波器的计算基础</h4><p>定义系统的第$k$ 步的<strong>先验</strong>状态估计值为$\hat{x}_{k}^{-} \in \Re^{n}$ ，定义给定测量值$z_k$之后的系统后验估计状态为$\hat{x}_{k} \in \Re^{n}$ ，此时可以定义<strong>先验估计误差</strong>和<strong>后验估计误差</strong>分别为：</p>
+<script type="math/tex; mode=display">
+e_{k}^{-} \equiv x_{k}-\hat{x}_{k}^{-}\\
+e_{k} \equiv x_{k}-\hat{x}_{k}</script><p><strong>先验估计方差</strong>和<strong>后验估计方差</strong>分别定义为：</p>
+<script type="math/tex; mode=display">
+P_{k}^{-}=E\left[e_{k}^{-} e_{k}^{-T}\right]\\
+P_{k}=E\left[e_{k} e_{k}^{T}\right]</script><p>定义后验观测值的表达式为：</p>
+<script type="math/tex; mode=display">
+\hat{x}_{k} = \hat{x}_{k}^{-} - K(z_k-H\hat{x}_k^-)</script><p>$(z_k-H\hat{x}_k^-)$ 称作测量残差，表示实际测量值与测量估计值的差值， $n\times m$ 维矩阵$K$ 定义为 Blending factor，一般通过最大化后验估计方差来求解。具体计算方式为，首先根据后验观测值表达式得出每一步估计的后验，然后根据后验表达误差计算出$e_k$, 再通过期望估计计算出$P_k$, 求$P_k$对$K$的导数，并使导数为0解出$K$。最小二乘解为：</p>
+<script type="math/tex; mode=display">
+K_{k}=P_{k}^{-} H^{T}\left(H P_{k}^{-} H^{T}+R\right)^{-1}</script><p>由此可看出，当测量误差方差$R$ 趋近于0时，因子$K$ 趋近于测量矩阵的逆矩阵：</p>
+<script type="math/tex; mode=display">
+\lim _{R_{k} \rightarrow 0} K_{k}=H^{-1}</script><p>如果先验估计误差方差$P_{k}^{-}$趋近于0，则因子$K$ 就趋近于0。解释意义为：当测量误差方差小的时候，测量结果更可信，当先验估计方差小的时候，预计测量值更加可信。</p>
+<h4 id="滤波器的概率基础"><a href="#滤波器的概率基础" class="headerlink" title="滤波器的概率基础"></a>滤波器的概率基础</h4><p>从概率的角度来说，滤波器的后验可以通过贝叶斯公式重新描述，卡尔曼滤波保留了状态分布的前两阶矩，一阶矩是期望，二阶矩是方差，即：</p>
+<script type="math/tex; mode=display">
+E[x_k]=\hat x_k\\
+E[(x_k -\hat x_k)(x_k -\hat x_k)^{\top}]=P_k</script><p>后验状态估计等于状态分布的均值，后验估计误差方差代表状态分布的方差，也就是说：</p>
+<script type="math/tex; mode=display">
+p\left(x_{k} \mid z_{k}\right) \sim N\left(E\left[x_{k}\right], E\left[\left(x_{k}-\hat{x}_{k}\right)\left(x_{k}-\hat{x}_{k}\right)^{\top}\right]\right)</script><h4 id="离散卡尔曼滤波算法"><a href="#离散卡尔曼滤波算法" class="headerlink" title="离散卡尔曼滤波算法"></a>离散卡尔曼滤波算法</h4><p>首先从广义的角度解释卡尔曼滤波器，后面章节会从具体的角度解读。Kalmam滤波器利用反馈控制的方式估计系统：滤波器首先估计系统的状态，然后获得带有误差的测量反馈。Kalman滤波的公式分成两部分，时间更新和测量更新，时间更新部分通过当前状态和当前状态的误差方差估计下一个状态的先验，测量更新是指将测量结果加入到先验估计中来获取后验分布。</p>
+<p>时间更新环节也可以当作是一种预测环节，测量更新环节可以当作是一种误差修正，因此整体估计算法就是一种预测-修正迭代流程，时间更新表示为：</p>
+<script type="math/tex; mode=display">
+\hat{x}_{k}^{-}=A \hat{x}_{k-1}+B u_{k-1} \\
+P_{k}^{-}=A P_{k-1} A^{T}+Q</script><p>其中方差更新可以根据上面的式子计算的。</p>
+<p>测量更新分三部分，包括因子矩阵计算，后验状态估计，后验状态方差：</p>
+<script type="math/tex; mode=display">
+K_{k}=P_{k}^{-} H^{T}\left(H P_{k}^{-} H^{T}+R\right)^{-1} \\
+\hat{x}_{k}=\hat{x}_{k}^{-}+K_{k}\left(z_{k}-H \hat{x}_{k}^{-}\right)\\
+P_{k}=\left(I-K_{k} H\right) P_{k}</script><p>因子矩阵计算就是按照上面的最小二乘解，后验状态方差我就不知道为什么了。</p>
+<h2 id="2-Coding"><a href="#2-Coding" class="headerlink" title="2. Coding"></a>2. Coding</h2><p>定义Kalman滤波类，包含两个函数，预测函数和更新函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> np.linalg <span class="keyword">import</span> inv</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> identity</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KalmanFilter</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, X, P, F, Q, Z, H, R)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        X: State Estimate</span></span><br><span class="line"><span class="string">        P: State Estimate Covaiance </span></span><br><span class="line"><span class="string">        F: Stage transition model</span></span><br><span class="line"><span class="string">        Q: Process noise covariance</span></span><br><span class="line"><span class="string">        Z: Measurement of X</span></span><br><span class="line"><span class="string">        H: Observation model</span></span><br><span class="line"><span class="string">        R: Observation noise covariance</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.X = X</span><br><span class="line">        self.P = P</span><br><span class="line">        self.F = F</span><br><span class="line">        self.Q = Q</span><br><span class="line">        self.Z = Z</span><br><span class="line">        self.H = H</span><br><span class="line">        self.R = R</span><br><span class="line">        </span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X, P, w=<span class="number">0</span>)</span>:</span></span><br><span class="line">        X = self.F * X + w</span><br><span class="line">        P = self.F * P * self.F.T + self.Q</span><br><span class="line">        <span class="keyword">return</span> X, P</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, X, P, Z)</span>:</span></span><br><span class="line">        K = P * self.H.T * inv(self.H * P * self.H.T + self.R)</span><br><span class="line">        X = X + K * (Z - self.H * X)</span><br><span class="line">        P = (identity(P.shape[<span class="number">1</span>]) - K * self.H) * P</span><br><span class="line">        <span class="keyword">return</span> X, P</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -701,7 +731,7 @@ p(v) \sim N(0, R)</script><p>过程噪声方差$Q$和测量噪声方差$R$认为
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-离散卡尔曼滤波"><span class="nav-number">1.</span> <span class="nav-text">1.  离散卡尔曼滤波</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#待估计的过程"><span class="nav-number">1.0.1.</span> <span class="nav-text">待估计的过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-离散卡尔曼滤波"><span class="nav-number">1.</span> <span class="nav-text">1.  离散卡尔曼滤波</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#待估计的过程"><span class="nav-number">1.0.1.</span> <span class="nav-text">待估计的过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滤波器的计算基础"><span class="nav-number">1.0.2.</span> <span class="nav-text">滤波器的计算基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滤波器的概率基础"><span class="nav-number">1.0.3.</span> <span class="nav-text">滤波器的概率基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#离散卡尔曼滤波算法"><span class="nav-number">1.0.4.</span> <span class="nav-text">离散卡尔曼滤波算法</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Coding"><span class="nav-number">2.</span> <span class="nav-text">2. Coding</span></a></li></div>
             
 
           </div>
